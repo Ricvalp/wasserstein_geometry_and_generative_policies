@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{A Simple Example of Brenier's Theorem}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+Consider two probability measures on $\mathbb R$:
+\[
+\mu=\mathrm{Unif}[0,1],
+\qquad
+\nu=\mathrm{Unif}[1,2].
+\]
+The optimal transport map for the quadratic cost
+\[
+c(x,y)=|x-y|^2
+\]
+is
+\[
+T(x)=x+1.
+\]
+Indeed, $T$ pushes $\mu$ forward to $\nu$:
+\[
+T_\#\mu=\nu,
+\]
+because translating a uniform random variable on $[0,1]$ by $1$ gives a
+uniform random variable on $[1,2]$.
+
+\section*{Brenier Form}
+
+Brenier's theorem says that, under its hypotheses, the optimal map has the form
+\[
+T=\nabla\varphi
+\]
+for a convex function $\varphi$.
+
+In one dimension, the gradient is just the derivative. Here
+\[
+T(x)=x+1
+\]
+is the derivative of
+\[
+\varphi(x)=\frac12 x^2+x.
+\]
+Since
+\[
+\varphi''(x)=1>0,
+\]
+the function $\varphi$ is convex. Therefore
+\[
+T(x)=\varphi'(x)=x+1
+\]
+is exactly a Brenier map.
+
+\section*{Interpretation}
+
+This example says that the optimal way to move the uniform distribution on
+$[0,1]$ to the uniform distribution on $[1,2]$ is to translate every particle
+one unit to the right.
+
+\end{document}

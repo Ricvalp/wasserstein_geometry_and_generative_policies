@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Derivation of the Wasserstein Gradient Flow Equation}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+In Euclidean space, the gradient flow of a function $f$ is
+\[
+\dot x_t=-\nabla f(x_t).
+\]
+This says that the point moves in the direction of steepest decrease, measured
+using the Euclidean inner product.
+
+In Wasserstein space, points are probability densities $\rho_t$. A curve of
+densities moves through a velocity field $v_t$ satisfying the continuity
+equation:
+\[
+\partial_t\rho_t+\operatorname{div}(\rho_t v_t)=0.
+\]
+The Wasserstein metric measures the size of the velocity by kinetic energy:
+\[
+\|v_t\|_{\rho_t}^2
+=
+\int_{\mathbb R^d}|v_t(x)|^2\rho_t(x)\,dx.
+\]
+
+\section*{Derivative of the Functional}
+
+Let $\mathcal F$ be a functional on densities. Along a curve $\rho_t$,
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)
+\partial_t\rho_t(x)\,dx.
+\]
+Using the continuity equation,
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+-\int_{\mathbb R^d}
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\operatorname{div}(\rho_t v_t)\,dx.
+\]
+Integrating by parts gives
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right]
+\cdot v_t\,\rho_t\,dx.
+\]
+
+\section*{Identifying the Wasserstein Gradient}
+
+The Wasserstein inner product of two velocity fields is
+\[
+\langle u,v\rangle_{\rho_t}
+=
+\int_{\mathbb R^d}u\cdot v\,\rho_t\,dx.
+\]
+The previous identity shows that the velocity-field representative of the
+Wasserstein gradient of $\mathcal F$ is
+\[
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right].
+\]
+Therefore the negative-gradient velocity is
+\[
+v_t
+=
+-
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right].
+\]
+
+\section*{Plugging Into the Continuity Equation}
+
+Substituting this velocity into
+\[
+\partial_t\rho_t+\operatorname{div}(\rho_t v_t)=0
+\]
+gives
+\[
+\partial_t\rho_t
+=
+\operatorname{div}
+\left(
+\rho_t
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right]
+\right).
+\]
+This is the Wasserstein gradient flow equation.
+
+\end{document}

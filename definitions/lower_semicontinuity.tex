@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Lower Semicontinuity}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Definition}
+
+Let $X$ be a topological space and let
+\[
+f:X\to(-\infty,\infty]
+\]
+be a function. The function $f$ is lower semicontinuous if, for every
+$a\in\mathbb R$, the superlevel set
+\[
+\{x\in X : f(x)>a\}
+\]
+is open.
+
+Equivalently, the sublevel sets
+\[
+\{x\in X : f(x)\le a\}
+\]
+are closed whenever this formulation is appropriate for the topology under
+consideration.
+
+\section*{Sequential Characterization}
+
+If $X$ is a metric space, then $f$ is lower semicontinuous if and only if for
+every sequence $x_n\to x$,
+\[
+f(x)
+\le
+\liminf_{n\to\infty} f(x_n).
+\]
+
+\section*{Interpretation}
+
+Lower semicontinuity means that the function cannot jump downward in the
+limit. It may jump upward, but limiting values cannot be strictly smaller than
+nearby limiting costs.
+
+\end{document}

@@ -1,0 +1,123 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Integral with Respect to a Measure}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Definition}
+
+Let $(X,\mathcal A,\mu)$ be a measure space and let
+\[
+f : X \to \mathbb R
+\]
+be a measurable function. The integral
+\[
+\int_X f\,d\mu
+\]
+is defined in stages.
+
+\subsection*{Indicator Functions}
+
+For a measurable set $A \in \mathcal A$, define
+\[
+\int_X \mathbf 1_A\,d\mu = \mu(A).
+\]
+
+\subsection*{Nonnegative Simple Functions}
+
+If
+\[
+s=\sum_{i=1}^n a_i\mathbf 1_{A_i},
+\]
+where $a_i\ge 0$ and $A_i\in\mathcal A$, define
+\[
+\int_X s\,d\mu
+=
+\sum_{i=1}^n a_i\mu(A_i).
+\]
+
+\subsection*{Nonnegative Measurable Functions}
+
+If $f:X\to[0,\infty]$ is measurable, define
+\[
+\int_X f\,d\mu
+=
+\sup\left\{
+\int_X s\,d\mu
+:
+0\le s\le f,\ s \text{ simple}
+\right\}.
+\]
+
+\subsection*{General Measurable Functions}
+
+For a real-valued measurable function $f$, write
+\[
+f^+=\max\{f,0\},
+\qquad
+f^-=\max\{-f,0\}.
+\]
+Then
+\[
+f=f^+-f^-,
+\qquad
+|f|=f^++f^-.
+\]
+If at least one of $\int_X f^+\,d\mu$ and $\int_X f^-\,d\mu$ is finite, define
+\[
+\int_X f\,d\mu
+=
+\int_X f^+\,d\mu
+-
+\int_X f^-\,d\mu.
+\]
+If both are finite, then $f$ is integrable and
+\[
+\int_X |f|\,d\mu<\infty.
+\]
+
+\section*{Interpretation}
+
+The notation does not necessarily mean integration with respect to Lebesgue
+measure. The measure is the object written after $d$.
+
+For example:
+\[
+\int_{\mathbb R^d} f\,d\mu
+\]
+means integration with respect to $\mu$. If $\mu$ is Lebesgue measure, this is
+the usual Lebesgue integral. If $\mu$ is a probability measure, it is the
+expectation of $f$ under $\mu$:
+\[
+\int_{\mathbb R^d} f\,d\mu = \mathbb E_\mu[f].
+\]
+
+\section*{Absolutely Continuous Case}
+
+If $\mu$ has density $\rho$ with respect to Lebesgue measure, then
+\[
+d\mu(x)=\rho(x)\,dx
+\]
+and therefore
+\[
+\int_{\mathbb R^d} f\,d\mu
+=
+\int_{\mathbb R^d} f(x)\rho(x)\,dx.
+\]
+
+\end{document}

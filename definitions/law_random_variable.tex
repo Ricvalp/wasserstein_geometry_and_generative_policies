@@ -1,0 +1,52 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Law of a Random Variable}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Definition}
+
+Let $(\Omega,\mathcal F,\mathbb P)$ be a probability space and let
+\[
+X:\Omega\to E
+\]
+be a random variable taking values in a measurable space $(E,\mathcal E)$.
+The law, or distribution, of $X$ is the probability measure on $E$ defined by
+\[
+\mathcal L(X)(A)
+=
+\mathbb P(X\in A)
+=
+\mathbb P(X^{-1}(A)),
+\qquad A\in\mathcal E.
+\]
+Equivalently,
+\[
+\mathcal L(X)=X_\#\mathbb P.
+\]
+
+\section*{Time-Dependent Random Variables}
+
+If $(X_t)_{t\ge 0}$ is a time-dependent random variable or stochastic process,
+then the law of $X_t$ is
+\[
+\mathcal L(X_t)=(X_t)_\#\mathbb P.
+\]
+It describes the probability distribution of the random state at time $t$.
+
+\end{document}

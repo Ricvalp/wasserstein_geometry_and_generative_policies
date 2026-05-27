@@ -1,0 +1,44 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Measurability of a Map}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Definition}
+
+Let $(X,\mathcal A)$ and $(Y,\mathcal B)$ be measurable spaces. A map
+\[
+T : X \to Y
+\]
+is measurable if
+\[
+T^{-1}(B) \in \mathcal A
+\]
+for every $B \in \mathcal B$.
+
+\section*{Special Case}
+
+If $X=\mathbb R^m$ and $Y=\mathbb R^d$ are equipped with their Borel
+$\sigma$-algebras, then $T:\mathbb R^m \to \mathbb R^d$ is measurable if
+\[
+T^{-1}(B)
+\]
+is a Borel subset of $\mathbb R^m$ for every Borel subset
+$B \subseteq \mathbb R^d$.
+
+\end{document}

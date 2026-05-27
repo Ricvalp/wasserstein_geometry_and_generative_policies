@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Dirac Measure}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Definition}
+
+Let $(X,\mathcal A)$ be a measurable space and let $x\in X$. The Dirac measure
+at $x$, denoted by $\delta_x$, is the measure defined by
+\[
+\delta_x(A)
+=
+\begin{cases}
+1, & x\in A,\\
+0, & x\notin A,
+\end{cases}
+\qquad A\in\mathcal A.
+\]
+
+\section*{Interpretation}
+
+The Dirac measure places all its mass at the single point $x$. If $f:X\to\mathbb R$
+is measurable, then
+\[
+\int_X f\,d\delta_x = f(x),
+\]
+whenever the integral is defined.
+
+\section*{In Euclidean Space}
+
+On $\mathbb R^d$ with its Borel $\sigma$-algebra, $\delta_x$ is a probability
+measure concentrated at the point $x\in\mathbb R^d$.
+
+\end{document}

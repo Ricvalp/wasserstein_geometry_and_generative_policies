@@ -1,0 +1,63 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Why $W_2(\delta_0,\delta_1)=1$}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+Let
+\[
+\mu=\delta_0,
+\qquad
+\nu=\delta_1.
+\]
+By definition,
+\[
+W_2(\mu,\nu)
+=
+\left(
+\inf_{\gamma\in\Pi(\mu,\nu)}
+\int |x-y|^2\,d\gamma(x,y)
+\right)^{1/2}.
+\]
+
+Since all mass starts at $0$ and must end at $1$, the only possible transport
+plan is
+\[
+\gamma=\delta_{(0,1)}.
+\]
+Thus
+\[
+\int |x-y|^2\,d\gamma(x,y)
+=
+|0-1|^2
+=
+1.
+\]
+Therefore,
+\[
+W_2^2(\delta_0,\delta_1)=1,
+\qquad
+W_2(\delta_0,\delta_1)=\sqrt{1}=1.
+\]
+
+More generally,
+\[
+W_p(\delta_a,\delta_b)=|a-b|.
+\]
+
+\end{document}

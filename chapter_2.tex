@@ -1,0 +1,445 @@
+% !TeX root = main.tex
+
+\chapter{Optimal Transport and Wasserstein Geometry}
+\section{Motivation}
+Optimal transport (OT) studies the geometry of probability distributions by quantifying the cost of transporting mass from one distribution to another.
+The modern importance of OT in machine learning derives from several observations:
+\begin{itemize}
+    \item probability distributions can be treated as geometric objects;
+    \item Wasserstein distances induce meaningful topologies on spaces of measures;
+    \item gradient flows in Wasserstein space produce important PDEs;
+    \item generative models and policies evolve distributions during training;
+    \item reinforcement learning objectives can often be interpreted as transport problems.
+\end{itemize}
+The goal of this phase is to introduce:
+\begin{enumerate}[label=(\roman*)]
+    \item Monge and Kantorovich optimal transport,
+    \item Wasserstein distances,
+    \item dynamic optimal transport,
+    \item Wasserstein geodesics,
+    \item the geometry of $W_2$ space.
+\end{enumerate}
+Throughout these notes we focus primarily on the quadratic Wasserstein metric $W_2$, since it is the relevant geometry for Wasserstein gradient flows and drifting-field policies.
+\section{The Monge Formulation}
+\subsection{Mass transport maps}
+Suppose we are given two probability measures
+\[
+\mu,\nu \in \cP(\R^d).
+\]
+Intuitively:
+\begin{itemize}
+    \item $\mu$ represents an initial mass distribution,
+    \item $\nu$ represents a target mass distribution.
+\end{itemize}
+The original formulation of optimal transport was introduced by Gaspard Monge in 1781.
+\begin{definition}[Transport map]
+A measurable map
+\[
+T : \R^d \to \R^d
+\]
+is said to transport $\mu$ to $\nu$ if
+\[
+T_{\#}\mu = \nu.
+\]
+\end{definition}
+The goal is to find the transport map minimizing transportation cost.
+\begin{definition}[Monge problem]
+Given a cost function
+\[
+c : \R^d \times \R^d \to [0,\infty),
+\]
+the Monge optimal transport problem is
+\[
+\inf_T
+\int_{\R^d}
+ c(x,T(x))d\mu(x)
+\]
+subject to
+\[
+T_{\#}\mu=\nu.
+\]
+\end{definition}
+Typically one chooses
+\[
+c(x,y)=\|x-y\|^p.
+\]
+\subsection{Difficulties of the Monge problem}
+The Monge formulation is highly nonlinear.
+Major difficulties include:
+\begin{itemize}
+    \item existence of transport maps may fail;
+    \item the pushforward constraint is nonlinear;
+    \item \explanationlink{transport_maps_do_not_split_mass}{transport maps cannot split mass}.
+\end{itemize}
+\begin{example}
+Suppose
+\[
+\mu = \delta_0,
+\qquad
+\nu = \tfrac12\delta_{-1}+\tfrac12\delta_1.
+\]
+No transport map can split the mass at $0$ into two pieces.
+\end{example}
+These difficulties motivate the Kantorovich relaxation.
+\section{The Kantorovich Formulation}
+\subsection{Transport plans}
+Instead of deterministic maps, Kantorovich introduced probabilistic couplings.
+\begin{definition}[Transport plan]
+A transport plan between $\mu$ and $\nu$ is a probability measure
+\[
+\gamma \in \cP(\R^d\times\R^d)
+\]
+such that:
+\begin{align*}
+\explanationlink{first_marginal_transport_plan}{(\pi_x)_{\#}\gamma} &= \explanationlink{first_marginal_transport_plan}{\mu},
+\\
+(\pi_y)_{\#}\gamma &= \nu,
+\end{align*}
+where
+\[
+\pi_x(x,y)=x,
+\qquad
+\pi_y(x,y)=y.
+\]
+The set of all such couplings is denoted
+\[
+\Pi(\mu,\nu).
+\]
+\end{definition}
+\begin{remark}
+A transport plan specifies how much mass moves from $x$ to $y$.
+Unlike Monge maps, transport plans may split mass.
+\end{remark}
+\subsection{Kantorovich optimal transport}
+\begin{definition}[Kantorovich problem]
+The Kantorovich optimal transport problem is
+\[
+\inf_{\gamma \in \Pi(\mu,\nu)}
+\int_{\R^d\times\R^d}
+ c(x,y)d\gamma(x,y).
+\]
+\end{definition}
+This is a linear optimization problem over probability measures.
+\begin{theorem}[Existence of optimal plans]
+Let $c$ be \definitionlink{lower_semicontinuity}{lower semicontinuous} and bounded from below. Then for every
+\[
+\mu,\nu \in \cP(\R^d)
+\]
+there exists at least one optimal transport plan.
+\end{theorem}
+\section{Wasserstein Distances}
+\subsection{Definition}
+The most important costs are powers of Euclidean distance.
+\begin{definition}[$p$-Wasserstein distance]
+Let $p\ge1$. For
+\[
+\mu,\nu \in \cP_p(\R^d),
+\]
+the $p$-Wasserstein distance is
+\[
+W_p(\mu,\nu)
+=
+\left(
+\inf_{\gamma\in\Pi(\mu,\nu)}
+\int \|x-y\|^p d\gamma(x,y)
+\right)^{1/p}.
+\]
+\end{definition}
+The most important case for modern machine learning is:
+\[
+W_2.
+\]
+\subsection{Metric structure}
+\begin{theorem}
+For $p\ge1$, the Wasserstein distance defines a metric on
+\[
+\cP_p(\R^d).
+\]
+\end{theorem}
+Thus probability distributions become points in a metric space.
+\begin{remark}
+Unlike KL divergence, Wasserstein distances compare distributions geometrically.
+Even distributions with disjoint supports may have finite Wasserstein distance.
+\end{remark}
+\subsection{Comparison with KL divergence}
+Suppose
+\[
+\mu = \delta_0,
+\qquad
+\nu = \delta_1.
+\]
+Then:
+\[
+\explanationlink{w2_between_dirac_masses}{W_2(\mu,\nu)=1},
+\]
+while
+\[
+\KL(\mu\|\nu)=\infty.
+\]
+This sensitivity to geometry is one reason Wasserstein distances are important in generative modeling.
+\section{Optimal Maps and Brenier Theory}
+The quadratic Wasserstein geometry possesses remarkable structure.
+\subsection{Brenier theorem}
+\begin{theorem}[Brenier]
+Let
+\[
+\mu,\nu \in \cP_2(\R^d)
+\]
+and assume $\mu$ is absolutely continuous.
+Then there exists a unique optimal transport map
+\[
+T : \R^d \to \R^d
+\]
+for the quadratic cost
+\[
+c(x,y)=\|x-y\|^2.
+\]
+Moreover,
+\[
+T = \grad \varphi
+\]
+for a convex function
+\[
+\varphi : \R^d \to \R.
+\]
+\end{theorem}
+\begin{remark}
+This theorem is foundational for Wasserstein geometry.
+Optimal transport maps are \explanationlink{simple_brenier_example}{gradients of convex potentials}.
+\end{remark}
+\subsection{Displacement interpolation}
+Given the optimal map $T$, define
+\[
+T_t(x)
+=
+(1-t)x+tT(x).
+\]
+Then the interpolating measures
+\[
+\mu_t = (T_t)_{\#}\mu
+\]
+define the Wasserstein geodesic between $\mu$ and $\nu$.
+This interpolation is called displacement interpolation.
+\section{Dynamic Optimal Transport}
+The static Kantorovich formulation can be rewritten dynamically.
+This viewpoint is one of the most important developments in modern OT.
+\subsection{Continuity equations}
+Recall the continuity equation:
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0.
+\]
+Here:
+\begin{itemize}
+    \item $\rho_t$ is a time-dependent density,
+    \item $v_t$ is a velocity field.
+\end{itemize}
+The velocity field transports mass continuously.
+\subsection{Benamou--Brenier formulation}
+\begin{theorem}[Benamou--Brenier]
+Let
+\[
+\mu_0,\mu_1 \in \cP_2(\R^d).
+\]
+Then
+\[
+W_2^2(\mu_0,\mu_1)
+=
+\inf_{(\rho_t,v_t)}
+\int_0^1
+\int_{\R^d}
+ \|v_t(x)\|^2\rho_t(x)dxdt
+\]
+subject to:
+\begin{align*}
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)&=0,
+\\
+\rho_0 &= \mu_0,
+\\
+\rho_1 &= \mu_1.
+\end{align*}
+\end{theorem}
+\subsection{Interpretation}
+The quantity
+\[
+\int \|v_t(x)\|^2\rho_t(x)dx
+\]
+represents kinetic energy.
+Thus:
+\begin{quote}
+The Wasserstein distance is the minimum kinetic energy required to transport one distribution into another.
+\end{quote}
+This dynamic viewpoint is central for:
+\begin{itemize}
+    \item Wasserstein gradient flows,
+    \item fluid formulations of generative models,
+    \item Schr\"odinger bridges,
+    \item policy transport in RL.
+\end{itemize}
+\section{Wasserstein Geodesics}
+\subsection{Geodesic curves}
+A geodesic is a shortest path in a metric space.
+\begin{definition}[Geodesic in metric space]
+Let $(X,d)$ be a metric space.
+A curve
+\[
+\gamma_t : [0,1]\to X
+\]
+is a geodesic if
+\[
+d(\gamma_s,\gamma_t)
+=
+|t-s|d(\gamma_0,\gamma_1)
+\]
+for all $s,t\in[0,1]$.
+\end{definition}
+\subsection{Wasserstein geodesics}
+The \explanationlink{wasserstein_geodesics}{displacement interpolation}
+\[
+\mu_t=(T_t)_{\#}\mu
+\]
+constructed from the Brenier map defines a geodesic in $(\cP_2(\R^d),W_2)$.
+Thus:
+\begin{quote}
+Optimal transport equips probability space with a Riemannian-like geometry.
+\end{quote}
+\subsection{Velocity representation}
+Along Wasserstein geodesics, the velocity field satisfies:
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0.
+\]
+The velocity field minimizing kinetic energy defines the geodesic flow.
+\section{Otto Calculus and Formal Riemannian Structure}
+Felix Otto observed that $W_2$ space behaves formally like an infinite-dimensional Riemannian manifold.
+\subsection{Tangent vectors}
+Suppose $\rho_t$ evolves according to
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0.
+\]
+The tangent vector at $\rho$ can formally be identified with
+\[
+\dot \rho
+=
+-\divergence(\rho v).
+\]
+\explanationlink{minimal_velocity_gradient}{Among all velocity fields generating the same tangent vector, the minimal kinetic-energy representative is gradient-valued}:
+\[
+v = \grad \phi.
+\]
+Thus tangent vectors may be represented as:
+\[
+\dot \rho
+=
+-\divergence(\rho \grad \phi).
+\]
+\subsection{Formal metric tensor}
+Otto's formal metric is:
+\[
+\langle \dot \rho_1,\dot \rho_2 \rangle_\rho
+=
+\int_{\R^d}
+ \grad \phi_1 \cdot \grad \phi_2
+ \, d\rho.
+\]
+This provides the formal Riemannian structure underlying Wasserstein gradient flows.
+\begin{remark}
+The space $\cP_2(\R^d)$ is not literally a finite-dimensional manifold.
+The Otto calculus is partly formal, but extraordinarily powerful.
+\end{remark}
+\section{Convexity Along Geodesics}
+In Euclidean optimization, convexity governs gradient descent.
+In Wasserstein geometry, one instead studies convexity along geodesics.
+\begin{definition}[Displacement convexity]
+A functional
+\[
+\mathcal F : \cP_2(\R^d) \to \R
+\]
+is displacement convex if
+\[
+\mathcal F(\mu_t)
+\]
+is convex along Wasserstein geodesics.
+\end{definition}
+Examples include:
+\begin{itemize}
+    \item entropy functionals,
+    \item internal energies,
+    \item interaction energies.
+\end{itemize}
+Displacement convexity is fundamental for:
+\begin{itemize}
+    \item uniqueness of gradient flows,
+    \item convergence of diffusion equations,
+    \item entropy dissipation.
+\end{itemize}
+\section{Wasserstein Geometry in Machine Learning}
+\subsection{Generative modeling}
+Generative models induce distributions
+\[
+\rho_\theta=(f_\theta)_\#\rho_0.
+\]
+Training changes the generated distribution through parameter updates.
+The induced trajectory:
+\[
+\theta_t
+\mapsto
+\rho_{\theta_t}
+\]
+may sometimes be interpreted as an approximate Wasserstein gradient flow.
+\subsection{Diffusion and flow models}
+Diffusion models define stochastic transport processes between distributions.
+Flow matching and continuous normalizing flows define velocity fields transporting probability mass.
+Schr\"odinger bridges regularize optimal transport with entropy.
+\subsection{Policies as evolving distributions}
+In reinforcement learning:
+\[
+\pi(a|s)
+\]
+is a conditional probability distribution over actions.
+Modern policy optimization methods may be interpreted as transport in probability space:
+\[
+\pi_t
+\rightarrow
+\pi_{t+1}.
+\]
+This perspective motivates Wasserstein formulations of RL and drifting-field policies.
+\section{Summary}
+The key ideas of this phase are:
+\begin{enumerate}[label=(\arabic*)]
+    \item Optimal transport studies the geometry of probability distributions.
+    \item The Monge formulation searches for deterministic transport maps.
+    \item The Kantorovich relaxation allows probabilistic couplings.
+    \item Wasserstein distances metrize spaces of probability measures.
+    \item The quadratic Wasserstein metric admits a dynamic fluid formulation.
+    \item Wasserstein geodesics describe optimal displacement of mass.
+    \item The Otto calculus provides a formal Riemannian structure on probability space.
+    \item Many learning algorithms may be interpreted as evolution equations in Wasserstein space.
+\end{enumerate}
+The central conceptual shift is the following:
+\begin{quote}
+Instead of optimizing points in Euclidean space, one optimizes probability distributions in Wasserstein space.
+\end{quote}
+This viewpoint underlies:
+\begin{itemize}
+    \item Wasserstein gradient flows,
+    \item diffusion and flow models,
+    \item Schr\"odinger bridges,
+    \item entropy-regularized optimal transport,
+    \item modern formulations of reinforcement learning.
+\end{itemize}
+In the next phase we introduce Wasserstein gradient flows and their connections with PDEs, variational principles, and learning dynamics.
+\section*{Recommended Reading}
+\begin{enumerate}
+    \item C. Villani, \emph{Optimal Transport: Old and New}.
+    \item G. Peyr\'e and M. Cuturi, \emph{Computational Optimal Transport}.
+    \item F. Santambrogio, \emph{Optimal Transport for Applied Mathematicians}.
+    \item J.-D. Benamou and Y. Brenier, ``A Computational Fluid Mechanics Solution to the Monge--Kantorovich Mass Transfer Problem.''
+    \item F. Otto, ``The Geometry of Dissipative Evolution Equations.''
+\end{enumerate}

@@ -1,0 +1,404 @@
+% !TeX root = main.tex
+
+\chapter{Probability Measures, Pushforwards, and Weak Calculus}
+\section{Motivation and Scope}
+The goal of these notes is to introduce the minimal measure-theoretic and variational language required for modern formulations of:
+\begin{itemize}
+    \item Wasserstein gradient flows,
+    \item Schr\"odinger bridges,
+    \item diffusion and drifting generative models,
+    \item policy optimization in probability space.
+\end{itemize}
+Throughout these notes, probability distributions are treated as geometric objects that evolve in time. The central idea is that learning algorithms can often be interpreted not merely as optimization in parameter space, but as evolution equations over spaces of probability measures.
+This first phase introduces:
+\begin{enumerate}[label=(\roman*)]
+    \item probability measures on Euclidean spaces,
+    \item pushforward measures,
+    \item weak convergence,
+    \item entropy and Kullback--Leibler divergence,
+    \item continuity equations and weak formulations.
+\end{enumerate}
+We assume familiarity with basic probability theory, measure theory, and multivariable calculus.
+\section{Probability Measures on Euclidean Spaces}
+\subsection{Borel probability measures}
+Let $\R^d$ denote Euclidean space equipped with its Borel $\sigma$-algebra $\cB(\R^d)$.
+\begin{definition}[Probability measure]
+A probability measure on $\R^d$ is a map
+\[
+\mu : \cB(\R^d) \to [0,1]
+\]
+such that:
+\begin{enumerate}[label=(\alph*)]
+    \item $\mu(\R^d)=1$,
+    \item for any countable collection of pairwise disjoint Borel sets $\{A_i\}_{i=1}^{\infty}$,
+    \[
+    \mu\left(\bigcup_{i=1}^{\infty} A_i\right)
+    =
+    \sum_{i=1}^{\infty} \mu(A_i).
+    \]
+\end{enumerate}
+\end{definition}
+The set of all Borel probability measures on $\R^d$ is denoted by
+\[
+\cP(\R^d).
+\]
+\begin{definition}[Absolutely continuous measure]
+A measure $\mu \in \cP(\R^d)$ is absolutely continuous with respect to Lebesgue measure if there exists a nonnegative function
+\[
+\rho \in L^1(\R^d)
+\]
+with
+\[
+\int_{\R^d} \rho(x)dx =1
+\]
+such that
+\[
+\mu(A)=\int_A \rho(x)dx
+\]
+for every Borel set $A$.
+The function $\rho$ is called the density of $\mu$.
+\end{definition}
+In applied machine learning, probability measures are often represented implicitly through neural generators rather than explicit densities.
+\subsection{Moments}
+\begin{definition}[Moment of order $p$]
+For $p\ge 1$, the $p$-th moment of $\mu \in \cP(\R^d)$ is
+\[
+\int_{\R^d} \|x\|^p d\mu(x).
+\]
+We define
+\[
+\cP_p(\R^d)
+=
+\left\{
+\mu \in \cP(\R^d)
+:
+\int \|x\|^p d\mu(x)<\infty
+\right\}.
+\]
+\end{definition}
+Finite second moments will become fundamental in Wasserstein geometry.
+\section{Random Variables and Pushforward Measures}
+\subsection{Pushforwards}
+The pushforward operation is one of the most important constructions in modern generative modeling.
+\begin{definition}[Pushforward measure]
+Let
+\[
+T : \R^m \to \R^d
+\]
+be \definitionlink{measurability}{measurable} and let $\mu \in \cP(\R^m)$. The pushforward of $\mu$ through $T$ is the probability measure
+\[
+T_{\#}\mu \in \cP(\R^d)
+\]
+defined by
+\[
+(T_{\#}\mu)(A)=\mu(T^{-1}(A))
+\]
+for every Borel set $A \subseteq \R^d$.
+\end{definition}
+\begin{remark}
+If
+\[
+X \sim \mu
+\]
+and
+\[
+Y=T(X),
+\]
+then
+\[
+Y \sim T_{\#}\mu.
+\]
+Thus pushforwards generalize the notion of the distribution of a transformed random variable.
+\end{remark}
+\subsection{Pushforwards in generative modeling}
+A generative model is frequently defined by:
+\begin{enumerate}[label=(\roman*)]
+    \item a latent distribution $z \sim \rho_0$,
+    \item a neural map
+    \[
+    f_\theta : \R^m \to \R^d.
+    \]
+\end{enumerate}
+The generated distribution is
+\[
+\rho_\theta = (f_\theta)_{\#}\rho_0.
+\]
+This point of view is central in:
+\begin{itemize}
+    \item normalizing flows,
+    \item diffusion decoding maps,
+    \item one-step generators,
+    \item drifting models,
+    \item policy distributions in reinforcement learning.
+\end{itemize}
+\begin{example}[Policy as pushforward]
+Suppose
+\[
+z \sim \mathcal N(0,I)
+\]
+and define a policy
+\[
+a = f_\theta(s,z).
+\]
+For fixed state $s$, the induced action distribution is
+\[
+\pi_\theta(\cdot|s)
+=
+(f_\theta(s,\cdot))_{\#}\rho_0.
+\]
+Thus a policy can be viewed as a state-dependent pushforward distribution.
+\end{example}
+\subsection{Change of variables}
+\begin{theorem}[Change-of-variables formula]
+Let
+\[
+T : \R^d \to \R^d
+\]
+be a smooth bijection with smooth inverse. Suppose $\mu$ has density $\rho$. Then the pushforward measure
+\[
+T_{\#}\mu
+\]
+has density
+\[
+\tilde \rho(y)
+=
+\rho(T^{-1}(y))
+\left|
+\det DT^{-1}(y)
+\right|.
+\]
+\end{theorem}
+This theorem underlies likelihood computation in normalizing flows.
+\section{Weak Convergence of Measures}
+In optimization over distributions, one requires a notion of convergence between probability measures.
+\begin{definition}[Weak convergence]
+A sequence
+\[
+\mu_n \in \cP(\R^d)
+\]
+converges weakly to $\mu$ if
+\[
+\definitionlink{measure_integral}{\int f\,d\mu_n}
+\to
+\int f\,d\mu
+\]
+for every bounded continuous function
+\[
+f : \R^d \to \R.
+\]
+We write
+\[
+\mu_n \rightharpoonup \mu.
+\]
+\end{definition}
+\begin{remark}
+Weak convergence means convergence ``in distribution.''
+\end{remark}
+\begin{example}
+Let
+\[
+\mu_n = \delta_{1/n}
+\]
+where $\delta_x$ denotes the \definitionlink{dirac_measure}{Dirac measure at $x$}. Then
+\[
+\mu_n \rightharpoonup \delta_0.
+\]
+\end{example}
+\subsection{Tightness}
+\begin{definition}[Tight family]
+A family of measures
+\[
+\mathcal F \subseteq \cP(\R^d)
+\]
+is tight if for every $\varepsilon>0$ there exists a compact set $K \subseteq \R^d$ such that
+\[
+\mu(K) \ge 1-\varepsilon
+\]
+for all $\mu \in \mathcal F$.
+\end{definition}
+\begin{theorem}[Prokhorov]
+A family of probability measures on $\R^d$ is relatively compact for weak convergence if and only if it is tight.
+\end{theorem}
+This theorem is foundational in variational formulations over probability spaces.
+\section{Entropy and Kullback--Leibler Divergence}
+Entropy functionals play a central role in:
+\begin{itemize}
+    \item diffusion models,
+    \item Schr\"odinger bridges,
+    \item entropy-regularized optimal transport,
+    \item reinforcement learning.
+\end{itemize}
+\subsection{Differential entropy}
+\begin{definition}[Differential entropy]
+Let $\mu$ have density $\rho$. The differential entropy is
+\[
+\mathcal H(\rho)
+=
+-\int \rho(x)\log \rho(x)dx.
+\]
+\end{definition}
+Entropy measures the spread or uncertainty of a distribution.
+\subsection{Relative entropy}
+\begin{definition}[Kullback--Leibler divergence]
+Let $\mu$ and $\nu$ be probability measures with densities $\rho$ and $\eta$, respectively. The Kullback--Leibler divergence is
+\[
+\KL(\mu\|\nu)
+=
+\int \rho(x)
+\log \frac{\rho(x)}{\eta(x)}dx
+\]
+whenever $\mu$ is absolutely continuous with respect to $\nu$.
+\end{definition}
+\begin{remark}
+The KL divergence is not symmetric:
+\[
+\KL(\mu\|\nu)
+\neq
+\KL(\nu\|\mu).
+\]
+Thus it is not a metric.
+\end{remark}
+\begin{theorem}[Gibbs inequality]
+For probability measures $\mu$ and $\nu$,
+\[
+\KL(\mu\|\nu) \ge 0,
+\]
+with equality if and only if
+\[
+\mu=\nu
+\]
+almost everywhere.
+\end{theorem}
+\subsection{Forward and reverse KL}
+In machine learning, two optimization regimes appear frequently.
+\paragraph{Forward KL}
+\[
+\KL(p\|q).
+\]
+Penalizes missing support heavily.
+\paragraph{Reverse KL}
+\[
+\KL(q\|p).
+\]
+Often mode-seeking.
+Reverse KL objectives appear in policy optimization and drifting-field policies.
+\section{Curves of Measures and Continuity Equations}
+Modern optimal transport interprets probability distributions as evolving continuously in time.
+\subsection{Time-dependent measures}
+Consider a family of measures
+\[
+(\rho_t)_{t\in[0,1]}.
+\]
+Intuitively, mass moves through space according to a velocity field.
+\begin{definition}[Velocity field]
+A velocity field is a map
+\[
+v_t : \R^d \to \R^d.
+\]
+The quantity
+\[
+v_t(x)
+\]
+represents the instantaneous velocity of mass at location $x$ and time $t$.
+\end{definition}
+\subsection{Continuity equation}
+\begin{definition}[Continuity equation]
+The continuity equation is
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0.
+\]
+\end{definition}
+This equation expresses conservation of probability mass.
+\begin{remark}
+The continuity equation is analogous to conservation laws in fluid mechanics.
+\end{remark}
+\subsection{Weak formulation}
+Since densities may not be smooth, one frequently uses weak formulations.
+\begin{definition}[Weak solution of the continuity equation]
+A curve of measures $(\rho_t)$ is a weak solution of
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0
+\]
+if for every smooth compactly supported test function
+\[
+\varphi \in C_c^{\infty}((0,1)\times \R^d),
+\]
+one has
+\[
+\int_0^1
+\int_{\R^d}
+\left(
+\partial_t \varphi
++
+\grad \varphi \cdot v_t
+\right)
+ d\rho_t dt
+=
+0.
+\]
+\end{definition}
+\subsection{Particle interpretation}
+Suppose particles evolve according to the ODE
+\[
+\dot X_t = v_t(X_t).
+\]
+If
+\[
+X_0 \sim \rho_0,
+\]
+then the \definitionlink{law_random_variable}{law of $X_t$} evolves according to the continuity equation.
+Thus:
+\begin{itemize}
+    \item particle dynamics induce measure dynamics,
+    \item velocity fields induce trajectories in probability space.
+\end{itemize}
+This viewpoint becomes central in Wasserstein geometry.
+\section{Free Energies and Variational Perspectives}
+Many evolution equations can be written as gradient flows of an energy functional.
+A generic free energy has the form
+\[
+\mathcal F(\mu)
+=
+\int V(x)\,d\mu(x)
++
+\beta^{-1}
+\int \rho(x)\log \rho(x)\,dx,
+\qquad
+\mu=\rho(x)\,dx.
+\]
+The first term represents potential energy with respect to the measure $\mu$, while the second corresponds to entropy written in terms of its density $\rho$.
+Examples include:
+\begin{itemize}
+    \item Gibbs measures,
+    \item Langevin dynamics,
+    \item diffusion models,
+    \item entropy-regularized reinforcement learning.
+\end{itemize}
+In later phases we will show that many PDEs are gradient flows of such energies in Wasserstein space.
+\section{Summary and Outlook}
+The main ideas introduced in this phase are:
+\begin{enumerate}[label=(\arabic*)]
+    \item Probability distributions can be viewed as geometric objects.
+    \item Neural generators define pushforward measures.
+    \item Learning can be interpreted as evolution in probability space.
+    \item Entropy and KL divergences define variational objectives over measures.
+    \item Continuity equations describe the transport of probability mass.
+\end{enumerate}
+These concepts form the foundation for:
+\begin{itemize}
+    \item Wasserstein distances,
+    \item optimal transport,
+    \item Wasserstein gradient flows,
+    \item Schr\"odinger bridges,
+    \item drifting generative models,
+    \item generative policies in reinforcement learning.
+\end{itemize}
+In the next phase we introduce optimal transport and Wasserstein geometry.
+\section*{Recommended Reading}
+\begin{enumerate}
+    \item C. Villani, \emph{Topics in Optimal Transportation}
+\end{enumerate}

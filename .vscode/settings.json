@@ -1,0 +1,18 @@
+{
+  "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.view.pdf.viewer": "external",
+  "latex-workshop.view.pdf.external.viewer.command": "/Applications/Skim.app/Contents/SharedSupport/displayline",
+  "latex-workshop.view.pdf.external.viewer.args": [
+    "-r",
+    "%LINE%",
+    "%PDF%",
+    "%TEX%"
+  ],
+  "latex-workshop.view.pdf.external.synctex.command": "/Applications/Skim.app/Contents/SharedSupport/displayline",
+  "latex-workshop.view.pdf.external.synctex.args": [
+    "-r",
+    "%LINE%",
+    "%PDF%",
+    "%TEX%"
+  ]
+}

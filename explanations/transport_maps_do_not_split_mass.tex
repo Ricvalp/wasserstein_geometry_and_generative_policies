@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Why Transport Maps Cannot Split Mass}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+A transport map cannot split mass because it is a deterministic function.
+If
+\[
+T:X\to Y
+\]
+is a map, then every source point $x$ is sent to exactly one target point
+$T(x)$. Thus all mass located at $x$ must move together to the single point
+$T(x)$.
+
+In measure notation, the transported measure is
+\[
+T_\#\mu(A)=\mu(T^{-1}(A)).
+\]
+This formula has no mechanism for sending part of the mass at $x$ to one point
+and another part to a different point.
+
+\section*{Example}
+
+Let
+\[
+\mu=\delta_0,
+\qquad
+\nu=\frac12\delta_{-1}+\frac12\delta_1.
+\]
+No transport map $T$ can satisfy $T_\#\mu=\nu$, because
+\[
+T_\#\delta_0=\delta_{T(0)}.
+\]
+This is always a single Dirac mass, not a mixture of two Dirac masses.
+
+A transport plan can split the mass:
+\[
+\pi
+=
+\frac12\delta_{(0,-1)}
++
+\frac12\delta_{(0,1)}.
+\]
+This plan sends half the mass at $0$ to $-1$ and half to $1$.
+
+\end{document}

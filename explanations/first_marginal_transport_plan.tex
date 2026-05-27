@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{The First Marginal of a Transport Plan}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+Let
+\[
+\gamma \in \mathcal P(\mathbb R^d\times \mathbb R^d)
+\]
+be a transport plan. The projection onto the first coordinate is the map
+\[
+\pi_x:\mathbb R^d\times\mathbb R^d\to\mathbb R^d,
+\qquad
+\pi_x(x,y)=x.
+\]
+The condition
+\[
+(\pi_x)_\#\gamma=\mu
+\]
+means that if we ignore the destination coordinate $y$ and keep only the source
+coordinate $x$, then the resulting distribution is $\mu$.
+
+Explicitly, for every Borel set $A\subseteq\mathbb R^d$,
+\[
+\mu(A)
+=
+(\pi_x)_\#\gamma(A)
+=
+\gamma(\pi_x^{-1}(A))
+=
+\gamma(A\times\mathbb R^d).
+\]
+Thus the total amount of mass in the plan whose source lies in $A$ must equal
+the original mass $\mu(A)$.
+
+\section*{Finite Example}
+
+Suppose
+\[
+\mu=\frac12\delta_0+\frac12\delta_1
+\]
+and define a transport plan
+\[
+\gamma
+=
+\frac12\delta_{(0,2)}
++
+\frac12\delta_{(1,3)}.
+\]
+Then
+\[
+(\pi_x)_\#\gamma
+=
+\frac12\delta_{\pi_x(0,2)}
++
+\frac12\delta_{\pi_x(1,3)}
+=
+\frac12\delta_0+\frac12\delta_1
+=
+\mu.
+\]
+The first marginal condition says that the plan starts with exactly the source
+distribution $\mu$.
+
+\end{document}

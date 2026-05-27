@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Why the Minimal-Energy Velocity Is a Gradient}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+In Otto calculus, a velocity field $v$ generates a tangent vector at a density
+$\rho$ through the continuity equation:
+\[
+\dot\rho=-\operatorname{div}(\rho v).
+\]
+Different velocity fields can generate the same $\dot\rho$. Indeed, if $w$
+satisfies
+\[
+\operatorname{div}(\rho w)=0,
+\]
+then
+\[
+-\operatorname{div}(\rho(v+w))
+=
+-\operatorname{div}(\rho v).
+\]
+So $v$ and $v+w$ represent the same tangent vector.
+
+\section*{Choosing the Minimal-Energy Representative}
+
+The kinetic energy of a velocity field is
+\[
+\int_{\mathbb R^d}|v|^2\,d\rho.
+\]
+Among all velocity fields producing the same tangent vector $\dot\rho$, Otto
+calculus chooses the one with minimal kinetic energy.
+
+This is analogous to choosing the shortest vector among all representatives of
+an equivalence class.
+
+\section*{Why It Is a Gradient}
+
+The gradient fields are orthogonal, in the weighted inner product
+\[
+\langle u,v\rangle_\rho
+=
+\int_{\mathbb R^d} u\cdot v\,d\rho,
+\]
+to the fields that do not move the density, namely fields $w$ satisfying
+\[
+\operatorname{div}(\rho w)=0.
+\]
+Indeed, for a smooth test potential $\phi$,
+\[
+\int_{\mathbb R^d} \nabla\phi\cdot w\,d\rho
+=
+\int_{\mathbb R^d} \nabla\phi\cdot \rho w\,dx
+=
+-\int_{\mathbb R^d}\phi\,\operatorname{div}(\rho w)\,dx
+=0.
+\]
+Thus any velocity field can be decomposed formally as
+\[
+v=\nabla\phi+w,
+\qquad
+\operatorname{div}(\rho w)=0.
+\]
+The component $w$ does not affect the tangent vector, but it increases kinetic
+energy:
+\[
+\int |v|^2\,d\rho
+=
+\int |\nabla\phi|^2\,d\rho
++
+\int |w|^2\,d\rho.
+\]
+Therefore the minimal-energy representative is obtained by setting $w=0$:
+\[
+v=\nabla\phi.
+\]
+
+\section*{Interpretation}
+
+Only the compressive part of the velocity field changes the density. The
+weighted divergence-free part moves mass around without changing the density to
+first order, so it is extra motion. Wasserstein geometry discards that extra
+motion and keeps the gradient velocity.
+
+\end{document}

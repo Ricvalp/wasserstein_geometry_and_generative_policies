@@ -1,0 +1,655 @@
+% !TeX root = main.tex
+
+\chapter{Wasserstein Gradient Flows}
+\section{Motivation}
+
+In Euclidean optimization, gradient descent evolves points according to:
+
+\[
+\dot x_t = -\grad f(x_t).
+\]
+
+The fundamental idea of Wasserstein gradient flows is the following:
+
+\begin{quote}
+Instead of evolving points in Euclidean space, evolve probability distributions in Wasserstein space.
+\end{quote}
+
+The resulting framework connects:
+
+\begin{itemize}
+    \item partial differential equations,
+    \item diffusion processes,
+    \item entropy dissipation,
+    \item stochastic control,
+    \item generative modeling,
+    \item reinforcement learning.
+\end{itemize}
+
+This chapter develops the formalism of Wasserstein gradient flows (WGF), emphasizing:
+
+\begin{enumerate}[label=(\roman*)]
+    \item variational principles,
+    \item continuity equations,
+    \item free energy functionals,
+    \item the Jordan--Kinderlehrer--Otto (JKO) scheme,
+    \item connections to diffusion and learning.
+\end{enumerate}
+
+\section{Gradient Flows in Euclidean Space}
+
+We briefly recall ordinary gradient descent.
+
+\subsection{Gradient descent ODE}
+
+Let
+\[
+f : \R^d \to \R
+\]
+be smooth.
+
+The gradient flow equation is
+
+\[
+\dot x_t = -\grad f(x_t).
+\]
+
+This equation follows the direction of steepest descent.
+
+\subsection{Energy dissipation}
+
+Along solutions:
+
+\[
+\frac{d}{dt}f(x_t)
+=
+\grad f(x_t) \cdot \dot x_t.
+\]
+
+Substituting the gradient flow equation gives:
+
+\[
+\frac{d}{dt}f(x_t)
+=
+-\|\grad f(x_t)\|^2
+\le 0.
+\]
+
+Thus gradient flows dissipate energy monotonically.
+
+\subsection{Metric interpretation}
+
+Gradient descent depends on the geometry of the underlying space.
+
+In Euclidean space, the metric tensor is the identity.
+
+In Wasserstein geometry, the metric structure is different, leading to different gradient flows.
+
+\section{Functionals on Probability Space}
+
+Wasserstein gradient flows evolve probability measures to decrease an energy functional.
+
+\subsection{Energy functionals}
+
+A functional is a map:
+
+\[
+\mathcal F : \cP_2(\R^d) \to \R.
+\]
+
+Important examples include:
+
+\begin{enumerate}[label=(\alph*)]
+    \item potential energies,
+    \item entropy functionals,
+    \item interaction energies,
+    \item KL divergences.
+\end{enumerate}
+
+\subsection{Potential energy}
+
+Given a confining potential
+\[
+V : \R^d \to \R,
+\]
+define:
+
+\[
+\mathcal V(\rho)
+=
+\int V(x)d\rho(x).
+\]
+
+\subsection{Entropy}
+
+For a density $\rho$:
+
+\[
+\mathcal H(\rho)
+=
+\int \rho(x)\log \rho(x)dx.
+\]
+
+Note the sign convention differs from Shannon entropy.
+
+\subsection{Free energy}
+
+A central object is the free energy:
+
+\[
+\mathcal F(\rho)
+=
+\int V(x)d\rho(x)
++
+\beta^{-1}
+\int \rho(x)\log \rho(x)dx.
+\]
+
+This combines:
+
+\begin{itemize}
+    \item energy minimization,
+    \item entropy regularization.
+\end{itemize}
+
+The parameter:
+
+\[
+\beta^{-1}
+\]
+plays the role of temperature.
+
+\section{First Variations}
+
+To define gradient flows on probability space we require a notion of derivative.
+
+\subsection{Functional derivatives}
+
+\begin{definition}[First variation]
+Let $\mathcal F$ be a functional defined on a class of probability densities.
+The first variation of $\mathcal F$ at $\rho$ is a function
+\[
+\frac{\delta \mathcal F}{\delta \rho}(\rho)
+\]
+such that, for every smooth perturbation $\eta$ satisfying
+\[
+\int_{\R^d}\eta(x)\,dx=0,
+\]
+one has
+\[
+\left.
+\frac{d}{d\varepsilon}
+\mathcal F(\rho+\varepsilon\eta)
+\right|_{\varepsilon=0}
+=
+\int_{\R^d}
+\frac{\delta \mathcal F}{\delta \rho}(\rho)(x)\,\eta(x)\,dx.
+\]
+\end{definition}
+
+The zero-mass condition on $\eta$ ensures that $\rho+\varepsilon\eta$ remains a probability density to first order.
+On probability densities, the first variation is defined only up to an additive constant, since constants vanish against zero-mass perturbations.
+
+\subsection{Examples}
+
+\paragraph{Potential energy}
+
+For
+\[
+\mathcal V(\rho)=\int V d\rho,
+\]
+one has:
+
+\[
+\frac{\delta \mathcal V}{\delta \rho}=V.
+\]
+
+\paragraph{Entropy}
+
+For
+\[
+\mathcal H(\rho)
+=
+\int \rho\log \rho,
+\]
+one obtains:
+
+\[
+\frac{\delta \mathcal H}{\delta \rho}
+=
+\log \rho +1.
+\]
+
+\paragraph{Free energy}
+
+For
+\[
+\mathcal F(\rho)
+=
+\int V d\rho
++
+\beta^{-1}
+\int \rho\log \rho,
+\]
+we get:
+
+\[
+\frac{\delta \mathcal F}{\delta \rho}
+=
+V + \beta^{-1}(\log \rho +1).
+\]
+
+\section{Wasserstein Gradient Flows}
+
+\subsection{Formal definition}
+
+The Wasserstein gradient flow of a functional $\mathcal F$ is formally:
+
+\[
+\explanationlink{wasserstein_gradient_flow_derivation}{\partial_t \rho_t
+=
+\divergence
+\left(
+\rho_t
+\grad
+\frac{\delta \mathcal F}{\delta \rho}(\rho_t)
+\right)}.
+\]
+
+Equivalently:
+
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0,
+\]
+
+with velocity field:
+
+\[
+v_t
+=
+-\grad
+\frac{\delta \mathcal F}{\delta \rho}(\rho_t).
+\]
+
+\subsection{Interpretation}
+
+Compare with Euclidean gradient flow:
+
+\[
+\dot x_t = -\grad f(x_t).
+\]
+
+In Wasserstein space:
+
+\begin{itemize}
+    \item points become distributions,
+    \item velocities become transport vector fields,
+    \item gradients become functional derivatives.
+\end{itemize}
+
+\section{The Fokker--Planck Equation}
+
+One of the most important examples of a Wasserstein gradient flow is the Fokker--Planck equation.
+
+\subsection{Langevin dynamics}
+
+Consider the stochastic differential equation:
+
+\[
+dX_t
+=
+-\grad V(X_t)dt
++
+\sqrt{2\beta^{-1}}dW_t.
+\]
+
+Its probability density evolves according to:
+
+\[
+\partial_t \rho_t
+=
+\divergence(\rho_t \grad V)
++
+\beta^{-1}\Delta \rho_t.
+\]
+
+\subsection{Gradient flow structure}
+
+\begin{theorem}
+The Fokker--Planck equation is the Wasserstein gradient flow of the free energy:
+
+\[
+\mathcal F(\rho)
+=
+\int Vd\rho
++
+\beta^{-1}
+\int \rho\log \rho.
+\]
+\end{theorem}
+
+\subsection{Derivation}
+
+Using:
+
+\[
+\frac{\delta \mathcal F}{\delta \rho}
+=
+V+\beta^{-1}(\log \rho+1),
+\]
+we compute:
+
+\begin{align*}
+\partial_t \rho
+&=
+\divergence
+\left(
+\rho
+\grad
+(V+\beta^{-1}\log \rho)
+\right)
+\\
+&=
+\divergence(\rho\grad V)
++
+\beta^{-1}
+\divergence(\rho\grad \log \rho).
+\end{align*}
+
+Since
+\[
+\rho\grad \log \rho = \grad \rho,
+\]
+we obtain:
+
+\[
+\partial_t \rho
+=
+\divergence(\rho\grad V)
++
+\beta^{-1}\Delta \rho.
+\]
+
+\section{Energy Dissipation}
+
+Gradient flows dissipate free energy.
+
+\begin{theorem}[Energy dissipation]
+Along Wasserstein gradient flows:
+
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+-
+\int
+\left\|
+\grad
+\frac{\delta \mathcal F}{\delta \rho}
+\right\|^2
+ d\rho_t.
+\]
+\end{theorem}
+
+Thus:
+
+\[
+\frac{d}{dt}\mathcal F(\rho_t) \le 0.
+\]
+
+\begin{remark}
+This is the infinite-dimensional analogue of:
+
+\[
+\frac{d}{dt}f(x_t)
+=
+-\|\grad f(x_t)\|^2.
+\]
+\end{remark}
+
+\section{The Jordan--Kinderlehrer--Otto Scheme}
+
+The JKO scheme gives a variational discretization of Wasserstein gradient flows.
+
+\subsection{Implicit Euler in Wasserstein space}
+
+Recall ordinary gradient descent:
+
+\[
+x_{k+1}
+=
+\argmin_x
+\left(
+\frac{1}{2\tau}\|x-x_k\|^2
++
+f(x)
+\right).
+\]
+
+The JKO scheme replaces Euclidean distance with Wasserstein distance.
+
+\begin{definition}[JKO scheme]
+Given timestep $\tau>0$, define recursively:
+
+\[
+\rho_{k+1}
+=
+\argmin_\rho
+\left(
+\frac{1}{2\tau}
+W_2^2(\rho,\rho_k)
++
+\mathcal F(\rho)
+\right).
+\]
+\end{definition}
+
+\subsection{Interpretation}
+
+Each step balances:
+
+\begin{itemize}
+    \item staying close to the previous distribution,
+    \item decreasing free energy.
+\end{itemize}
+
+Thus Wasserstein gradient flows emerge from repeated proximal optimization.
+
+\subsection{Conceptual importance}
+
+The JKO scheme is foundational because it:
+
+\begin{itemize}
+    \item defines gradient flows variationally,
+    \item avoids explicit PDE analysis,
+    \item links optimization and transport geometry.
+\end{itemize}
+
+Many modern ML methods can be interpreted as approximate JKO steps.
+
+\section{KL Divergence as Free Energy}
+
+Suppose:
+
+\[
+\pi(x)
+\propto
+e^{-V(x)}.
+\]
+
+Then:
+
+\[
+\KL(\rho\|\pi)
+=
+\int \rho\log \rho
++
+\int Vd\rho
++
+\text{constant}.
+\]
+
+Thus:
+
+\begin{quote}
+KL divergence is a free energy.
+\end{quote}
+
+Consequently:
+
+\begin{quote}
+The Fokker--Planck equation is gradient descent on KL divergence in Wasserstein space.
+\end{quote}
+
+This observation is central for:
+
+\begin{itemize}
+    \item diffusion models,
+    \item score-based modeling,
+    \item entropy-regularized RL,
+    \item Schr\"odinger bridges.
+\end{itemize}
+
+\section{Connections to Generative Modeling}
+
+\subsection{Diffusion models}
+
+Diffusion models gradually transform noise distributions into data distributions.
+
+The forward diffusion process satisfies a Fokker--Planck equation.
+
+The reverse process can be interpreted as transport in probability space.
+
+\subsection{Flow models}
+
+Continuous normalizing flows evolve densities according to:
+
+\[
+\partial_t \rho_t
++
+\divergence(\rho_t v_t)=0.
+\]
+
+Thus they directly implement deterministic transport.
+
+\subsection{Drifting models}
+
+Drifting models train generators whose induced distributions evolve during optimization.
+
+A key question is:
+
+\begin{quote}
+Does SGD in parameter space induce approximate Wasserstein gradient flow in distribution space?
+\end{quote}
+
+This perspective motivates drifting generative modeling.
+
+\section{Connections to Reinforcement Learning}
+
+Policies are conditional distributions:
+
+\[
+\pi(a|s).
+\]
+
+Policy optimization may be interpreted as transport in action-distribution space.
+
+Instead of:
+
+\[
+\theta_t \to \theta_{t+1},
+\]
+
+one may study:
+
+\[
+\pi_t \to \pi_{t+1}.
+\]
+
+Recent work formulates RL as Wasserstein gradient flow toward soft optimal policies.
+
+\subsection{Entropy-regularized RL}
+
+Soft RL objectives often involve:
+
+\[
+\mathbb E[-Q(a,s)]
++
+\beta^{-1}\KL(\pi\|\pi_0).
+\]
+
+This resembles free-energy minimization.
+
+Consequently:
+
+\begin{quote}
+Soft policy optimization may be viewed as gradient flow in probability space.
+\end{quote}
+
+This viewpoint underlies drifting-field policies.
+
+\section{Otto Calculus Revisited}
+
+Recall the formal metric:
+
+\[
+\langle \dot \rho_1,\dot \rho_2 \rangle_\rho
+=
+\int \grad \phi_1 \cdot \grad \phi_2 d\rho.
+\]
+
+Under this geometry:
+
+\[
+\partial_t \rho
+=
+-\mathrm{grad}_{W_2}\mathcal F(\rho).
+\]
+
+Thus Wasserstein gradient flow is literally gradient descent under the Wasserstein metric.
+
+This is the conceptual core of the theory.
+
+\section{Summary}
+
+The main ideas of this phase are:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item Wasserstein space admits gradient-flow dynamics.
+    \item Functionals on probability space define evolution equations.
+    \item The Fokker--Planck equation is a Wasserstein gradient flow.
+    \item Free-energy minimization combines energy and entropy.
+    \item The JKO scheme defines variational time discretization.
+    \item KL divergence can be interpreted as a free energy.
+    \item Many modern AI models evolve distributions rather than points.
+\end{enumerate}
+
+The key conceptual shift is:
+
+\begin{quote}
+Optimization algorithms may be interpreted as transport dynamics in probability space.
+\end{quote}
+
+This idea will be fundamental for:
+
+\begin{itemize}
+    \item Schr\"odinger bridges,
+    \item entropy-regularized optimal transport,
+    \item diffusion models,
+    \item score-based generative modeling,
+    \item Wasserstein reinforcement learning,
+    \item drifting-field policies.
+\end{itemize}
+
+In the next phase we study policy optimization and reinforcement learning directly in Wasserstein space.
+
+\section*{Recommended Reading}
+
+\begin{enumerate}
+    \item L. Ambrosio, N. Gigli, and G. Savar\'e, \emph{Gradient Flows in Metric Spaces and in the Space of Probability Measures}.
+    \item F. Otto, ``The Geometry of Dissipative Evolution Equations.''
+    \item R. Jordan, D. Kinderlehrer, and F. Otto, ``The Variational Formulation of the Fokker--Planck Equation.''
+    \item C. Villani, \emph{Optimal Transport: Old and New}.
+    \item F. Santambrogio, \emph{Optimal Transport for Applied Mathematicians}.
+\end{enumerate}
