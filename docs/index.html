@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Syllabus Notes" />
+  <title>Wasserstein Geometry and Generative Policies</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Wasserstein Geometry and Generative Policies</h1>
+<p class="author">Syllabus Notes</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#probability-measures-pushforwards-and-weak-calculus"
+id="toc-probability-measures-pushforwards-and-weak-calculus">Probability
+Measures, Pushforwards, and Weak Calculus</a>
+<ul>
+<li><a href="#motivation-and-scope"
+id="toc-motivation-and-scope">Motivation and Scope</a></li>
+<li><a href="#probability-measures-on-euclidean-spaces"
+id="toc-probability-measures-on-euclidean-spaces">Probability Measures
+on Euclidean Spaces</a>
+<ul>
+<li><a href="#borel-probability-measures"
+id="toc-borel-probability-measures">Borel probability measures</a></li>
+<li><a href="#moments" id="toc-moments">Moments</a></li>
+</ul></li>
+<li><a href="#random-variables-and-pushforward-measures"
+id="toc-random-variables-and-pushforward-measures">Random Variables and
+Pushforward Measures</a>
+<ul>
+<li><a href="#pushforwards" id="toc-pushforwards">Pushforwards</a></li>
+<li><a href="#pushforwards-in-generative-modeling"
+id="toc-pushforwards-in-generative-modeling">Pushforwards in generative
+modeling</a></li>
+<li><a href="#change-of-variables" id="toc-change-of-variables">Change
+of variables</a></li>
+</ul></li>
+<li><a href="#weak-convergence-of-measures"
+id="toc-weak-convergence-of-measures">Weak Convergence of Measures</a>
+<ul>
+<li><a href="#tightness" id="toc-tightness">Tightness</a></li>
+</ul></li>
+<li><a href="#entropy-and-kullbackleibler-divergence"
+id="toc-entropy-and-kullbackleibler-divergence">Entropy and
+Kullback–Leibler Divergence</a>
+<ul>
+<li><a href="#differential-entropy"
+id="toc-differential-entropy">Differential entropy</a></li>
+<li><a href="#relative-entropy" id="toc-relative-entropy">Relative
+entropy</a></li>
+<li><a href="#forward-and-reverse-kl"
+id="toc-forward-and-reverse-kl">Forward and reverse KL</a></li>
+</ul></li>
+<li><a href="#curves-of-measures-and-continuity-equations"
+id="toc-curves-of-measures-and-continuity-equations">Curves of Measures
+and Continuity Equations</a>
+<ul>
+<li><a href="#time-dependent-measures"
+id="toc-time-dependent-measures">Time-dependent measures</a></li>
+<li><a href="#continuity-equation"
+id="toc-continuity-equation">Continuity equation</a></li>
+<li><a href="#weak-formulation" id="toc-weak-formulation">Weak
+formulation</a></li>
+<li><a href="#particle-interpretation"
+id="toc-particle-interpretation">Particle interpretation</a></li>
+</ul></li>
+<li><a href="#free-energies-and-variational-perspectives"
+id="toc-free-energies-and-variational-perspectives">Free Energies and
+Variational Perspectives</a></li>
+<li><a href="#summary-and-outlook" id="toc-summary-and-outlook">Summary
+and Outlook</a></li>
+<li><a href="#recommended-reading"
+id="toc-recommended-reading">Recommended Reading</a></li>
+</ul></li>
+<li><a href="#optimal-transport-and-wasserstein-geometry"
+id="toc-optimal-transport-and-wasserstein-geometry">Optimal Transport
+and Wasserstein Geometry</a>
+<ul>
+<li><a href="#motivation" id="toc-motivation">Motivation</a></li>
+<li><a href="#the-monge-formulation" id="toc-the-monge-formulation">The
+Monge Formulation</a>
+<ul>
+<li><a href="#mass-transport-maps" id="toc-mass-transport-maps">Mass
+transport maps</a></li>
+<li><a href="#difficulties-of-the-monge-problem"
+id="toc-difficulties-of-the-monge-problem">Difficulties of the Monge
+problem</a></li>
+</ul></li>
+<li><a href="#the-kantorovich-formulation"
+id="toc-the-kantorovich-formulation">The Kantorovich Formulation</a>
+<ul>
+<li><a href="#transport-plans" id="toc-transport-plans">Transport
+plans</a></li>
+<li><a href="#kantorovich-optimal-transport"
+id="toc-kantorovich-optimal-transport">Kantorovich optimal
+transport</a></li>
+</ul></li>
+<li><a href="#wasserstein-distances"
+id="toc-wasserstein-distances">Wasserstein Distances</a>
+<ul>
+<li><a href="#definition" id="toc-definition">Definition</a></li>
+<li><a href="#metric-structure" id="toc-metric-structure">Metric
+structure</a></li>
+<li><a href="#comparison-with-kl-divergence"
+id="toc-comparison-with-kl-divergence">Comparison with KL
+divergence</a></li>
+</ul></li>
+<li><a href="#optimal-maps-and-brenier-theory"
+id="toc-optimal-maps-and-brenier-theory">Optimal Maps and Brenier
+Theory</a>
+<ul>
+<li><a href="#brenier-theorem" id="toc-brenier-theorem">Brenier
+theorem</a></li>
+<li><a href="#displacement-interpolation"
+id="toc-displacement-interpolation">Displacement interpolation</a></li>
+</ul></li>
+<li><a href="#dynamic-optimal-transport"
+id="toc-dynamic-optimal-transport">Dynamic Optimal Transport</a>
+<ul>
+<li><a href="#continuity-equations"
+id="toc-continuity-equations">Continuity equations</a></li>
+<li><a href="#benamoubrenier-formulation"
+id="toc-benamoubrenier-formulation">Benamou–Brenier formulation</a></li>
+<li><a href="#interpretation"
+id="toc-interpretation">Interpretation</a></li>
+</ul></li>
+<li><a href="#wasserstein-geodesics"
+id="toc-wasserstein-geodesics">Wasserstein Geodesics</a>
+<ul>
+<li><a href="#geodesic-curves" id="toc-geodesic-curves">Geodesic
+curves</a></li>
+<li><a href="#wasserstein-geodesics-1"
+id="toc-wasserstein-geodesics-1">Wasserstein geodesics</a></li>
+<li><a href="#velocity-representation"
+id="toc-velocity-representation">Velocity representation</a></li>
+</ul></li>
+<li><a href="#otto-calculus-and-formal-riemannian-structure"
+id="toc-otto-calculus-and-formal-riemannian-structure">Otto Calculus and
+Formal Riemannian Structure</a>
+<ul>
+<li><a href="#tangent-vectors" id="toc-tangent-vectors">Tangent
+vectors</a></li>
+<li><a href="#formal-metric-tensor" id="toc-formal-metric-tensor">Formal
+metric tensor</a></li>
+</ul></li>
+<li><a href="#convexity-along-geodesics"
+id="toc-convexity-along-geodesics">Convexity Along Geodesics</a></li>
+<li><a href="#wasserstein-geometry-in-machine-learning"
+id="toc-wasserstein-geometry-in-machine-learning">Wasserstein Geometry
+in Machine Learning</a>
+<ul>
+<li><a href="#generative-modeling"
+id="toc-generative-modeling">Generative modeling</a></li>
+<li><a href="#diffusion-and-flow-models"
+id="toc-diffusion-and-flow-models">Diffusion and flow models</a></li>
+<li><a href="#policies-as-evolving-distributions"
+id="toc-policies-as-evolving-distributions">Policies as evolving
+distributions</a></li>
+</ul></li>
+<li><a href="#summary" id="toc-summary">Summary</a></li>
+<li><a href="#recommended-reading-1"
+id="toc-recommended-reading-1">Recommended Reading</a></li>
+</ul></li>
+<li><a href="#wasserstein-gradient-flows"
+id="toc-wasserstein-gradient-flows">Wasserstein Gradient Flows</a>
+<ul>
+<li><a href="#motivation-1" id="toc-motivation-1">Motivation</a></li>
+<li><a href="#gradient-flows-in-euclidean-space"
+id="toc-gradient-flows-in-euclidean-space">Gradient Flows in Euclidean
+Space</a>
+<ul>
+<li><a href="#gradient-descent-ode"
+id="toc-gradient-descent-ode">Gradient descent ODE</a></li>
+<li><a href="#energy-dissipation" id="toc-energy-dissipation">Energy
+dissipation</a></li>
+<li><a href="#metric-interpretation"
+id="toc-metric-interpretation">Metric interpretation</a></li>
+</ul></li>
+<li><a href="#functionals-on-probability-space"
+id="toc-functionals-on-probability-space">Functionals on Probability
+Space</a>
+<ul>
+<li><a href="#energy-functionals" id="toc-energy-functionals">Energy
+functionals</a></li>
+<li><a href="#potential-energy" id="toc-potential-energy">Potential
+energy</a></li>
+<li><a href="#entropy" id="toc-entropy">Entropy</a></li>
+<li><a href="#free-energy" id="toc-free-energy">Free energy</a></li>
+</ul></li>
+<li><a href="#first-variations" id="toc-first-variations">First
+Variations</a>
+<ul>
+<li><a href="#functional-derivatives"
+id="toc-functional-derivatives">Functional derivatives</a></li>
+<li><a href="#examples" id="toc-examples">Examples</a></li>
+</ul></li>
+<li><a href="#wasserstein-gradient-flows-1"
+id="toc-wasserstein-gradient-flows-1">Wasserstein Gradient Flows</a>
+<ul>
+<li><a href="#formal-definition" id="toc-formal-definition">Formal
+definition</a></li>
+<li><a href="#interpretation-1"
+id="toc-interpretation-1">Interpretation</a></li>
+</ul></li>
+<li><a href="#the-fokkerplanck-equation"
+id="toc-the-fokkerplanck-equation">The Fokker–Planck Equation</a>
+<ul>
+<li><a href="#langevin-dynamics" id="toc-langevin-dynamics">Langevin
+dynamics</a></li>
+<li><a href="#gradient-flow-structure"
+id="toc-gradient-flow-structure">Gradient flow structure</a></li>
+<li><a href="#derivation" id="toc-derivation">Derivation</a></li>
+</ul></li>
+<li><a href="#energy-dissipation-1" id="toc-energy-dissipation-1">Energy
+Dissipation</a></li>
+<li><a href="#the-jordankinderlehrerotto-scheme"
+id="toc-the-jordankinderlehrerotto-scheme">The Jordan–Kinderlehrer–Otto
+Scheme</a>
+<ul>
+<li><a href="#implicit-euler-in-wasserstein-space"
+id="toc-implicit-euler-in-wasserstein-space">Implicit Euler in
+Wasserstein space</a></li>
+<li><a href="#interpretation-2"
+id="toc-interpretation-2">Interpretation</a></li>
+<li><a href="#conceptual-importance"
+id="toc-conceptual-importance">Conceptual importance</a></li>
+</ul></li>
+<li><a href="#kl-divergence-as-free-energy"
+id="toc-kl-divergence-as-free-energy">KL Divergence as Free
+Energy</a></li>
+<li><a href="#connections-to-generative-modeling"
+id="toc-connections-to-generative-modeling">Connections to Generative
+Modeling</a>
+<ul>
+<li><a href="#diffusion-models" id="toc-diffusion-models">Diffusion
+models</a></li>
+<li><a href="#flow-models" id="toc-flow-models">Flow models</a></li>
+<li><a href="#drifting-models" id="toc-drifting-models">Drifting
+models</a></li>
+</ul></li>
+<li><a href="#connections-to-reinforcement-learning"
+id="toc-connections-to-reinforcement-learning">Connections to
+Reinforcement Learning</a>
+<ul>
+<li><a href="#entropy-regularized-rl"
+id="toc-entropy-regularized-rl">Entropy-regularized RL</a></li>
+</ul></li>
+<li><a href="#otto-calculus-revisited"
+id="toc-otto-calculus-revisited">Otto Calculus Revisited</a></li>
+<li><a href="#summary-1" id="toc-summary-1">Summary</a></li>
+<li><a href="#recommended-reading-2"
+id="toc-recommended-reading-2">Recommended Reading</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="probability-measures-pushforwards-and-weak-calculus">Probability
+Measures, Pushforwards, and Weak Calculus</h1>
+<h2 id="motivation-and-scope">Motivation and Scope</h2>
+<p>The goal of these notes is to introduce the minimal measure-theoretic
+and variational language required for modern formulations of:</p>
+<ul>
+<li><p>Wasserstein gradient flows,</p></li>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>diffusion and drifting generative models,</p></li>
+<li><p>policy optimization in probability space.</p></li>
+</ul>
+<p>Throughout these notes, probability distributions are treated as
+geometric objects that evolve in time. The central idea is that learning
+algorithms can often be interpreted not merely as optimization in
+parameter space, but as evolution equations over spaces of probability
+measures. This first phase introduces:</p>
+<ol>
+<li><p>probability measures on Euclidean spaces,</p></li>
+<li><p>pushforward measures,</p></li>
+<li><p>weak convergence,</p></li>
+<li><p>entropy and Kullback–Leibler divergence,</p></li>
+<li><p>continuity equations and weak formulations.</p></li>
+</ol>
+<p>We assume familiarity with basic probability theory, measure theory,
+and multivariable calculus.</p>
+<h2 id="probability-measures-on-euclidean-spaces">Probability Measures
+on Euclidean Spaces</h2>
+<h3 id="borel-probability-measures">Borel probability measures</h3>
+<p>Let <span class="math inline">\(\mathbb{R}^d\)</span> denote
+Euclidean space equipped with its Borel <span
+class="math inline">\(\sigma\)</span>-algebra <span
+class="math inline">\(\mathcal{B}(\mathbb{R}^d)\)</span>.</p>
+<div class="definition">
+<p><strong>Definition 1.1</strong> (Probability measure). A probability
+measure on <span class="math inline">\(\mathbb{R}^d\)</span> is a map
+<span class="math display">\[\mu : \mathcal{B}(\mathbb{R}^d) \to
+[0,1]\]</span> such that:</p>
+<ol>
+<li><p><span
+class="math inline">\(\mu(\mathbb{R}^d)=1\)</span>,</p></li>
+<li><p>for any countable collection of pairwise disjoint Borel sets
+<span class="math inline">\(\{A_i\}_{i=1}^{\infty}\)</span>, <span
+class="math display">\[\mu\left(\bigcup_{i=1}^{\infty} A_i\right)
+    =
+    \sum_{i=1}^{\infty} \mu(A_i).\]</span></p></li>
+</ol>
+</div>
+<p>The set of all Borel probability measures on <span
+class="math inline">\(\mathbb{R}^d\)</span> is denoted by <span
+class="math display">\[\mathcal{P}(\mathbb{R}^d).\]</span></p>
+<div class="definition">
+<p><strong>Definition 1.2</strong> (Absolutely continuous measure). A
+measure <span class="math inline">\(\mu \in
+\mathcal{P}(\mathbb{R}^d)\)</span> is absolutely continuous with respect
+to Lebesgue measure if there exists a nonnegative function <span
+class="math display">\[\rho \in L^1(\mathbb{R}^d)\]</span> with <span
+class="math display">\[\int_{\mathbb{R}^d} \rho(x)dx =1\]</span> such
+that <span class="math display">\[\mu(A)=\int_A \rho(x)dx\]</span> for
+every Borel set <span class="math inline">\(A\)</span>. The function
+<span class="math inline">\(\rho\)</span> is called the density of <span
+class="math inline">\(\mu\)</span>.</p>
+</div>
+<p>In applied machine learning, probability measures are often
+represented implicitly through neural generators rather than explicit
+densities.</p>
+<h3 id="moments">Moments</h3>
+<div class="definition">
+<p><strong>Definition 1.3</strong> (Moment of order <span
+class="math inline">\(p\)</span>). For <span class="math inline">\(p\ge
+1\)</span>, the <span class="math inline">\(p\)</span>-th moment of
+<span class="math inline">\(\mu \in \mathcal{P}(\mathbb{R}^d)\)</span>
+is <span class="math display">\[\int_{\mathbb{R}^d} \|x\|^p
+d\mu(x).\]</span> We define <span
+class="math display">\[\mathcal{P}_p(\mathbb{R}^d)
+=
+\left\{
+\mu \in \mathcal{P}(\mathbb{R}^d)
+:
+\int \|x\|^p d\mu(x)&lt;\infty
+\right\}.\]</span></p>
+</div>
+<p>Finite second moments will become fundamental in Wasserstein
+geometry.</p>
+<h2 id="random-variables-and-pushforward-measures">Random Variables and
+Pushforward Measures</h2>
+<h3 id="pushforwards">Pushforwards</h3>
+<p>The pushforward operation is one of the most important constructions
+in modern generative modeling.</p>
+<div class="definition">
+<p><strong>Definition 1.4</strong> (Pushforward measure). Let <span
+class="math display">\[T : \mathbb{R}^m \to \mathbb{R}^d\]</span> be <a
+href="definitions/measurability.html">measurable</a> and let <span
+class="math inline">\(\mu \in \mathcal{P}(\mathbb{R}^m)\)</span>. The
+pushforward of <span class="math inline">\(\mu\)</span> through <span
+class="math inline">\(T\)</span> is the probability measure <span
+class="math display">\[T_{\#}\mu \in \mathcal{P}(\mathbb{R}^d)\]</span>
+defined by <span
+class="math display">\[(T_{\#}\mu)(A)=\mu(T^{-1}(A))\]</span> for every
+Borel set <span class="math inline">\(A \subseteq
+\mathbb{R}^d\)</span>.</p>
+</div>
+<div class="remark">
+<p><strong>Remark 1.5</strong>. If <span class="math display">\[X \sim
+\mu\]</span> and <span class="math display">\[Y=T(X),\]</span> then
+<span class="math display">\[Y \sim T_{\#}\mu.\]</span> Thus
+pushforwards generalize the notion of the distribution of a transformed
+random variable.</p>
+</div>
+<h3 id="pushforwards-in-generative-modeling">Pushforwards in generative
+modeling</h3>
+<p>A generative model is frequently defined by:</p>
+<ol>
+<li><p>a latent distribution <span class="math inline">\(z \sim
+\rho_0\)</span>,</p></li>
+<li><p>a neural map <span class="math display">\[f_\theta : \mathbb{R}^m
+\to \mathbb{R}^d.\]</span></p></li>
+</ol>
+<p>The generated distribution is <span
+class="math display">\[\rho_\theta = (f_\theta)_{\#}\rho_0.\]</span>
+This point of view is central in:</p>
+<ul>
+<li><p>normalizing flows,</p></li>
+<li><p>diffusion decoding maps,</p></li>
+<li><p>one-step generators,</p></li>
+<li><p>drifting models,</p></li>
+<li><p>policy distributions in reinforcement learning.</p></li>
+</ul>
+<div class="example">
+<p><strong>Example 1.6</strong> (Policy as pushforward). Suppose <span
+class="math display">\[z \sim \mathcal N(0,I)\]</span> and define a
+policy <span class="math display">\[a = f_\theta(s,z).\]</span> For
+fixed state <span class="math inline">\(s\)</span>, the induced action
+distribution is <span class="math display">\[\pi_\theta(\cdot|s)
+=
+(f_\theta(s,\cdot))_{\#}\rho_0.\]</span> Thus a policy can be viewed as
+a state-dependent pushforward distribution.</p>
+</div>
+<h3 id="change-of-variables">Change of variables</h3>
+<div class="theorem">
+<p><strong>Theorem 1.7</strong> (Change-of-variables formula). <em>Let
+<span class="math display">\[T : \mathbb{R}^d \to \mathbb{R}^d\]</span>
+be a smooth bijection with smooth inverse. Suppose <span
+class="math inline">\(\mu\)</span> has density <span
+class="math inline">\(\rho\)</span>. Then the pushforward measure <span
+class="math display">\[T_{\#}\mu\]</span> has density <span
+class="math display">\[\tilde \rho(y)
+=
+\rho(T^{-1}(y))
+\left|
+\det DT^{-1}(y)
+\right|.\]</span></em></p>
+</div>
+<p>This theorem underlies likelihood computation in normalizing
+flows.</p>
+<h2 id="weak-convergence-of-measures">Weak Convergence of Measures</h2>
+<p>In optimization over distributions, one requires a notion of
+convergence between probability measures.</p>
+<div class="definition">
+<p><strong>Definition 1.8</strong> (Weak convergence). A sequence <span
+class="math display">\[\mu_n \in \mathcal{P}(\mathbb{R}^d)\]</span>
+converges weakly to <span class="math inline">\(\mu\)</span> if <span
+class="math display">\[\href{definitions/measure_integral.html}{\int
+f\,d\mu_n}
+\to
+\int f\,d\mu\]</span> for every bounded continuous function <span
+class="math display">\[f : \mathbb{R}^d \to \mathbb{R}.\]</span> We
+write <span class="math display">\[\mu_n \rightharpoonup
+\mu.\]</span></p>
+</div>
+<div class="remark">
+<p><strong>Remark 1.9</strong>. Weak convergence means convergence “in
+distribution.”</p>
+</div>
+<div class="example">
+<p><strong>Example 1.10</strong>. Let <span class="math display">\[\mu_n
+= \delta_{1/n}\]</span> where <span
+class="math inline">\(\delta_x\)</span> denotes the <a
+href="definitions/dirac_measure.html">Dirac measure at <span
+class="math inline">\(x\)</span></a>. Then <span
+class="math display">\[\mu_n \rightharpoonup \delta_0.\]</span></p>
+</div>
+<h3 id="tightness">Tightness</h3>
+<div class="definition">
+<p><strong>Definition 1.11</strong> (Tight family). A family of measures
+<span class="math display">\[\mathcal F \subseteq
+\mathcal{P}(\mathbb{R}^d)\]</span> is tight if for every <span
+class="math inline">\(\varepsilon&gt;0\)</span> there exists a compact
+set <span class="math inline">\(K \subseteq \mathbb{R}^d\)</span> such
+that <span class="math display">\[\mu(K) \ge 1-\varepsilon\]</span> for
+all <span class="math inline">\(\mu \in \mathcal F\)</span>.</p>
+</div>
+<div class="theorem">
+<p><strong>Theorem 1.12</strong> (Prokhorov). <em>A family of
+probability measures on <span
+class="math inline">\(\mathbb{R}^d\)</span> is relatively compact for
+weak convergence if and only if it is tight.</em></p>
+</div>
+<p>This theorem is foundational in variational formulations over
+probability spaces.</p>
+<h2 id="entropy-and-kullbackleibler-divergence">Entropy and
+Kullback–Leibler Divergence</h2>
+<p>Entropy functionals play a central role in:</p>
+<ul>
+<li><p>diffusion models,</p></li>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>entropy-regularized optimal transport,</p></li>
+<li><p>reinforcement learning.</p></li>
+</ul>
+<h3 id="differential-entropy">Differential entropy</h3>
+<div class="definition">
+<p><strong>Definition 1.13</strong> (Differential entropy). Let <span
+class="math inline">\(\mu\)</span> have density <span
+class="math inline">\(\rho\)</span>. The differential entropy is <span
+class="math display">\[\mathcal H(\rho)
+=
+-\int \rho(x)\log \rho(x)dx.\]</span></p>
+</div>
+<p>Entropy measures the spread or uncertainty of a distribution.</p>
+<h3 id="relative-entropy">Relative entropy</h3>
+<div class="definition">
+<p><strong>Definition 1.14</strong> (Kullback–Leibler divergence). Let
+<span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span> be probability measures with
+densities <span class="math inline">\(\rho\)</span> and <span
+class="math inline">\(\eta\)</span>, respectively. The Kullback–Leibler
+divergence is <span class="math display">\[\mathrm{KL}(\mu\|\nu)
+=
+\int \rho(x)
+\log \frac{\rho(x)}{\eta(x)}dx\]</span> whenever <span
+class="math inline">\(\mu\)</span> is absolutely continuous with respect
+to <span class="math inline">\(\nu\)</span>.</p>
+</div>
+<div class="remark">
+<p><strong>Remark 1.15</strong>. The KL divergence is not symmetric:
+<span class="math display">\[\mathrm{KL}(\mu\|\nu)
+\neq
+\mathrm{KL}(\nu\|\mu).\]</span> Thus it is not a metric.</p>
+</div>
+<div class="theorem">
+<p><strong>Theorem 1.16</strong> (Gibbs inequality). <em>For probability
+measures <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span>, <span
+class="math display">\[\mathrm{KL}(\mu\|\nu) \ge 0,\]</span> with
+equality if and only if <span class="math display">\[\mu=\nu\]</span>
+almost everywhere.</em></p>
+</div>
+<h3 id="forward-and-reverse-kl">Forward and reverse KL</h3>
+<p>In machine learning, two optimization regimes appear frequently.</p>
+<h5 id="forward-kl">Forward KL</h5>
+<p><span class="math display">\[\mathrm{KL}(p\|q).\]</span> Penalizes
+missing support heavily.</p>
+<h5 id="reverse-kl">Reverse KL</h5>
+<p><span class="math display">\[\mathrm{KL}(q\|p).\]</span> Often
+mode-seeking. Reverse KL objectives appear in policy optimization and
+drifting-field policies.</p>
+<h2 id="curves-of-measures-and-continuity-equations">Curves of Measures
+and Continuity Equations</h2>
+<p>Modern optimal transport interprets probability distributions as
+evolving continuously in time.</p>
+<h3 id="time-dependent-measures">Time-dependent measures</h3>
+<p>Consider a family of measures <span
+class="math display">\[(\rho_t)_{t\in[0,1]}.\]</span> Intuitively, mass
+moves through space according to a velocity field.</p>
+<div class="definition">
+<p><strong>Definition 1.17</strong> (Velocity field). A velocity field
+is a map <span class="math display">\[v_t : \mathbb{R}^d \to
+\mathbb{R}^d.\]</span> The quantity <span
+class="math display">\[v_t(x)\]</span> represents the instantaneous
+velocity of mass at location <span class="math inline">\(x\)</span> and
+time <span class="math inline">\(t\)</span>.</p>
+</div>
+<h3 id="continuity-equation">Continuity equation</h3>
+<div class="definition">
+<p><strong>Definition 1.18</strong> (Continuity equation). The
+continuity equation is <span class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0.\]</span></p>
+</div>
+<p>This equation expresses conservation of probability mass.</p>
+<div class="remark">
+<p><strong>Remark 1.19</strong>. The continuity equation is analogous to
+conservation laws in fluid mechanics.</p>
+</div>
+<h3 id="weak-formulation">Weak formulation</h3>
+<p>Since densities may not be smooth, one frequently uses weak
+formulations.</p>
+<div class="definition">
+<p><strong>Definition 1.20</strong> (Weak solution of the continuity
+equation). A curve of measures <span
+class="math inline">\((\rho_t)\)</span> is a weak solution of <span
+class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0\]</span> if for every smooth compactly
+supported test function <span class="math display">\[\varphi \in
+C_c^{\infty}((0,1)\times \mathbb{R}^d),\]</span> one has <span
+class="math display">\[\int_0^1
+\int_{\mathbb{R}^d}
+\left(
+\partial_t \varphi
++
+\nabla\varphi \cdot v_t
+\right)
+d\rho_t dt
+=
+0.\]</span></p>
+</div>
+<h3 id="particle-interpretation">Particle interpretation</h3>
+<p>Suppose particles evolve according to the ODE <span
+class="math display">\[\dot X_t = v_t(X_t).\]</span> If <span
+class="math display">\[X_0 \sim \rho_0,\]</span> then the <a
+href="definitions/law_random_variable.html">law of <span
+class="math inline">\(X_t\)</span></a> evolves according to the
+continuity equation. Thus:</p>
+<ul>
+<li><p>particle dynamics induce measure dynamics,</p></li>
+<li><p>velocity fields induce trajectories in probability
+space.</p></li>
+</ul>
+<p>This viewpoint becomes central in Wasserstein geometry.</p>
+<h2 id="free-energies-and-variational-perspectives">Free Energies and
+Variational Perspectives</h2>
+<p>Many evolution equations can be written as gradient flows of an
+energy functional. A generic free energy has the form <span
+class="math display">\[\mathcal F(\mu)
+=
+\int V(x)\,d\mu(x)
++
+\beta^{-1}
+\int \rho(x)\log \rho(x)\,dx,
+\qquad
+\mu=\rho(x)\,dx.\]</span> The first term represents potential energy
+with respect to the measure <span class="math inline">\(\mu\)</span>,
+while the second corresponds to entropy written in terms of its density
+<span class="math inline">\(\rho\)</span>. Examples include:</p>
+<ul>
+<li><p>Gibbs measures,</p></li>
+<li><p>Langevin dynamics,</p></li>
+<li><p>diffusion models,</p></li>
+<li><p>entropy-regularized reinforcement learning.</p></li>
+</ul>
+<p>In later phases we will show that many PDEs are gradient flows of
+such energies in Wasserstein space.</p>
+<h2 id="summary-and-outlook">Summary and Outlook</h2>
+<p>The main ideas introduced in this phase are:</p>
+<ol>
+<li><p>Probability distributions can be viewed as geometric
+objects.</p></li>
+<li><p>Neural generators define pushforward measures.</p></li>
+<li><p>Learning can be interpreted as evolution in probability
+space.</p></li>
+<li><p>Entropy and KL divergences define variational objectives over
+measures.</p></li>
+<li><p>Continuity equations describe the transport of probability
+mass.</p></li>
+</ol>
+<p>These concepts form the foundation for:</p>
+<ul>
+<li><p>Wasserstein distances,</p></li>
+<li><p>optimal transport,</p></li>
+<li><p>Wasserstein gradient flows,</p></li>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>drifting generative models,</p></li>
+<li><p>generative policies in reinforcement learning.</p></li>
+</ul>
+<p>In the next phase we introduce optimal transport and Wasserstein
+geometry.</p>
+<h2 class="unnumbered" id="recommended-reading">Recommended Reading</h2>
+<ol>
+<li><p>C. Villani, <em>Topics in Optimal Transportation</em></p></li>
+</ol>
+<h1 id="optimal-transport-and-wasserstein-geometry">Optimal Transport
+and Wasserstein Geometry</h1>
+<h2 id="motivation">Motivation</h2>
+<p>Optimal transport (OT) studies the geometry of probability
+distributions by quantifying the cost of transporting mass from one
+distribution to another. The modern importance of OT in machine learning
+derives from several observations:</p>
+<ul>
+<li><p>probability distributions can be treated as geometric
+objects;</p></li>
+<li><p>Wasserstein distances induce meaningful topologies on spaces of
+measures;</p></li>
+<li><p>gradient flows in Wasserstein space produce important
+PDEs;</p></li>
+<li><p>generative models and policies evolve distributions during
+training;</p></li>
+<li><p>reinforcement learning objectives can often be interpreted as
+transport problems.</p></li>
+</ul>
+<p>The goal of this phase is to introduce:</p>
+<ol>
+<li><p>Monge and Kantorovich optimal transport,</p></li>
+<li><p>Wasserstein distances,</p></li>
+<li><p>dynamic optimal transport,</p></li>
+<li><p>Wasserstein geodesics,</p></li>
+<li><p>the geometry of <span class="math inline">\(W_2\)</span>
+space.</p></li>
+</ol>
+<p>Throughout these notes we focus primarily on the quadratic
+Wasserstein metric <span class="math inline">\(W_2\)</span>, since it is
+the relevant geometry for Wasserstein gradient flows and drifting-field
+policies.</p>
+<h2 id="the-monge-formulation">The Monge Formulation</h2>
+<h3 id="mass-transport-maps">Mass transport maps</h3>
+<p>Suppose we are given two probability measures <span
+class="math display">\[\mu,\nu \in \mathcal{P}(\mathbb{R}^d).\]</span>
+Intuitively:</p>
+<ul>
+<li><p><span class="math inline">\(\mu\)</span> represents an initial
+mass distribution,</p></li>
+<li><p><span class="math inline">\(\nu\)</span> represents a target mass
+distribution.</p></li>
+</ul>
+<p>The original formulation of optimal transport was introduced by
+Gaspard Monge in 1781.</p>
+<div class="definition">
+<p><strong>Definition 2.1</strong> (Transport map). A measurable map
+<span class="math display">\[T : \mathbb{R}^d \to \mathbb{R}^d\]</span>
+is said to transport <span class="math inline">\(\mu\)</span> to <span
+class="math inline">\(\nu\)</span> if <span
+class="math display">\[T_{\#}\mu = \nu.\]</span></p>
+</div>
+<p>The goal is to find the transport map minimizing transportation
+cost.</p>
+<div class="definition">
+<p><strong>Definition 2.2</strong> (Monge problem). Given a cost
+function <span class="math display">\[c : \mathbb{R}^d \times
+\mathbb{R}^d \to [0,\infty),\]</span> the Monge optimal transport
+problem is <span class="math display">\[\inf_T
+\int_{\mathbb{R}^d}
+c(x,T(x))d\mu(x)\]</span> subject to <span
+class="math display">\[T_{\#}\mu=\nu.\]</span></p>
+</div>
+<p>Typically one chooses <span
+class="math display">\[c(x,y)=\|x-y\|^p.\]</span></p>
+<h3 id="difficulties-of-the-monge-problem">Difficulties of the Monge
+problem</h3>
+<p>The Monge formulation is highly nonlinear. Major difficulties
+include:</p>
+<ul>
+<li><p>existence of transport maps may fail;</p></li>
+<li><p>the pushforward constraint is nonlinear;</p></li>
+<li><p><a
+href="explanations/transport_maps_do_not_split_mass.html">transport maps
+cannot split mass</a>.</p></li>
+</ul>
+<div class="example">
+<p><strong>Example 2.3</strong>. Suppose <span
+class="math display">\[\mu = \delta_0,
+\qquad
+\nu = \tfrac12\delta_{-1}+\tfrac12\delta_1.\]</span> No transport map
+can split the mass at <span class="math inline">\(0\)</span> into two
+pieces.</p>
+</div>
+<p>These difficulties motivate the Kantorovich relaxation.</p>
+<h2 id="the-kantorovich-formulation">The Kantorovich Formulation</h2>
+<h3 id="transport-plans">Transport plans</h3>
+<p>Instead of deterministic maps, Kantorovich introduced probabilistic
+couplings.</p>
+<div class="definition">
+<p><strong>Definition 2.4</strong> (Transport plan). A transport plan
+between <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\nu\)</span> is a probability measure <span
+class="math display">\[\gamma \in
+\mathcal{P}(\mathbb{R}^d\times\mathbb{R}^d)\]</span> such that: <span
+class="math display">\[\begin{align*}
+\href{explanations/first_marginal_transport_plan.html}{(\pi_x)_{\#}\gamma}
+&amp;= \href{explanations/first_marginal_transport_plan.html}{\mu},
+\\
+(\pi_y)_{\#}\gamma &amp;= \nu,
+\end{align*}\]</span> where <span class="math display">\[\pi_x(x,y)=x,
+\qquad
+\pi_y(x,y)=y.\]</span> The set of all such couplings is denoted <span
+class="math display">\[\Pi(\mu,\nu).\]</span></p>
+</div>
+<div class="remark">
+<p><strong>Remark 2.5</strong>. A transport plan specifies how much mass
+moves from <span class="math inline">\(x\)</span> to <span
+class="math inline">\(y\)</span>. Unlike Monge maps, transport plans may
+split mass.</p>
+</div>
+<h3 id="kantorovich-optimal-transport">Kantorovich optimal
+transport</h3>
+<div class="definition">
+<p><strong>Definition 2.6</strong> (Kantorovich problem). The
+Kantorovich optimal transport problem is <span
+class="math display">\[\inf_{\gamma \in \Pi(\mu,\nu)}
+\int_{\mathbb{R}^d\times\mathbb{R}^d}
+c(x,y)d\gamma(x,y).\]</span></p>
+</div>
+<p>This is a linear optimization problem over probability measures.</p>
+<div class="theorem">
+<p><strong>Theorem 2.7</strong> (Existence of optimal plans). <em>Let
+<span class="math inline">\(c\)</span> be <a
+href="definitions/lower_semicontinuity.html">lower semicontinuous</a>
+and bounded from below. Then for every <span
+class="math display">\[\mu,\nu \in \mathcal{P}(\mathbb{R}^d)\]</span>
+there exists at least one optimal transport plan.</em></p>
+</div>
+<h2 id="wasserstein-distances">Wasserstein Distances</h2>
+<h3 id="definition">Definition</h3>
+<p>The most important costs are powers of Euclidean distance.</p>
+<div class="definition">
+<p><strong>Definition 2.8</strong> (<span
+class="math inline">\(p\)</span>-Wasserstein distance). Let <span
+class="math inline">\(p\ge1\)</span>. For <span
+class="math display">\[\mu,\nu \in \mathcal{P}_p(\mathbb{R}^d),\]</span>
+the <span class="math inline">\(p\)</span>-Wasserstein distance is <span
+class="math display">\[W_p(\mu,\nu)
+=
+\left(
+\inf_{\gamma\in\Pi(\mu,\nu)}
+\int \|x-y\|^p d\gamma(x,y)
+\right)^{1/p}.\]</span></p>
+</div>
+<p>The most important case for modern machine learning is: <span
+class="math display">\[W_2.\]</span></p>
+<h3 id="metric-structure">Metric structure</h3>
+<div class="theorem">
+<p><strong>Theorem 2.9</strong>. <em>For <span
+class="math inline">\(p\ge1\)</span>, the Wasserstein distance defines a
+metric on <span
+class="math display">\[\mathcal{P}_p(\mathbb{R}^d).\]</span></em></p>
+</div>
+<p>Thus probability distributions become points in a metric space.</p>
+<div class="remark">
+<p><strong>Remark 2.10</strong>. Unlike KL divergence, Wasserstein
+distances compare distributions geometrically. Even distributions with
+disjoint supports may have finite Wasserstein distance.</p>
+</div>
+<h3 id="comparison-with-kl-divergence">Comparison with KL
+divergence</h3>
+<p>Suppose <span class="math display">\[\mu = \delta_0,
+\qquad
+\nu = \delta_1.\]</span> Then: <span
+class="math display">\[\href{explanations/w2_between_dirac_masses.html}{W_2(\mu,\nu)=1},\]</span>
+while <span
+class="math display">\[\mathrm{KL}(\mu\|\nu)=\infty.\]</span> This
+sensitivity to geometry is one reason Wasserstein distances are
+important in generative modeling.</p>
+<h2 id="optimal-maps-and-brenier-theory">Optimal Maps and Brenier
+Theory</h2>
+<p>The quadratic Wasserstein geometry possesses remarkable
+structure.</p>
+<h3 id="brenier-theorem">Brenier theorem</h3>
+<div class="theorem">
+<p><strong>Theorem 2.11</strong> (Brenier). <em>Let <span
+class="math display">\[\mu,\nu \in \mathcal{P}_2(\mathbb{R}^d)\]</span>
+and assume <span class="math inline">\(\mu\)</span> is absolutely
+continuous. Then there exists a unique optimal transport map <span
+class="math display">\[T : \mathbb{R}^d \to \mathbb{R}^d\]</span> for
+the quadratic cost <span
+class="math display">\[c(x,y)=\|x-y\|^2.\]</span> Moreover, <span
+class="math display">\[T = \nabla\varphi\]</span> for a convex function
+<span class="math display">\[\varphi : \mathbb{R}^d \to
+\mathbb{R}.\]</span></em></p>
+</div>
+<div class="remark">
+<p><strong>Remark 2.12</strong>. This theorem is foundational for
+Wasserstein geometry. Optimal transport maps are <a
+href="explanations/simple_brenier_example.html">gradients of convex
+potentials</a>.</p>
+</div>
+<h3 id="displacement-interpolation">Displacement interpolation</h3>
+<p>Given the optimal map <span class="math inline">\(T\)</span>, define
+<span class="math display">\[T_t(x)
+=
+(1-t)x+tT(x).\]</span> Then the interpolating measures <span
+class="math display">\[\mu_t = (T_t)_{\#}\mu\]</span> define the
+Wasserstein geodesic between <span class="math inline">\(\mu\)</span>
+and <span class="math inline">\(\nu\)</span>. This interpolation is
+called displacement interpolation.</p>
+<h2 id="dynamic-optimal-transport">Dynamic Optimal Transport</h2>
+<p>The static Kantorovich formulation can be rewritten dynamically. This
+viewpoint is one of the most important developments in modern OT.</p>
+<h3 id="continuity-equations">Continuity equations</h3>
+<p>Recall the continuity equation: <span
+class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0.\]</span> Here:</p>
+<ul>
+<li><p><span class="math inline">\(\rho_t\)</span> is a time-dependent
+density,</p></li>
+<li><p><span class="math inline">\(v_t\)</span> is a velocity
+field.</p></li>
+</ul>
+<p>The velocity field transports mass continuously.</p>
+<h3 id="benamoubrenier-formulation">Benamou–Brenier formulation</h3>
+<div class="theorem">
+<p><strong>Theorem 2.13</strong> (Benamou–Brenier). <em>Let <span
+class="math display">\[\mu_0,\mu_1 \in
+\mathcal{P}_2(\mathbb{R}^d).\]</span> Then <span
+class="math display">\[W_2^2(\mu_0,\mu_1)
+=
+\inf_{(\rho_t,v_t)}
+\int_0^1
+\int_{\mathbb{R}^d}
+\|v_t(x)\|^2\rho_t(x)dxdt\]</span> subject to: <span
+class="math display">\[\begin{align*}
+\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)&amp;=0,
+\\
+\rho_0 &amp;= \mu_0,
+\\
+\rho_1 &amp;= \mu_1.
+\end{align*}\]</span></em></p>
+</div>
+<h3 id="interpretation">Interpretation</h3>
+<p>The quantity <span class="math display">\[\int
+\|v_t(x)\|^2\rho_t(x)dx\]</span> represents kinetic energy. Thus:</p>
+<blockquote>
+<p>The Wasserstein distance is the minimum kinetic energy required to
+transport one distribution into another.</p>
+</blockquote>
+<p>This dynamic viewpoint is central for:</p>
+<ul>
+<li><p>Wasserstein gradient flows,</p></li>
+<li><p>fluid formulations of generative models,</p></li>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>policy transport in RL.</p></li>
+</ul>
+<h2 id="wasserstein-geodesics">Wasserstein Geodesics</h2>
+<h3 id="geodesic-curves">Geodesic curves</h3>
+<p>A geodesic is a shortest path in a metric space.</p>
+<div class="definition">
+<p><strong>Definition 2.14</strong> (Geodesic in metric space). Let
+<span class="math inline">\((X,d)\)</span> be a metric space. A curve
+<span class="math display">\[\gamma_t : [0,1]\to X\]</span> is a
+geodesic if <span class="math display">\[d(\gamma_s,\gamma_t)
+=
+|t-s|d(\gamma_0,\gamma_1)\]</span> for all <span
+class="math inline">\(s,t\in[0,1]\)</span>.</p>
+</div>
+<h3 id="wasserstein-geodesics-1">Wasserstein geodesics</h3>
+<p>The displacement interpolation <span
+class="math display">\[\mu_t=(T_t)_{\#}\mu\]</span> constructed from the
+Brenier map <a href="explanations/wasserstein_geodesics.html">defines a
+geodesic</a> in <span
+class="math inline">\((\mathcal{P}_2(\mathbb{R}^d),W_2)\)</span>.
+Thus:</p>
+<blockquote>
+<p>Optimal transport equips probability space with a Riemannian-like
+geometry.</p>
+</blockquote>
+<h3 id="velocity-representation">Velocity representation</h3>
+<p>Along Wasserstein geodesics, the velocity field satisfies: <span
+class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0.\]</span> The velocity field minimizing
+kinetic energy defines the geodesic flow.</p>
+<h2 id="otto-calculus-and-formal-riemannian-structure">Otto Calculus and
+Formal Riemannian Structure</h2>
+<p>Felix Otto observed that <span class="math inline">\(W_2\)</span>
+space behaves formally like an infinite-dimensional Riemannian
+manifold.</p>
+<h3 id="tangent-vectors">Tangent vectors</h3>
+<p>Suppose <span class="math inline">\(\rho_t\)</span> evolves according
+to <span class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0.\]</span> The tangent vector at <span
+class="math inline">\(\rho\)</span> can formally be identified with
+<span class="math display">\[\dot \rho
+=
+-\operatorname{div}(\rho v).\]</span> <a
+href="explanations/minimal_velocity_gradient.html">Among all velocity
+fields generating the same tangent vector, the minimal kinetic-energy
+representative is gradient-valued</a>: <span class="math display">\[v =
+\nabla\phi.\]</span> Thus tangent vectors may be represented as: <span
+class="math display">\[\dot \rho
+=
+-\operatorname{div}(\rho \nabla\phi).\]</span></p>
+<h3 id="formal-metric-tensor">Formal metric tensor</h3>
+<p>Otto’s formal metric is: <span class="math display">\[\langle \dot
+\rho_1,\dot \rho_2 \rangle_\rho
+=
+\int_{\mathbb{R}^d}
+\nabla\phi_1 \cdot \nabla\phi_2
+\, d\rho.\]</span> This provides the formal Riemannian structure
+underlying Wasserstein gradient flows.</p>
+<div class="remark">
+<p><strong>Remark 2.15</strong>. The space <span
+class="math inline">\(\mathcal{P}_2(\mathbb{R}^d)\)</span> is not
+literally a finite-dimensional manifold. The Otto calculus is partly
+formal, but extraordinarily powerful.</p>
+</div>
+<h2 id="convexity-along-geodesics">Convexity Along Geodesics</h2>
+<p>In Euclidean optimization, convexity governs gradient descent. In
+Wasserstein geometry, one instead studies convexity along geodesics.</p>
+<div class="definition">
+<p><strong>Definition 2.16</strong> (Displacement convexity). A
+functional <span class="math display">\[\mathcal F :
+\mathcal{P}_2(\mathbb{R}^d) \to \mathbb{R}\]</span> is displacement
+convex if <span class="math display">\[\mathcal F(\mu_t)\]</span> is
+convex along Wasserstein geodesics.</p>
+</div>
+<p>Examples include:</p>
+<ul>
+<li><p>entropy functionals,</p></li>
+<li><p>internal energies,</p></li>
+<li><p>interaction energies.</p></li>
+</ul>
+<p>Displacement convexity is fundamental for:</p>
+<ul>
+<li><p>uniqueness of gradient flows,</p></li>
+<li><p>convergence of diffusion equations,</p></li>
+<li><p>entropy dissipation.</p></li>
+</ul>
+<h2 id="wasserstein-geometry-in-machine-learning">Wasserstein Geometry
+in Machine Learning</h2>
+<h3 id="generative-modeling">Generative modeling</h3>
+<p>Generative models induce distributions <span
+class="math display">\[\rho_\theta=(f_\theta)_\#\rho_0.\]</span>
+Training changes the generated distribution through parameter updates.
+The induced trajectory: <span class="math display">\[\theta_t
+\mapsto
+\rho_{\theta_t}\]</span> may sometimes be interpreted as an approximate
+Wasserstein gradient flow.</p>
+<h3 id="diffusion-and-flow-models">Diffusion and flow models</h3>
+<p>Diffusion models define stochastic transport processes between
+distributions. Flow matching and continuous normalizing flows define
+velocity fields transporting probability mass. Schrödinger bridges
+regularize optimal transport with entropy.</p>
+<h3 id="policies-as-evolving-distributions">Policies as evolving
+distributions</h3>
+<p>In reinforcement learning: <span
+class="math display">\[\pi(a|s)\]</span> is a conditional probability
+distribution over actions. Modern policy optimization methods may be
+interpreted as transport in probability space: <span
+class="math display">\[\pi_t
+\rightarrow
+\pi_{t+1}.\]</span> This perspective motivates Wasserstein formulations
+of RL and drifting-field policies.</p>
+<h2 id="summary">Summary</h2>
+<p>The key ideas of this phase are:</p>
+<ol>
+<li><p>Optimal transport studies the geometry of probability
+distributions.</p></li>
+<li><p>The Monge formulation searches for deterministic transport
+maps.</p></li>
+<li><p>The Kantorovich relaxation allows probabilistic
+couplings.</p></li>
+<li><p>Wasserstein distances metrize spaces of probability
+measures.</p></li>
+<li><p>The quadratic Wasserstein metric admits a dynamic fluid
+formulation.</p></li>
+<li><p>Wasserstein geodesics describe optimal displacement of
+mass.</p></li>
+<li><p>The Otto calculus provides a formal Riemannian structure on
+probability space.</p></li>
+<li><p>Many learning algorithms may be interpreted as evolution
+equations in Wasserstein space.</p></li>
+</ol>
+<p>The central conceptual shift is the following:</p>
+<blockquote>
+<p>Instead of optimizing points in Euclidean space, one optimizes
+probability distributions in Wasserstein space.</p>
+</blockquote>
+<p>This viewpoint underlies:</p>
+<ul>
+<li><p>Wasserstein gradient flows,</p></li>
+<li><p>diffusion and flow models,</p></li>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>entropy-regularized optimal transport,</p></li>
+<li><p>modern formulations of reinforcement learning.</p></li>
+</ul>
+<p>In the next phase we introduce Wasserstein gradient flows and their
+connections with PDEs, variational principles, and learning
+dynamics.</p>
+<h2 class="unnumbered" id="recommended-reading-1">Recommended
+Reading</h2>
+<ol>
+<li><p>C. Villani, <em>Optimal Transport: Old and New</em>.</p></li>
+<li><p>G. Peyré and M. Cuturi, <em>Computational Optimal
+Transport</em>.</p></li>
+<li><p>F. Santambrogio, <em>Optimal Transport for Applied
+Mathematicians</em>.</p></li>
+<li><p>J.-D. Benamou and Y. Brenier, “A Computational Fluid Mechanics
+Solution to the Monge–Kantorovich Mass Transfer Problem.”</p></li>
+<li><p>F. Otto, “The Geometry of Dissipative Evolution
+Equations.”</p></li>
+</ol>
+<h1 id="wasserstein-gradient-flows">Wasserstein Gradient Flows</h1>
+<h2 id="motivation-1">Motivation</h2>
+<p>In Euclidean optimization, gradient descent evolves points according
+to:</p>
+<p><span class="math display">\[\dot x_t = -\nabla f(x_t).\]</span></p>
+<p>The fundamental idea of Wasserstein gradient flows is the
+following:</p>
+<blockquote>
+<p>Instead of evolving points in Euclidean space, evolve probability
+distributions in Wasserstein space.</p>
+</blockquote>
+<p>The resulting framework connects:</p>
+<ul>
+<li><p>partial differential equations,</p></li>
+<li><p>diffusion processes,</p></li>
+<li><p>entropy dissipation,</p></li>
+<li><p>stochastic control,</p></li>
+<li><p>generative modeling,</p></li>
+<li><p>reinforcement learning.</p></li>
+</ul>
+<p>This chapter develops the formalism of Wasserstein gradient flows
+(WGF), emphasizing:</p>
+<ol>
+<li><p>variational principles,</p></li>
+<li><p>continuity equations,</p></li>
+<li><p>free energy functionals,</p></li>
+<li><p>the Jordan–Kinderlehrer–Otto (JKO) scheme,</p></li>
+<li><p>connections to diffusion and learning.</p></li>
+</ol>
+<h2 id="gradient-flows-in-euclidean-space">Gradient Flows in Euclidean
+Space</h2>
+<p>We briefly recall ordinary gradient descent.</p>
+<h3 id="gradient-descent-ode">Gradient descent ODE</h3>
+<p>Let <span class="math display">\[f : \mathbb{R}^d \to
+\mathbb{R}\]</span> be smooth.</p>
+<p>The gradient flow equation is</p>
+<p><span class="math display">\[\dot x_t = -\nabla f(x_t).\]</span></p>
+<p>This equation follows the direction of steepest descent.</p>
+<h3 id="energy-dissipation">Energy dissipation</h3>
+<p>Along solutions:</p>
+<p><span class="math display">\[\frac{d}{dt}f(x_t)
+=
+\nabla f(x_t) \cdot \dot x_t.\]</span></p>
+<p>Substituting the gradient flow equation gives:</p>
+<p><span class="math display">\[\frac{d}{dt}f(x_t)
+=
+-\|\nabla f(x_t)\|^2
+\le 0.\]</span></p>
+<p>Thus gradient flows dissipate energy monotonically.</p>
+<h3 id="metric-interpretation">Metric interpretation</h3>
+<p>Gradient descent depends on the geometry of the underlying space.</p>
+<p>In Euclidean space, the metric tensor is the identity.</p>
+<p>In Wasserstein geometry, the metric structure is different, leading
+to different gradient flows.</p>
+<h2 id="functionals-on-probability-space">Functionals on Probability
+Space</h2>
+<p>Wasserstein gradient flows evolve probability measures to decrease an
+energy functional.</p>
+<h3 id="energy-functionals">Energy functionals</h3>
+<p>A functional is a map:</p>
+<p><span class="math display">\[\mathcal F : \mathcal{P}_2(\mathbb{R}^d)
+\to \mathbb{R}.\]</span></p>
+<p>Important examples include:</p>
+<ol>
+<li><p>potential energies,</p></li>
+<li><p>entropy functionals,</p></li>
+<li><p>interaction energies,</p></li>
+<li><p>KL divergences.</p></li>
+</ol>
+<h3 id="potential-energy">Potential energy</h3>
+<p>Given a confining potential <span class="math display">\[V :
+\mathbb{R}^d \to \mathbb{R},\]</span> define:</p>
+<p><span class="math display">\[\mathcal V(\rho)
+=
+\int V(x)d\rho(x).\]</span></p>
+<h3 id="entropy">Entropy</h3>
+<p>For a density <span class="math inline">\(\rho\)</span>:</p>
+<p><span class="math display">\[\mathcal H(\rho)
+=
+\int \rho(x)\log \rho(x)dx.\]</span></p>
+<p>Note the sign convention differs from Shannon entropy.</p>
+<h3 id="free-energy">Free energy</h3>
+<p>A central object is the free energy:</p>
+<p><span class="math display">\[\mathcal F(\rho)
+=
+\int V(x)d\rho(x)
++
+\beta^{-1}
+\int \rho(x)\log \rho(x)dx.\]</span></p>
+<p>This combines:</p>
+<ul>
+<li><p>energy minimization,</p></li>
+<li><p>entropy regularization.</p></li>
+</ul>
+<p>The parameter:</p>
+<p><span class="math display">\[\beta^{-1}\]</span> plays the role of
+temperature.</p>
+<h2 id="first-variations">First Variations</h2>
+<p>To define gradient flows on probability space we require a notion of
+derivative.</p>
+<h3 id="functional-derivatives">Functional derivatives</h3>
+<div class="definition">
+<p><strong>Definition 3.1</strong> (First variation). Let <span
+class="math inline">\(\mathcal F\)</span> be a functional defined on a
+class of probability densities. The first variation of <span
+class="math inline">\(\mathcal F\)</span> at <span
+class="math inline">\(\rho\)</span> is a function <span
+class="math display">\[\frac{\delta \mathcal F}{\delta
+\rho}(\rho)\]</span> such that, for every smooth perturbation <span
+class="math inline">\(\eta\)</span> satisfying <span
+class="math display">\[\int_{\mathbb{R}^d}\eta(x)\,dx=0,\]</span> one
+has <span class="math display">\[\left.
+\frac{d}{d\varepsilon}
+\mathcal F(\rho+\varepsilon\eta)
+\right|_{\varepsilon=0}
+=
+\int_{\mathbb{R}^d}
+\frac{\delta \mathcal F}{\delta
+\rho}(\rho)(x)\,\eta(x)\,dx.\]</span></p>
+</div>
+<p>The zero-mass condition on <span class="math inline">\(\eta\)</span>
+ensures that <span class="math inline">\(\rho+\varepsilon\eta\)</span>
+remains a probability density to first order. On probability densities,
+the first variation is defined only up to an additive constant, since
+constants vanish against zero-mass perturbations.</p>
+<h3 id="examples">Examples</h3>
+<h5 id="potential-energy-1">Potential energy</h5>
+<p>For <span class="math display">\[\mathcal V(\rho)=\int V
+d\rho,\]</span> one has:</p>
+<p><span class="math display">\[\frac{\delta \mathcal V}{\delta
+\rho}=V.\]</span></p>
+<h5 id="entropy-1">Entropy</h5>
+<p>For <span class="math display">\[\mathcal H(\rho)
+=
+\int \rho\log \rho,\]</span> one obtains:</p>
+<p><span class="math display">\[\frac{\delta \mathcal H}{\delta \rho}
+=
+\log \rho +1.\]</span></p>
+<h5 id="free-energy-1">Free energy</h5>
+<p>For <span class="math display">\[\mathcal F(\rho)
+=
+\int V d\rho
++
+\beta^{-1}
+\int \rho\log \rho,\]</span> we get:</p>
+<p><span class="math display">\[\frac{\delta \mathcal F}{\delta \rho}
+=
+V + \beta^{-1}(\log \rho +1).\]</span></p>
+<h2 id="wasserstein-gradient-flows-1">Wasserstein Gradient Flows</h2>
+<h3 id="formal-definition">Formal definition</h3>
+<p>The Wasserstein gradient flow of a functional <span
+class="math inline">\(\mathcal F\)</span> is formally:</p>
+<p><span
+class="math display">\[\href{explanations/wasserstein_gradient_flow_derivation.html}{\partial_t
+\rho_t
+=
+\operatorname{div}
+\left(
+\rho_t
+\nabla
+\frac{\delta \mathcal F}{\delta \rho}(\rho_t)
+\right)}.\]</span></p>
+<p>Equivalently:</p>
+<p><span class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0,\]</span></p>
+<p>with velocity field:</p>
+<p><span class="math display">\[v_t
+=
+-\nabla
+\frac{\delta \mathcal F}{\delta \rho}(\rho_t).\]</span></p>
+<h3 id="interpretation-1">Interpretation</h3>
+<p>Compare with Euclidean gradient flow:</p>
+<p><span class="math display">\[\dot x_t = -\nabla f(x_t).\]</span></p>
+<p>In Wasserstein space:</p>
+<ul>
+<li><p>points become distributions,</p></li>
+<li><p>velocities become transport vector fields,</p></li>
+<li><p>gradients become functional derivatives.</p></li>
+</ul>
+<h2 id="the-fokkerplanck-equation">The Fokker–Planck Equation</h2>
+<p>One of the most important examples of a Wasserstein gradient flow is
+the Fokker–Planck equation.</p>
+<h3 id="langevin-dynamics">Langevin dynamics</h3>
+<p>Consider the stochastic differential equation:</p>
+<p><span class="math display">\[dX_t
+=
+-\nabla V(X_t)dt
++
+\sqrt{2\beta^{-1}}dW_t.\]</span></p>
+<p>Its probability density evolves according to:</p>
+<p><span class="math display">\[\partial_t \rho_t
+=
+\operatorname{div}(\rho_t \nabla V)
++
+\beta^{-1}\Delta \rho_t.\]</span></p>
+<h3 id="gradient-flow-structure">Gradient flow structure</h3>
+<div class="theorem">
+<p><strong>Theorem 3.2</strong>. <em>The Fokker–Planck equation is the
+Wasserstein gradient flow of the free energy:</em></p>
+<p><em><span class="math display">\[\mathcal F(\rho)
+=
+\int Vd\rho
++
+\beta^{-1}
+\int \rho\log \rho.\]</span></em></p>
+</div>
+<h3 id="derivation">Derivation</h3>
+<p>Using:</p>
+<p><span class="math display">\[\frac{\delta \mathcal F}{\delta \rho}
+=
+V+\beta^{-1}(\log \rho+1),\]</span> we compute:</p>
+<p><span class="math display">\[\begin{align*}
+\partial_t \rho
+&amp;=
+\operatorname{div}
+\left(
+\rho
+\nabla
+(V+\beta^{-1}\log \rho)
+\right)
+\\
+&amp;=
+\operatorname{div}(\rho\nabla V)
++
+\beta^{-1}
+\operatorname{div}(\rho\nabla\log \rho).
+\end{align*}\]</span></p>
+<p>Since <span class="math display">\[\rho\nabla\log \rho =
+\nabla\rho,\]</span> we obtain:</p>
+<p><span class="math display">\[\partial_t \rho
+=
+\operatorname{div}(\rho\nabla V)
++
+\beta^{-1}\Delta \rho.\]</span></p>
+<h2 id="energy-dissipation-1">Energy Dissipation</h2>
+<p>Gradient flows dissipate free energy.</p>
+<div class="theorem">
+<p><strong>Theorem 3.3</strong> (Energy dissipation). <em>Along
+Wasserstein gradient flows:</em></p>
+<p><em><span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+=
+-
+\int
+\left\|
+\nabla
+\frac{\delta \mathcal F}{\delta \rho}
+\right\|^2
+d\rho_t.\]</span></em></p>
+</div>
+<p>Thus:</p>
+<p><span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t) \le
+0.\]</span></p>
+<div class="remark">
+<p><strong>Remark 3.4</strong>. This is the infinite-dimensional
+analogue of:</p>
+<p><span class="math display">\[\frac{d}{dt}f(x_t)
+=
+-\|\nabla f(x_t)\|^2.\]</span></p>
+</div>
+<h2 id="the-jordankinderlehrerotto-scheme">The Jordan–Kinderlehrer–Otto
+Scheme</h2>
+<p>The JKO scheme gives a variational discretization of Wasserstein
+gradient flows.</p>
+<h3 id="implicit-euler-in-wasserstein-space">Implicit Euler in
+Wasserstein space</h3>
+<p>Recall ordinary gradient descent:</p>
+<p><span class="math display">\[x_{k+1}
+=
+\operatorname*{argmin}_x
+\left(
+\frac{1}{2\tau}\|x-x_k\|^2
++
+f(x)
+\right).\]</span></p>
+<p>The JKO scheme replaces Euclidean distance with Wasserstein
+distance.</p>
+<div class="definition">
+<p><strong>Definition 3.5</strong> (JKO scheme). Given timestep <span
+class="math inline">\(\tau&gt;0\)</span>, define recursively:</p>
+<p><span class="math display">\[\rho_{k+1}
+=
+\operatorname*{argmin}_\rho
+\left(
+\frac{1}{2\tau}
+W_2^2(\rho,\rho_k)
++
+\mathcal F(\rho)
+\right).\]</span></p>
+</div>
+<h3 id="interpretation-2">Interpretation</h3>
+<p>Each step balances:</p>
+<ul>
+<li><p>staying close to the previous distribution,</p></li>
+<li><p>decreasing free energy.</p></li>
+</ul>
+<p>Thus Wasserstein gradient flows emerge from repeated proximal
+optimization.</p>
+<h3 id="conceptual-importance">Conceptual importance</h3>
+<p>The JKO scheme is foundational because it:</p>
+<ul>
+<li><p>defines gradient flows variationally,</p></li>
+<li><p>avoids explicit PDE analysis,</p></li>
+<li><p>links optimization and transport geometry.</p></li>
+</ul>
+<p>Many modern ML methods can be interpreted as approximate JKO
+steps.</p>
+<h2 id="kl-divergence-as-free-energy">KL Divergence as Free Energy</h2>
+<p>Suppose:</p>
+<p><span class="math display">\[\pi(x)
+\propto
+e^{-V(x)}.\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[\mathrm{KL}(\rho\|\pi)
+=
+\int \rho\log \rho
++
+\int Vd\rho
++
+\text{constant}.\]</span></p>
+<p>Thus:</p>
+<blockquote>
+<p>KL divergence is a free energy.</p>
+</blockquote>
+<p>Consequently:</p>
+<blockquote>
+<p>The Fokker–Planck equation is gradient descent on KL divergence in
+Wasserstein space.</p>
+</blockquote>
+<p>This observation is central for:</p>
+<ul>
+<li><p>diffusion models,</p></li>
+<li><p>score-based modeling,</p></li>
+<li><p>entropy-regularized RL,</p></li>
+<li><p>Schrödinger bridges.</p></li>
+</ul>
+<h2 id="connections-to-generative-modeling">Connections to Generative
+Modeling</h2>
+<h3 id="diffusion-models">Diffusion models</h3>
+<p>Diffusion models gradually transform noise distributions into data
+distributions.</p>
+<p>The forward diffusion process satisfies a Fokker–Planck equation.</p>
+<p>The reverse process can be interpreted as transport in probability
+space.</p>
+<h3 id="flow-models">Flow models</h3>
+<p>Continuous normalizing flows evolve densities according to:</p>
+<p><span class="math display">\[\partial_t \rho_t
++
+\operatorname{div}(\rho_t v_t)=0.\]</span></p>
+<p>Thus they directly implement deterministic transport.</p>
+<h3 id="drifting-models">Drifting models</h3>
+<p>Drifting models train generators whose induced distributions evolve
+during optimization.</p>
+<p>A key question is:</p>
+<blockquote>
+<p>Does SGD in parameter space induce approximate Wasserstein gradient
+flow in distribution space?</p>
+</blockquote>
+<p>This perspective motivates drifting generative modeling.</p>
+<h2 id="connections-to-reinforcement-learning">Connections to
+Reinforcement Learning</h2>
+<p>Policies are conditional distributions:</p>
+<p><span class="math display">\[\pi(a|s).\]</span></p>
+<p>Policy optimization may be interpreted as transport in
+action-distribution space.</p>
+<p>Instead of:</p>
+<p><span class="math display">\[\theta_t \to \theta_{t+1},\]</span></p>
+<p>one may study:</p>
+<p><span class="math display">\[\pi_t \to \pi_{t+1}.\]</span></p>
+<p>Recent work formulates RL as Wasserstein gradient flow toward soft
+optimal policies.</p>
+<h3 id="entropy-regularized-rl">Entropy-regularized RL</h3>
+<p>Soft RL objectives often involve:</p>
+<p><span class="math display">\[\mathbb E[-Q(a,s)]
++
+\beta^{-1}\mathrm{KL}(\pi\|\pi_0).\]</span></p>
+<p>This resembles free-energy minimization.</p>
+<p>Consequently:</p>
+<blockquote>
+<p>Soft policy optimization may be viewed as gradient flow in
+probability space.</p>
+</blockquote>
+<p>This viewpoint underlies drifting-field policies.</p>
+<h2 id="otto-calculus-revisited">Otto Calculus Revisited</h2>
+<p>Recall the formal metric:</p>
+<p><span class="math display">\[\langle \dot \rho_1,\dot \rho_2
+\rangle_\rho
+=
+\int \nabla\phi_1 \cdot \nabla\phi_2 d\rho.\]</span></p>
+<p>Under this geometry:</p>
+<p><span class="math display">\[\partial_t \rho
+=
+-\mathrm{grad}_{W_2}\mathcal F(\rho).\]</span></p>
+<p>Thus Wasserstein gradient flow is literally gradient descent under
+the Wasserstein metric.</p>
+<p>This is the conceptual core of the theory.</p>
+<h2 id="summary-1">Summary</h2>
+<p>The main ideas of this phase are:</p>
+<ol>
+<li><p>Wasserstein space admits gradient-flow dynamics.</p></li>
+<li><p>Functionals on probability space define evolution
+equations.</p></li>
+<li><p>The Fokker–Planck equation is a Wasserstein gradient
+flow.</p></li>
+<li><p>Free-energy minimization combines energy and entropy.</p></li>
+<li><p>The JKO scheme defines variational time discretization.</p></li>
+<li><p>KL divergence can be interpreted as a free energy.</p></li>
+<li><p>Many modern AI models evolve distributions rather than
+points.</p></li>
+</ol>
+<p>The key conceptual shift is:</p>
+<blockquote>
+<p>Optimization algorithms may be interpreted as transport dynamics in
+probability space.</p>
+</blockquote>
+<p>This idea will be fundamental for:</p>
+<ul>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>entropy-regularized optimal transport,</p></li>
+<li><p>diffusion models,</p></li>
+<li><p>score-based generative modeling,</p></li>
+<li><p>Wasserstein reinforcement learning,</p></li>
+<li><p>drifting-field policies.</p></li>
+</ul>
+<p>In the next phase we study policy optimization and reinforcement
+learning directly in Wasserstein space.</p>
+<h2 class="unnumbered" id="recommended-reading-2">Recommended
+Reading</h2>
+<ol>
+<li><p>L. Ambrosio, N. Gigli, and G. Savaré, <em>Gradient Flows in
+Metric Spaces and in the Space of Probability Measures</em>.</p></li>
+<li><p>F. Otto, “The Geometry of Dissipative Evolution
+Equations.”</p></li>
+<li><p>R. Jordan, D. Kinderlehrer, and F. Otto, “The Variational
+Formulation of the Fokker–Planck Equation.”</p></li>
+<li><p>C. Villani, <em>Optimal Transport: Old and New</em>.</p></li>
+<li><p>F. Santambrogio, <em>Optimal Transport for Applied
+Mathematicians</em>.</p></li>
+</ol>
+<script src="assets/preview.js"></script>
+</body>
+</html>

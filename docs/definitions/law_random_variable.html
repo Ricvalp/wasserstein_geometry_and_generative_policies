@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>law random variable</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">law random variable</h1>
+</header>
+<h1 class="unnumbered" id="definition">Definition</h1>
+<p>Let <span class="math inline">\((\Omega,\mathcal F,\mathbb
+P)\)</span> be a probability space and let <span
+class="math display">\[X:\Omega\to E\]</span> be a random variable
+taking values in a measurable space <span
+class="math inline">\((E,\mathcal E)\)</span>. The law, or distribution,
+of <span class="math inline">\(X\)</span> is the probability measure on
+<span class="math inline">\(E\)</span> defined by <span
+class="math display">\[\mathcal L(X)(A)
+=
+\mathbb P(X\in A)
+=
+\mathbb P(X^{-1}(A)),
+\qquad A\in\mathcal E.\]</span> Equivalently, <span
+class="math display">\[\mathcal L(X)=X_\#\mathbb P.\]</span></p>
+<h1 class="unnumbered"
+id="time-dependent-random-variables">Time-Dependent Random
+Variables</h1>
+<p>If <span class="math inline">\((X_t)_{t\ge 0}\)</span> is a
+time-dependent random variable or stochastic process, then the law of
+<span class="math inline">\(X_t\)</span> is <span
+class="math display">\[\mathcal L(X_t)=(X_t)_\#\mathbb P.\]</span> It
+describes the probability distribution of the random state at time <span
+class="math inline">\(t\)</span>.</p>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>wasserstein geodesics</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">wasserstein geodesics</h1>
+</header>
+<p>Assume <span class="math inline">\(\mu,\nu\in\mathcal P_2(\mathbb
+R^d)\)</span> and that the optimal transport for the quadratic cost is
+induced by a Brenier map <span class="math display">\[T:\mathbb
+R^d\to\mathbb R^d,
+\qquad
+T_\#\mu=\nu.\]</span> For the quadratic cost, define <span
+class="math display">\[T_t(x)=(1-t)x+tT(x),
+\qquad t\in[0,1],\]</span> and <span
+class="math display">\[\mu_t=(T_t)_\#\mu.\]</span> This curve moves each
+particle along the straight line from <span
+class="math inline">\(x\)</span> to <span
+class="math inline">\(T(x)\)</span>.</p>
+<h1 class="unnumbered" id="claim">Claim</h1>
+<p>The curve <span class="math inline">\((\mu_t)_{t\in[0,1]}\)</span> is
+a constant-speed geodesic: <span class="math display">\[W_2(\mu_s,\mu_t)
+=
+|t-s|\,W_2(\mu,\nu),
+\qquad
+s,t\in[0,1].\]</span></p>
+<h1 class="unnumbered" id="proof">Proof</h1>
+<p>Fix <span class="math inline">\(0\le s&lt;t\le 1\)</span>. Consider
+the coupling <span class="math display">\[\gamma_{s,t}=(T_s,T_t)_\#\mu
+\in \Pi(\mu_s,\mu_t).\]</span> This coupling pairs the position at time
+<span class="math inline">\(s\)</span> and the position at time <span
+class="math inline">\(t\)</span> of the same original particle <span
+class="math inline">\(x\)</span>. For each such particle, <span
+class="math display">\[|T_t(x)-T_s(x)|
+=
+|(t-s)(T(x)-x)|
+=
+|t-s|\,|T(x)-x|.\]</span> Using <span
+class="math inline">\(\gamma_{s,t}\)</span> as an admissible transport
+plan gives <span class="math display">\[W_2^2(\mu_s,\mu_t)
+\le
+\int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
+=
+|t-s|^2
+\int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x).\]</span> Since <span
+class="math inline">\(T\)</span> is optimal from <span
+class="math inline">\(\mu\)</span> to <span
+class="math inline">\(\nu\)</span>, <span
+class="math display">\[\int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x)
+=
+W_2^2(\mu,\nu).\]</span> Thus <span
+class="math display">\[W_2(\mu_s,\mu_t)
+\le
+|t-s|\,W_2(\mu,\nu).\]</span></p>
+<p>It remains to prove the reverse inequality. Apply the same upper
+bound on the intervals <span class="math inline">\([0,s]\)</span> and
+<span class="math inline">\([t,1]\)</span>: <span
+class="math display">\[W_2(\mu,\mu_s)
+\le
+s\,W_2(\mu,\nu),
+\qquad
+W_2(\mu_t,\nu)
+\le
+(1-t)\,W_2(\mu,\nu).\]</span> By the triangle inequality, <span
+class="math display">\[W_2(\mu,\nu)
+\le
+W_2(\mu,\mu_s)
++
+W_2(\mu_s,\mu_t)
++
+W_2(\mu_t,\nu).\]</span> Therefore <span
+class="math display">\[W_2(\mu,\nu)
+\le
+sW_2(\mu,\nu)
++
+W_2(\mu_s,\mu_t)
++
+(1-t)W_2(\mu,\nu).\]</span> Rearranging, <span
+class="math display">\[W_2(\mu_s,\mu_t)
+\ge
+|t-s|\,W_2(\mu,\nu).\]</span> Combining the upper and lower bounds gives
+<span class="math display">\[W_2(\mu_s,\mu_t)
+=
+|t-s|\,W_2(\mu,\nu).\]</span> This is exactly the constant-speed
+geodesic condition.</p>
+<h1 class="unnumbered" id="interpretation">Interpretation</h1>
+<p>Euclidean geodesics move points along straight lines. Wasserstein
+geodesics move mass along optimal straight-line particle trajectories.
+This is why the curve <span
+class="math inline">\(\mu_t=(T_t)_\#\mu\)</span> is called displacement
+interpolation.</p>
+</body>
+</html>

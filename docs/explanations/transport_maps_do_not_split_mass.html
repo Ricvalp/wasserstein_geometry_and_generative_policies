@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>transport maps do not split mass</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">transport maps do not split mass</h1>
+</header>
+<p>A transport map cannot split mass because it is a deterministic
+function. If <span class="math display">\[T:X\to Y\]</span> is a map,
+then every source point <span class="math inline">\(x\)</span> is sent
+to exactly one target point <span class="math inline">\(T(x)\)</span>.
+Thus all mass located at <span class="math inline">\(x\)</span> must
+move together to the single point <span
+class="math inline">\(T(x)\)</span>.</p>
+<p>In measure notation, the transported measure is <span
+class="math display">\[T_\#\mu(A)=\mu(T^{-1}(A)).\]</span> This formula
+has no mechanism for sending part of the mass at <span
+class="math inline">\(x\)</span> to one point and another part to a
+different point.</p>
+<h1 class="unnumbered" id="example">Example</h1>
+<p>Let <span class="math display">\[\mu=\delta_0,
+\qquad
+\nu=\frac12\delta_{-1}+\frac12\delta_1.\]</span> No transport map <span
+class="math inline">\(T\)</span> can satisfy <span
+class="math inline">\(T_\#\mu=\nu\)</span>, because <span
+class="math display">\[T_\#\delta_0=\delta_{T(0)}.\]</span> This is
+always a single Dirac mass, not a mixture of two Dirac masses.</p>
+<p>A transport plan can split the mass: <span class="math display">\[\pi
+=
+\frac12\delta_{(0,-1)}
++
+\frac12\delta_{(0,1)}.\]</span> This plan sends half the mass at <span
+class="math inline">\(0\)</span> to <span
+class="math inline">\(-1\)</span> and half to <span
+class="math inline">\(1\)</span>.</p>
+</body>
+</html>

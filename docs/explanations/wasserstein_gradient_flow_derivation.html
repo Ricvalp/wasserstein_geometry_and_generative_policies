@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>wasserstein gradient flow derivation</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">wasserstein gradient flow derivation</h1>
+</header>
+<p>In Euclidean space, the gradient flow of a function <span
+class="math inline">\(f\)</span> is <span class="math display">\[\dot
+x_t=-\nabla f(x_t).\]</span> This says that the point moves in the
+direction of steepest decrease, measured using the Euclidean inner
+product.</p>
+<p>In Wasserstein space, points are probability densities <span
+class="math inline">\(\rho_t\)</span>. A curve of densities moves
+through a velocity field <span class="math inline">\(v_t\)</span>
+satisfying the continuity equation: <span
+class="math display">\[\partial_t\rho_t+\operatorname{div}(\rho_t
+v_t)=0.\]</span> The Wasserstein metric measures the size of the
+velocity by kinetic energy: <span
+class="math display">\[\|v_t\|_{\rho_t}^2
+=
+\int_{\mathbb R^d}|v_t(x)|^2\rho_t(x)\,dx.\]</span></p>
+<h1 class="unnumbered" id="derivative-of-the-functional">Derivative of
+the Functional</h1>
+<p>Let <span class="math inline">\(\mathcal F\)</span> be a functional
+on densities. Along a curve <span class="math inline">\(\rho_t\)</span>,
+<span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)
+\partial_t\rho_t(x)\,dx.\]</span> Using the continuity equation, <span
+class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+=
+-\int_{\mathbb R^d}
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\operatorname{div}(\rho_t v_t)\,dx.\]</span> Integrating by parts gives
+<span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right]
+\cdot v_t\,\rho_t\,dx.\]</span></p>
+<h1 class="unnumbered"
+id="identifying-the-wasserstein-gradient">Identifying the Wasserstein
+Gradient</h1>
+<p>The Wasserstein inner product of two velocity fields is <span
+class="math display">\[\langle u,v\rangle_{\rho_t}
+=
+\int_{\mathbb R^d}u\cdot v\,\rho_t\,dx.\]</span> The previous identity
+shows that the velocity-field representative of the Wasserstein gradient
+of <span class="math inline">\(\mathcal F\)</span> is <span
+class="math display">\[\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right].\]</span> Therefore the negative-gradient velocity is <span
+class="math display">\[v_t
+=
+-
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right].\]</span></p>
+<h1 class="unnumbered"
+id="plugging-into-the-continuity-equation">Plugging Into the Continuity
+Equation</h1>
+<p>Substituting this velocity into <span
+class="math display">\[\partial_t\rho_t+\operatorname{div}(\rho_t
+v_t)=0\]</span> gives <span class="math display">\[\partial_t\rho_t
+=
+\operatorname{div}
+\left(
+\rho_t
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right]
+\right).\]</span> This is the Wasserstein gradient flow equation.</p>
+</body>
+</html>

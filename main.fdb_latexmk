@@ -1,5 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1779956777.18397 "main.tex" "main.pdf" "main" 1779956778.17471 0
+["pdflatex"] 1779964267.85507 "/Users/riccardovalperga/Projects/ syllabus-postdoc/main.tex" "main.pdf" "main" 1779964268.83193 0
+  "/Users/riccardovalperga/Projects/ syllabus-postdoc/main.tex" 1779815924.54001 384 0492048cf35e7167deea5316a6d7db57 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -184,11 +185,11 @@
   "chapter_1.tex" 1779785521.16244 10939 6ce422f6fcb65cbb991258551db89a20 ""
   "chapter_2.tex" 1779956771.10683 12765 0d4e6348dd51554d0c8c2092c49bece9 ""
   "chapter_3.tex" 1779872049.45034 11773 2e548b9505753667f2942c40c448daef ""
-  "main.aux" 1779956778.07087 12500 875f4b2e7a4619bc7f054135fca33867 "pdflatex"
-  "main.out" 1779956778.07238 15826 1558aeb323b348a9a554e6d9553dbe05 "pdflatex"
+  "main.aux" 1779964268.7496 12500 875f4b2e7a4619bc7f054135fca33867 "pdflatex"
+  "main.out" 1779964268.75116 15826 1558aeb323b348a9a554e6d9553dbe05 "pdflatex"
   "main.tex" 1779815924.54001 384 0492048cf35e7167deea5316a6d7db57 ""
-  "main.toc" 1779956778.07265 8255 1cbda6e6174cc657b948f8e0fedc61a6 "pdflatex"
-  "preamble.tex" 1779815924.53922 805 1f297420197dfeed75e7f9d87b06b0af ""
+  "main.toc" 1779964268.75142 8255 1cbda6e6174cc657b948f8e0fedc61a6 "pdflatex"
+  "preamble.tex" 1779964267.54562 795 51599d61477eed7f278819bfe2b6de34 ""
   "theorems.tex" 1779726951.14239 313 cc3b38493188724cf80eb5b99bfea6e3 ""
   (generated)
   "main.aux"

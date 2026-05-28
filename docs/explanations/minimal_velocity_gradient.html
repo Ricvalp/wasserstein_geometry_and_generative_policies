@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>minimal velocity gradient</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">minimal velocity gradient</h1>
+</header>
+<p>In Otto calculus, a velocity field <span
+class="math inline">\(v\)</span> generates a tangent vector at a density
+<span class="math inline">\(\rho\)</span> through the continuity
+equation: <span class="math display">\[\dot\rho=-\operatorname{div}(\rho
+v).\]</span> Different velocity fields can generate the same <span
+class="math inline">\(\dot\rho\)</span>. Indeed, if <span
+class="math inline">\(w\)</span> satisfies <span
+class="math display">\[\operatorname{div}(\rho w)=0,\]</span> then <span
+class="math display">\[-\operatorname{div}(\rho(v+w))
+=
+-\operatorname{div}(\rho v).\]</span> So <span
+class="math inline">\(v\)</span> and <span
+class="math inline">\(v+w\)</span> represent the same tangent
+vector.</p>
+<h1 class="unnumbered"
+id="choosing-the-minimal-energy-representative">Choosing the
+Minimal-Energy Representative</h1>
+<p>The kinetic energy of a velocity field is <span
+class="math display">\[\int_{\mathbb R^d}|v|^2\,d\rho.\]</span> Among
+all velocity fields producing the same tangent vector <span
+class="math inline">\(\dot\rho\)</span>, Otto calculus chooses the one
+with minimal kinetic energy.</p>
+<p>This is analogous to choosing the shortest vector among all
+representatives of an equivalence class.</p>
+<h1 class="unnumbered" id="why-it-is-a-gradient">Why It Is a
+Gradient</h1>
+<p>The gradient fields are orthogonal, in the weighted inner product
+<span class="math display">\[\langle u,v\rangle_\rho
+=
+\int_{\mathbb R^d} u\cdot v\,d\rho,\]</span> to the fields that do not
+move the density, namely fields <span class="math inline">\(w\)</span>
+satisfying <span class="math display">\[\operatorname{div}(\rho
+w)=0.\]</span> Indeed, for a smooth test potential <span
+class="math inline">\(\phi\)</span>, <span
+class="math display">\[\int_{\mathbb R^d} \nabla\phi\cdot w\,d\rho
+=
+\int_{\mathbb R^d} \nabla\phi\cdot \rho w\,dx
+=
+-\int_{\mathbb R^d}\phi\,\operatorname{div}(\rho w)\,dx
+=0.\]</span> Thus any velocity field can be decomposed formally as <span
+class="math display">\[v=\nabla\phi+w,
+\qquad
+\operatorname{div}(\rho w)=0.\]</span> The component <span
+class="math inline">\(w\)</span> does not affect the tangent vector, but
+it increases kinetic energy: <span class="math display">\[\int
+|v|^2\,d\rho
+=
+\int |\nabla\phi|^2\,d\rho
++
+\int |w|^2\,d\rho.\]</span> Therefore the minimal-energy representative
+is obtained by setting <span class="math inline">\(w=0\)</span>: <span
+class="math display">\[v=\nabla\phi.\]</span></p>
+<h1 class="unnumbered" id="interpretation">Interpretation</h1>
+<p>Only the compressive part of the velocity field changes the density.
+The weighted divergence-free part moves mass around without changing the
+density to first order, so it is extra motion. Wasserstein geometry
+discards that extra motion and keeps the gradient velocity.</p>
+</body>
+</html>
