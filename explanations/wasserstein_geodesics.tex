@@ -11,7 +11,7 @@
     urlcolor=blue
 }
 
-\title{Why Displacement Interpolation Gives Wasserstein Geodesics}
+\title{Proof That Displacement Interpolation Gives Wasserstein Geodesics}
 \author{}
 \date{}
 
@@ -19,8 +19,8 @@
 
 \maketitle
 
-Assume $\mu,\nu\in\mathcal P_2(\mathbb R^d)$ and that the optimal transport from
-$\mu$ to $\nu$ is induced by a map
+Assume $\mu,\nu\in\mathcal P_2(\mathbb R^d)$ and that the optimal transport for
+the quadratic cost is induced by a Brenier map
 \[
 T:\mathbb R^d\to\mathbb R^d,
 \qquad
@@ -37,11 +37,26 @@ and
 \]
 This curve moves each particle along the straight line from $x$ to $T(x)$.
 
-\section*{Why This Is a Geodesic}
+\section*{Claim}
 
-For $0\le s<t\le 1$, the map sending $T_s(x)$ to $T_t(x)$ moves the same
-particle from its position at time $s$ to its position at time $t$. The distance
-traveled by that particle is
+The curve $(\mu_t)_{t\in[0,1]}$ is a constant-speed geodesic:
+\[
+W_2(\mu_s,\mu_t)
+=
+|t-s|\,W_2(\mu,\nu),
+\qquad
+s,t\in[0,1].
+\]
+
+\section*{Proof}
+
+Fix $0\le s<t\le 1$. Consider the coupling
+\[
+\gamma_{s,t}=(T_s,T_t)_\#\mu
+\in \Pi(\mu_s,\mu_t).
+\]
+This coupling pairs the position at time $s$ and the position at time $t$ of the
+same original particle $x$. For each such particle,
 \[
 |T_t(x)-T_s(x)|
 =
@@ -49,10 +64,12 @@ traveled by that particle is
 =
 |t-s|\,|T(x)-x|.
 \]
-Therefore the quadratic transport cost between $\mu_s$ and $\mu_t$ is bounded by
+Using $\gamma_{s,t}$ as an admissible transport plan gives
 \[
 W_2^2(\mu_s,\mu_t)
 \le
+\int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
+=
 |t-s|^2
 \int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x).
 \]
@@ -69,7 +86,18 @@ W_2(\mu_s,\mu_t)
 |t-s|\,W_2(\mu,\nu).
 \]
 
-The reverse inequality follows from the triangle inequality:
+It remains to prove the reverse inequality. Apply the same upper bound on the
+intervals $[0,s]$ and $[t,1]$:
+\[
+W_2(\mu,\mu_s)
+\le
+s\,W_2(\mu,\nu),
+\qquad
+W_2(\mu_t,\nu)
+\le
+(1-t)\,W_2(\mu,\nu).
+\]
+By the triangle inequality,
 \[
 W_2(\mu,\nu)
 \le
@@ -79,19 +107,23 @@ W_2(\mu_s,\mu_t)
 +
 W_2(\mu_t,\nu).
 \]
-Using the same upper-bound argument on the intervals $[0,s]$ and $[t,1]$ gives
+Therefore
 \[
-W_2(\mu,\mu_s)\le sW_2(\mu,\nu),
-\qquad
-W_2(\mu_t,\nu)\le (1-t)W_2(\mu,\nu).
+W_2(\mu,\nu)
+\le
+sW_2(\mu,\nu)
++
+W_2(\mu_s,\mu_t)
++
+(1-t)W_2(\mu,\nu).
 \]
-Combining these inequalities forces
+Rearranging,
 \[
 W_2(\mu_s,\mu_t)
 \ge
 |t-s|\,W_2(\mu,\nu).
 \]
-Together,
+Combining the upper and lower bounds gives
 \[
 W_2(\mu_s,\mu_t)
 =
