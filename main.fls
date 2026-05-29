@@ -1,8 +1,8 @@
-PWD /Users/riccardovalperga/Projects/ syllabus-postdoc
+PWD /Users/riccardovalperga/Projects/wasserstein_geometry_and_generative_policies
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/riccardovalperga/Projects/ syllabus-postdoc/main.tex
+INPUT main.tex
 OUTPUT main.log
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/report.cls
