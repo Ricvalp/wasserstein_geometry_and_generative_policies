@@ -1,0 +1,212 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Gradient Descent on a Riemannian Manifold}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{The Euclidean Picture}
+
+Let
+\[
+f:\mathbb R^n\to\mathbb R
+\]
+be smooth. In Euclidean space, the gradient $\nabla f(x)$ is characterized by
+\[
+Df(x)[v]
+=
+\nabla f(x)\cdot v
+\]
+for every direction $v\in\mathbb R^n$.
+
+Here $Df(x)[v]$ is the
+\href{directional_derivative.html}{directional derivative} of $f$ at $x$ in
+the direction $v$. The dot product is the Euclidean metric. Thus the gradient
+is not merely ``the list of partial derivatives.'' It is the vector that
+\href{gradient_represents_derivative.html}{represents the linear map $Df(x)$
+through the chosen inner product}.
+
+\section*{Differential Versus Gradient}
+
+On a smooth manifold $M$, the derivative of a smooth function
+\[
+f:M\to\mathbb R
+\]
+at a point $p\in M$ is naturally a covector
+\[
+df_p:T_pM\to\mathbb R.
+\]
+It eats a tangent vector $X_p\in T_pM$ and returns the directional derivative
+\[
+df_p(X_p)=X_p[f].
+\]
+
+So the differential $df_p$ lives in the cotangent space $T_p^*M$, not in the
+tangent space $T_pM$. To turn this covector into a vector, we need
+\href{metric_needed_for_gradient.html}{extra geometric structure}.
+
+\section*{The Metric Converts Covectors Into Vectors}
+
+A Riemannian metric assigns to each point $p\in M$ an inner product
+\[
+g_p:T_pM\times T_pM\to\mathbb R.
+\]
+The Riemannian gradient of $f$ is the unique tangent vector
+\[
+\operatorname{grad}_g f(p)\in T_pM
+\]
+such that
+\[
+df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p)
+\]
+for every tangent vector $X_p\in T_pM$.
+
+This is the precise meaning of the phrase:
+\begin{quote}
+\href{gradient_represents_derivative.html}{The gradient is the vector that
+represents the directional derivative through the metric}.
+\end{quote}
+
+The directional derivative is the covector $df_p$. The metric $g_p$ converts
+that covector into the vector $\operatorname{grad}_g f(p)$.
+
+\section*{Coordinate Formula}
+
+Let $(x^1,\ldots,x^n)$ be local coordinates. Write the metric as
+\[
+g
+=
+g_{ij}\,dx^i\otimes dx^j.
+\]
+The differential is
+\[
+df
+=
+\frac{\partial f}{\partial x^i}\,dx^i.
+\]
+If
+\[
+\operatorname{grad}_g f
+=
+(\operatorname{grad}_g f)^i\frac{\partial}{\partial x^i},
+\]
+then the defining identity
+\[
+df(X)=g(\operatorname{grad}_g f,X)
+\]
+implies
+\[
+\frac{\partial f}{\partial x^j}
+=
+g_{ij}(\operatorname{grad}_g f)^i.
+\]
+Multiplying by the inverse metric $g^{kj}$ gives
+\[
+(\operatorname{grad}_g f)^k
+=
+g^{kj}\frac{\partial f}{\partial x^j}.
+\]
+Thus
+\[
+\operatorname{grad}_g f
+=
+g^{ij}\frac{\partial f}{\partial x^j}
+\frac{\partial}{\partial x^i}.
+\]
+
+When $g_{ij}=\delta_{ij}$, this reduces to the usual Euclidean gradient.
+
+\section*{Gradient Flow}
+
+The Riemannian gradient flow of $f$ is the curve $p_t\in M$ solving
+\[
+\dot p_t
+=
+-\operatorname{grad}_g f(p_t).
+\]
+This is the intrinsic version of gradient descent. The negative sign means
+that the curve moves in the
+\href{steepest_descent_metric.html}{direction of steepest decrease as measured
+by the metric $g$}.
+
+Indeed, along a solution,
+\[
+\frac{d}{dt}f(p_t)
+=
+df_{p_t}(\dot p_t).
+\]
+Using the defining property of the gradient,
+\[
+df_{p_t}(\dot p_t)
+=
+g_{p_t}(\operatorname{grad}_g f(p_t),\dot p_t).
+\]
+Substituting
+\[
+\dot p_t=-\operatorname{grad}_g f(p_t)
+\]
+gives
+\[
+\frac{d}{dt}f(p_t)
+=
+-g_{p_t}(\operatorname{grad}_g f(p_t),\operatorname{grad}_g f(p_t))
+\le 0.
+\]
+So the objective decreases monotonically.
+
+\section*{Why This Matters for Wasserstein Geometry}
+
+The Wasserstein calculation follows the same pattern.
+
+On a finite-dimensional Riemannian manifold:
+\[
+df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p).
+\]
+In Wasserstein geometry, a tangent direction is represented by a velocity field
+$v$, and the metric is the kinetic-energy inner product
+\[
+\langle u,v\rangle_\rho
+=
+\int_{\mathbb R^d}u(x)\cdot v(x)\,\rho(x)\,dx.
+\]
+Thus the Wasserstein gradient is identified by writing the directional
+derivative in the form
+\[
+D\mathcal F(\rho)[v]
+=
+\langle \operatorname{grad}_{W_2}\mathcal F(\rho),v\rangle_\rho.
+\]
+This is why, once we obtain
+\[
+D\mathcal F(\rho)[v]
+=
+\int_{\mathbb R^d}
+\nabla\left(\frac{\delta\mathcal F}{\delta\rho}\right)
+\cdot v\,\rho\,dx,
+\]
+we identify the velocity-field representative of the Wasserstein gradient as
+\[
+\operatorname{grad}_{W_2}\mathcal F(\rho)
+=
+\nabla\left(\frac{\delta\mathcal F}{\delta\rho}\right).
+\]
+
+\end{document}

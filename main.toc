@@ -62,19 +62,19 @@
 \contentsline {subsection}{\numberline {3.2.3}Metric interpretation}{17}{subsection.3.2.3}%
 \contentsline {section}{\numberline {3.3}Functionals on Probability Space}{17}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Energy functionals}{17}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Potential energy}{17}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.2}Potential energy}{18}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}Entropy}{18}{subsection.3.3.3}%
 \contentsline {subsection}{\numberline {3.3.4}Free energy}{18}{subsection.3.3.4}%
 \contentsline {section}{\numberline {3.4}First Variations}{18}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Functional derivatives}{18}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Examples}{18}{subsection.3.4.2}%
-\contentsline {paragraph}{Potential energy}{18}{section*.6}%
+\contentsline {subsection}{\numberline {3.4.2}Examples}{19}{subsection.3.4.2}%
+\contentsline {paragraph}{Potential energy}{19}{section*.6}%
 \contentsline {paragraph}{Entropy}{19}{section*.7}%
 \contentsline {paragraph}{Free energy}{19}{section*.8}%
 \contentsline {section}{\numberline {3.5}Wasserstein Gradient Flows}{19}{section.3.5}%
 \contentsline {subsection}{\numberline {3.5.1}Formal definition}{19}{subsection.3.5.1}%
 \contentsline {subsection}{\numberline {3.5.2}Interpretation}{19}{subsection.3.5.2}%
-\contentsline {section}{\numberline {3.6}The Fokker--Planck Equation}{19}{section.3.6}%
+\contentsline {section}{\numberline {3.6}The Fokker--Planck Equation}{20}{section.3.6}%
 \contentsline {subsection}{\numberline {3.6.1}Langevin dynamics}{20}{subsection.3.6.1}%
 \contentsline {subsection}{\numberline {3.6.2}Gradient flow structure}{20}{subsection.3.6.2}%
 \contentsline {subsection}{\numberline {3.6.3}Derivation}{20}{subsection.3.6.3}%

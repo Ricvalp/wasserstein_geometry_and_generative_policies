@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Proof That the First Variation of Entropy Is $\log\rho+1$}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Statement}
+
+Let
+\[
+\mathcal H(\rho)
+=
+\int_{\mathbb R^d}\rho(x)\log\rho(x)\,dx
+\]
+be the Boltzmann entropy functional, using the convention common in
+Wasserstein gradient flows.
+Assume $\rho$ is positive and smooth enough for the following computation, and
+let $\eta$ be a smooth perturbation satisfying
+\[
+\int_{\mathbb R^d}\eta(x)\,dx=0.
+\]
+Then
+\[
+\frac{\delta \mathcal H}{\delta \rho}
+=
+\log\rho+1.
+\]
+
+\section*{Proof}
+
+Consider the perturbed density
+\[
+\rho_\varepsilon=\rho+\varepsilon\eta.
+\]
+For sufficiently small $\varepsilon$, this remains positive if $\rho$ is
+strictly positive and $\eta$ is bounded. We compute
+\[
+\left.
+\frac{d}{d\varepsilon}
+\mathcal H(\rho_\varepsilon)
+\right|_{\varepsilon=0}.
+\]
+By definition,
+\[
+\mathcal H(\rho_\varepsilon)
+=
+\int_{\mathbb R^d}
+(\rho(x)+\varepsilon\eta(x))
+\log(\rho(x)+\varepsilon\eta(x))\,dx.
+\]
+Differentiate the scalar function
+\[
+h(r)=r\log r.
+\]
+Its derivative is
+\[
+h'(r)=\log r+1.
+\]
+Therefore, pointwise in $x$,
+\[
+\left.
+\frac{d}{d\varepsilon}
+\Big[
+(\rho(x)+\varepsilon\eta(x))
+\log(\rho(x)+\varepsilon\eta(x))
+\Big]
+\right|_{\varepsilon=0}
+=
+(\log\rho(x)+1)\eta(x).
+\]
+Integrating gives
+\[
+\left.
+\frac{d}{d\varepsilon}
+\mathcal H(\rho+\varepsilon\eta)
+\right|_{\varepsilon=0}
+=
+\int_{\mathbb R^d}
+(\log\rho(x)+1)\eta(x)\,dx.
+\]
+By the definition of first variation, this means
+\[
+\frac{\delta \mathcal H}{\delta \rho}(\rho)(x)
+=
+\log\rho(x)+1.
+\]
+
+\section*{Remark on the Constant}
+
+When working on probability densities, admissible perturbations satisfy
+\[
+\int_{\mathbb R^d}\eta(x)\,dx=0.
+\]
+Hence adding any constant $C$ to the first variation does not change the
+directional derivative, because
+\[
+\int_{\mathbb R^d}C\,\eta(x)\,dx=0.
+\]
+Thus, on the probability simplex, the first variation is defined only up to an
+additive constant. One often writes simply
+\[
+\frac{\delta \mathcal H}{\delta\rho}=\log\rho
+\]
+when the constant is irrelevant. In Wasserstein gradient flows, the constant
+also disappears after taking a spatial gradient:
+\[
+\nabla(\log\rho+1)=\nabla\log\rho.
+\]
+
+\end{document}

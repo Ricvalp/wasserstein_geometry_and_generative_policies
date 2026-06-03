@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Directional Derivative}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{In Euclidean Space}
+
+Let
+\[
+f:\mathbb R^n\to\mathbb R
+\]
+be smooth. The directional derivative of $f$ at $x$ in the direction $v$ is
+\[
+Df(x)[v]
+=
+\left.\frac{d}{dt}f(x+tv)\right|_{t=0}.
+\]
+It measures the first-order rate of change of $f$ if one starts at $x$ and
+moves infinitesimally with velocity $v$.
+
+If $f$ is differentiable, then
+\[
+Df(x)[v]
+=
+\sum_{i=1}^n
+\frac{\partial f}{\partial x^i}(x)v^i.
+\]
+Thus, for fixed $x$, the map
+\[
+v\mapsto Df(x)[v]
+\]
+is linear in $v$.
+
+\section*{On a Smooth Manifold}
+
+Let $M$ be a smooth manifold, let $p\in M$, and let
+\[
+X_p\in T_pM
+\]
+be a tangent vector. A tangent vector can be represented by a smooth curve
+\[
+\gamma:(-\epsilon,\epsilon)\to M
+\]
+such that
+\[
+\gamma(0)=p,
+\qquad
+\dot\gamma(0)=X_p.
+\]
+The directional derivative of $f:M\to\mathbb R$ at $p$ in the direction $X_p$
+is
+\[
+X_p[f]
+=
+\left.\frac{d}{dt}f(\gamma(t))\right|_{t=0}.
+\]
+This number depends only on the tangent vector $X_p$, not on the particular
+curve chosen to represent it.
+
+\section*{Relation to the Differential}
+
+The differential of $f$ at $p$ is the covector
+\[
+df_p:T_pM\to\mathbb R
+\]
+defined by
+\[
+df_p(X_p)=X_p[f].
+\]
+So the differential packages all directional derivatives at $p$ into one
+linear map.
+
+\section*{Is It the Covariant Derivative?}
+
+For a scalar function, the directional derivative $X[f]$ is already intrinsic.
+It does not require a connection.
+
+A connection is needed when differentiating vector fields or tensor fields
+along directions, because values of vector fields at different points live in
+different tangent spaces. But a function has values in $\mathbb R$, so along a
+curve $\gamma(t)$ we can simply differentiate the real-valued function
+\[
+t\mapsto f(\gamma(t)).
+\]
+Therefore:
+\[
+\text{directional derivative of a function: no connection needed,}
+\]
+while
+\[
+\text{covariant derivative of vector/tensor fields: connection needed.}
+\]
+
+\end{document}

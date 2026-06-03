@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>metric needed for gradient</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">metric needed for gradient</h1>
+</header>
+<h1 class="unnumbered" id="what-smooth-structure-gives-you">What Smooth
+Structure Gives You</h1>
+<p>On a smooth manifold <span class="math inline">\(M\)</span>, a smooth
+function <span class="math display">\[f:M\to\mathbb R\]</span> has a
+differential at each point: <span class="math display">\[df_p\in
+T_p^*M.\]</span> This is a covector, meaning a linear map <span
+class="math display">\[df_p:T_pM\to\mathbb R.\]</span> It eats a tangent
+vector <span class="math inline">\(X_p\)</span> and returns the
+directional derivative <span
+class="math display">\[df_p(X_p)=X_p[f].\]</span></p>
+<p>This construction uses only the smooth structure. No metric and no
+connection are required.</p>
+<h1 class="unnumbered"
+id="why-this-is-not-yet-a-direction-to-follow">Why This Is Not Yet a
+Direction to Follow</h1>
+<p>A gradient flow needs a tangent vector field: <span
+class="math display">\[\dot p_t = -(\text{some tangent vector at
+}p_t).\]</span> But <span class="math inline">\(df_p\)</span> is not a
+tangent vector. It lives in the dual space <span
+class="math inline">\(T_p^*M\)</span>, not in <span
+class="math inline">\(T_pM\)</span>.</p>
+<p>The distinction matters. A covector measures directions; a vector is
+a direction. The differential <span class="math inline">\(df_p\)</span>
+tells us how <span class="math inline">\(f\)</span> changes along every
+possible direction, but it is not itself one of those directions.</p>
+<h1 class="unnumbered" id="can-a-connection-help">Can a Connection
+Help?</h1>
+<p>A connection lets us differentiate vector fields along vector fields:
+<span class="math display">\[\nabla_XY.\]</span> It tells us how to
+compare tangent vectors at nearby points.</p>
+<p>But it does not, by itself, give a canonical map <span
+class="math display">\[T_p^*M\to T_pM.\]</span> So a connection alone
+does not turn <span class="math inline">\(df_p\)</span> into a vector
+field and does not define gradient descent.</p>
+<h1 class="unnumbered" id="what-a-riemannian-metric-adds">What a
+Riemannian Metric Adds</h1>
+<p>A Riemannian metric gives an inner product <span
+class="math display">\[g_p:T_pM\times T_pM\to\mathbb R.\]</span> For
+each vector <span class="math inline">\(Y_p\in T_pM\)</span>, the metric
+produces a covector <span class="math display">\[g_p(Y_p,\cdot)\in
+T_p^*M.\]</span> Because <span class="math inline">\(g_p\)</span> is
+nondegenerate, every covector arises uniquely in this way. Thus the
+metric gives an isomorphism <span class="math display">\[T_pM \cong
+T_p^*M.\]</span> The gradient is the vector corresponding to <span
+class="math inline">\(df_p\)</span> under this isomorphism: <span
+class="math display">\[df_p(\cdot)=g_p(\operatorname{grad}_g
+f(p),\cdot).\]</span></p>
+<h1 class="unnumbered"
+id="could-one-choose-another-identification">Could One Choose Another
+Identification?</h1>
+<p>Yes, but it would be extra structure. A bare smooth manifold has no
+canonical way to identify tangent and cotangent spaces. Choosing a
+Riemannian metric is the standard geometric way to make that
+identification.</p>
+<p>Different metrics produce different gradients and therefore different
+gradient flows. This is not a bug; it is the point. Gradient descent is
+metric-dependent.</p>
+</body>
+</html>

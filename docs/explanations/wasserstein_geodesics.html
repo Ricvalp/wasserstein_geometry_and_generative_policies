@@ -66,8 +66,53 @@ class="math display">\[|T_t(x)-T_s(x)|
 class="math inline">\(\gamma_{s,t}\)</span> as an admissible transport
 plan gives <span class="math display">\[W_2^2(\mu_s,\mu_t)
 \le
-\int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
+\int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b).\]</span>
+We now rewrite this integral in terms of the original variable <span
+class="math inline">\(x\)</span>. Define <span
+class="math display">\[F_{s,t}(x)=(T_s(x),T_t(x)).\]</span> By
+definition, <span
+class="math display">\[\gamma_{s,t}=(F_{s,t})_\#\mu.\]</span> The <a
+href="pushforward_change_of_variables.html">defining property</a> of a
+pushforward measure says that, for every integrable function <span
+class="math inline">\(\Phi:\mathbb R^d\times\mathbb R^d\to\mathbb
+R\)</span>, <span class="math display">\[\int_{\mathbb R^d\times\mathbb
+R^d}
+\Phi(a,b)\,d\gamma_{s,t}(a,b)
 =
+\int_{\mathbb R^d}
+\Phi(F_{s,t}(x))\,d\mu(x).\]</span> Here we choose <span
+class="math display">\[\Phi(a,b)=|a-b|^2.\]</span> Therefore <span
+class="math display">\[\int_{\mathbb R^d\times\mathbb
+R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
+=
+\int_{\mathbb R^d}|T_s(x)-T_t(x)|^2\,d\mu(x).\]</span> This is why the
+integral over <span class="math inline">\(\mathbb R^d\times\mathbb
+R^d\)</span> becomes an integral over <span
+class="math inline">\(\mathbb R^d\)</span>: the coupling <span
+class="math inline">\(\gamma_{s,t}\)</span> was itself obtained by
+pushing the original measure <span class="math inline">\(\mu\)</span>
+forward through the map <span class="math inline">\(x\mapsto
+(T_s(x),T_t(x))\)</span>.</p>
+<p>Now compute the integrand: <span class="math display">\[T_t(x)-T_s(x)
+=
+((1-t)x+tT(x))-((1-s)x+sT(x)).\]</span> The terms involving <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(T(x)\)</span> collect as <span
+class="math display">\[T_t(x)-T_s(x)
+=
+(s-t)x+(t-s)T(x)
+=
+(t-s)(T(x)-x).\]</span> Hence <span
+class="math display">\[|T_t(x)-T_s(x)|^2
+=
+|t-s|^2\,|T(x)-x|^2.\]</span> Substituting this into the previous
+integral gives <span class="math display">\[\int_{\mathbb
+R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
+=
+|t-s|^2
+\int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x).\]</span> Thus <span
+class="math display">\[W_2^2(\mu_s,\mu_t)
+\le
 |t-s|^2
 \int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x).\]</span> Since <span
 class="math inline">\(T\)</span> is optimal from <span

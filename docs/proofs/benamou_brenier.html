@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>benamou brenier</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">benamou brenier</h1>
+</header>
+<h1 class="unnumbered" id="statement">Statement</h1>
+<p>Let <span class="math display">\[\mu_0,\mu_1\in \mathcal P_2(\mathbb
+R^d).\]</span> Then <span class="math display">\[W_2^2(\mu_0,\mu_1)
+=
+\inf_{\rho_t,v_t}
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt,\]</span> where the
+infimum is taken over all narrowly continuous curves <span
+class="math display">\[t\mapsto \rho_t\in \mathcal P_2(\mathbb
+R^d)\]</span> and Borel velocity fields <span
+class="math inline">\(v_t\in L^2(\rho_t)\)</span> satisfying the
+continuity equation <span
+class="math display">\[\partial_t\rho_t+\operatorname{div}(\rho_t
+v_t)=0\]</span> in the sense of distributions, with endpoint conditions
+<span class="math display">\[\rho_0=\mu_0,
+\qquad
+\rho_1=\mu_1.\]</span></p>
+<h1 class="unnumbered" id="proof">Proof</h1>
+<p>Denote the dynamic action by <span class="math display">\[\mathcal
+A(\rho,v)
+=
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt.\]</span> We prove
+the equality by proving the two inequalities.</p>
+<h1 class="unnumbered"
+id="step-1-every-admissible-flow-costs-at-least-w_22">Step 1: Every
+admissible flow costs at least <span
+class="math inline">\(W_2^2\)</span></h1>
+<p>Let <span class="math inline">\((\rho_t,v_t)\)</span> be admissible
+and assume that <span class="math inline">\(\mathcal
+A(\rho,v)&lt;\infty\)</span>. The continuity equation says that the
+evolution of <span class="math inline">\(\rho_t\)</span> can be realized
+by moving particles with Eulerian velocity <span
+class="math inline">\(v_t\)</span>.</p>
+<p>The analytic result behind this statement is the superposition
+principle: there exists a probability measure <span
+class="math inline">\(\eta\)</span> on absolutely continuous paths <span
+class="math display">\[\omega:[0,1]\to\mathbb R^d\]</span> such that
+<span class="math display">\[(e_t)_\#\eta=\rho_t,
+\qquad
+e_t(\omega)=\omega(t),\]</span> and, for <span
+class="math inline">\(\eta\)</span>-almost every path, <span
+class="math display">\[\dot\omega(t)=v_t(\omega(t))\]</span> for almost
+every <span class="math inline">\(t\in[0,1]\)</span>.</p>
+<p>Define the endpoint coupling <span
+class="math display">\[\gamma=(e_0,e_1)_\#\eta.\]</span> Since <span
+class="math inline">\((e_0)_\#\eta=\rho_0=\mu_0\)</span> and <span
+class="math inline">\((e_1)_\#\eta=\rho_1=\mu_1\)</span>, we have <span
+class="math display">\[\gamma\in \Pi(\mu_0,\mu_1).\]</span> Therefore
+<span class="math display">\[W_2^2(\mu_0,\mu_1)
+\le
+\int_{\mathbb R^d\times\mathbb R^d}|x-y|^2\,d\gamma(x,y).\]</span> Using
+the definition of <span class="math inline">\(\gamma\)</span>, this
+becomes <span class="math display">\[\int_{\mathbb R^d\times\mathbb
+R^d}|x-y|^2\,d\gamma(x,y)
+=
+\int |\omega(1)-\omega(0)|^2\,d\eta(\omega).\]</span> For each
+absolutely continuous path, Cauchy’s inequality gives <span
+class="math display">\[|\omega(1)-\omega(0)|^2
+=
+\left|\int_0^1 \dot\omega(t)\,dt\right|^2
+\le
+\int_0^1|\dot\omega(t)|^2\,dt.\]</span> Integrating with respect to
+<span class="math inline">\(\eta\)</span> yields <span
+class="math display">\[W_2^2(\mu_0,\mu_1)
+\le
+\int\int_0^1|\dot\omega(t)|^2\,dt\,d\eta(\omega).\]</span> Since <span
+class="math inline">\(\dot\omega(t)=v_t(\omega(t))\)</span> and <span
+class="math inline">\((e_t)_\#\eta=\rho_t\)</span>, <span
+class="math display">\[\int\int_0^1|\dot\omega(t)|^2\,dt\,d\eta(\omega)
+=
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt.\]</span> Thus
+every admissible pair satisfies <span
+class="math display">\[W_2^2(\mu_0,\mu_1)
+\le
+\mathcal A(\rho,v).\]</span> Taking the infimum over all admissible
+pairs gives <span class="math display">\[W_2^2(\mu_0,\mu_1)
+\le
+\inf_{\rho,v}\mathcal A(\rho,v).\]</span></p>
+<h1 class="unnumbered"
+id="step-2-an-optimal-transport-plan-realizes-this-cost">Step 2: An
+optimal transport plan realizes this cost</h1>
+<p>Let <span class="math inline">\(\gamma\in\Pi(\mu_0,\mu_1)\)</span> be
+an optimal coupling for the quadratic transport problem, so that <span
+class="math display">\[\int_{\mathbb R^d\times\mathbb
+R^d}|x-y|^2\,d\gamma(x,y)
+=
+W_2^2(\mu_0,\mu_1).\]</span> For each pair <span
+class="math inline">\((x,y)\)</span>, move the particle from <span
+class="math inline">\(x\)</span> to <span
+class="math inline">\(y\)</span> along the straight line <span
+class="math display">\[X_t(x,y)=(1-t)x+ty.\]</span> Define <span
+class="math display">\[\rho_t=(X_t)_\#\gamma.\]</span> This gives <span
+class="math inline">\(\rho_0=\mu_0\)</span> and <span
+class="math inline">\(\rho_1=\mu_1\)</span>.</p>
+<p>The Lagrangian velocity of the particle labelled by <span
+class="math inline">\((x,y)\)</span> is constant: <span
+class="math display">\[\frac{d}{dt}X_t(x,y)=y-x.\]</span> To express
+this motion in Eulerian form, disintegrate the labels <span
+class="math inline">\((x,y)\)</span> conditioned on the current position
+<span class="math inline">\(z=X_t(x,y)\)</span> and define <span
+class="math display">\[v_t(z)
+=
+\mathbb E_\gamma[y-x\mid X_t(x,y)=z].\]</span> Equivalently, <span
+class="math inline">\(v_t\)</span> is the conditional average velocity
+of all particles that occupy the point <span
+class="math inline">\(z\)</span> at time <span
+class="math inline">\(t\)</span>.</p>
+<p>For every smooth compactly supported test function <span
+class="math inline">\(\varphi\)</span>, we compute <span
+class="math display">\[\frac{d}{dt}\int_{\mathbb
+R^d}\varphi(z)\,d\rho_t(z)
+=
+\frac{d}{dt}\int_{\mathbb R^d\times\mathbb R^d}
+\varphi(X_t(x,y))\,d\gamma(x,y).\]</span> By the chain rule, <span
+class="math display">\[\frac{d}{dt}\int \varphi(X_t(x,y))\,d\gamma(x,y)
+=
+\int \nabla\varphi(X_t(x,y))\cdot (y-x)\,d\gamma(x,y).\]</span> By the
+definition of the conditional expectation <span
+class="math inline">\(v_t\)</span>, <span class="math display">\[\int
+\nabla\varphi(X_t(x,y))\cdot (y-x)\,d\gamma(x,y)
+=
+\int_{\mathbb R^d}\nabla\varphi(z)\cdot v_t(z)\,d\rho_t(z).\]</span>
+This is precisely the weak form of <span
+class="math display">\[\partial_t\rho_t+\operatorname{div}(\rho_t
+v_t)=0.\]</span> Hence <span class="math inline">\((\rho_t,v_t)\)</span>
+is admissible.</p>
+<p>It remains to estimate its action. By Jensen’s inequality for
+conditional expectations, <span class="math display">\[|v_t(z)|^2
+=
+\left|\mathbb E_\gamma[y-x\mid X_t=z]\right|^2
+\le
+\mathbb E_\gamma[|y-x|^2\mid X_t=z].\]</span> Integrating with respect
+to <span class="math inline">\(\rho_t\)</span> gives <span
+class="math display">\[\int_{\mathbb R^d}|v_t(z)|^2\,d\rho_t(z)
+\le
+\int_{\mathbb R^d\times\mathbb R^d}|y-x|^2\,d\gamma(x,y).\]</span>
+Therefore <span class="math display">\[\mathcal A(\rho,v)
+\le
+\int_0^1
+\int_{\mathbb R^d\times\mathbb R^d}|y-x|^2\,d\gamma(x,y)\,dt
+=
+W_2^2(\mu_0,\mu_1).\]</span> Taking the infimum over admissible pairs
+gives <span class="math display">\[\inf_{\rho,v}\mathcal A(\rho,v)
+\le
+W_2^2(\mu_0,\mu_1).\]</span></p>
+<h1 class="unnumbered" id="conclusion">Conclusion</h1>
+<p>The first step gave <span class="math display">\[W_2^2(\mu_0,\mu_1)
+\le
+\inf_{\rho,v}\mathcal A(\rho,v),\]</span> while the second step gave
+<span class="math display">\[\inf_{\rho,v}\mathcal A(\rho,v)
+\le
+W_2^2(\mu_0,\mu_1).\]</span> Thus <span
+class="math display">\[W_2^2(\mu_0,\mu_1)
+=
+\inf_{\rho_t,v_t}
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt.\]</span></p>
+<h1 class="unnumbered" id="geometric-meaning">Geometric Meaning</h1>
+<p>The static formulation chooses an optimal coupling between initial
+and final positions. The Benamou–Brenier formulation inserts time
+between those positions. It says that the squared Wasserstein distance
+is the least kinetic energy needed to deform <span
+class="math inline">\(\mu_0\)</span> into <span
+class="math inline">\(\mu_1\)</span> through a mass-preserving flow.</p>
+</body>
+</html>

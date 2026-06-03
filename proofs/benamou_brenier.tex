@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\cP}{\mathcal P}
+
+\title{Proof of the Benamou--Brenier Formula}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Statement}
+
+Let
+\[
+\mu_0,\mu_1\in \mathcal P_2(\mathbb R^d).
+\]
+Then
+\[
+W_2^2(\mu_0,\mu_1)
+=
+\inf_{\rho_t,v_t}
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt,
+\]
+where the infimum is taken over all narrowly continuous curves
+\[
+t\mapsto \rho_t\in \mathcal P_2(\mathbb R^d)
+\]
+and Borel velocity fields $v_t\in L^2(\rho_t)$ satisfying the continuity
+equation
+\[
+\partial_t\rho_t+\operatorname{div}(\rho_t v_t)=0
+\]
+in the sense of distributions, with endpoint conditions
+\[
+\rho_0=\mu_0,
+\qquad
+\rho_1=\mu_1.
+\]
+
+\section*{Proof}
+
+Denote the dynamic action by
+\[
+\mathcal A(\rho,v)
+=
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt.
+\]
+We prove the equality by proving the two inequalities.
+
+\section*{Step 1: Every admissible flow costs at least $W_2^2$}
+
+Let $(\rho_t,v_t)$ be admissible and assume that $\mathcal A(\rho,v)<\infty$.
+The continuity equation says that the evolution of $\rho_t$ can be realized by
+moving particles with Eulerian velocity $v_t$.
+
+The analytic result behind this statement is the superposition principle: there
+exists a probability measure $\eta$ on absolutely continuous paths
+\[
+\omega:[0,1]\to\mathbb R^d
+\]
+such that
+\[
+(e_t)_\#\eta=\rho_t,
+\qquad
+e_t(\omega)=\omega(t),
+\]
+and, for $\eta$-almost every path,
+\[
+\dot\omega(t)=v_t(\omega(t))
+\]
+for almost every $t\in[0,1]$.
+
+Define the endpoint coupling
+\[
+\gamma=(e_0,e_1)_\#\eta.
+\]
+Since $(e_0)_\#\eta=\rho_0=\mu_0$ and $(e_1)_\#\eta=\rho_1=\mu_1$, we have
+\[
+\gamma\in \Pi(\mu_0,\mu_1).
+\]
+Therefore
+\[
+W_2^2(\mu_0,\mu_1)
+\le
+\int_{\mathbb R^d\times\mathbb R^d}|x-y|^2\,d\gamma(x,y).
+\]
+Using the definition of $\gamma$, this becomes
+\[
+\int_{\mathbb R^d\times\mathbb R^d}|x-y|^2\,d\gamma(x,y)
+=
+\int |\omega(1)-\omega(0)|^2\,d\eta(\omega).
+\]
+For each absolutely continuous path, Cauchy's inequality gives
+\[
+|\omega(1)-\omega(0)|^2
+=
+\left|\int_0^1 \dot\omega(t)\,dt\right|^2
+\le
+\int_0^1|\dot\omega(t)|^2\,dt.
+\]
+Integrating with respect to $\eta$ yields
+\[
+W_2^2(\mu_0,\mu_1)
+\le
+\int\int_0^1|\dot\omega(t)|^2\,dt\,d\eta(\omega).
+\]
+Since $\dot\omega(t)=v_t(\omega(t))$ and $(e_t)_\#\eta=\rho_t$,
+\[
+\int\int_0^1|\dot\omega(t)|^2\,dt\,d\eta(\omega)
+=
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt.
+\]
+Thus every admissible pair satisfies
+\[
+W_2^2(\mu_0,\mu_1)
+\le
+\mathcal A(\rho,v).
+\]
+Taking the infimum over all admissible pairs gives
+\[
+W_2^2(\mu_0,\mu_1)
+\le
+\inf_{\rho,v}\mathcal A(\rho,v).
+\]
+
+\section*{Step 2: An optimal transport plan realizes this cost}
+
+Let $\gamma\in\Pi(\mu_0,\mu_1)$ be an optimal coupling for the quadratic
+transport problem, so that
+\[
+\int_{\mathbb R^d\times\mathbb R^d}|x-y|^2\,d\gamma(x,y)
+=
+W_2^2(\mu_0,\mu_1).
+\]
+For each pair $(x,y)$, move the particle from $x$ to $y$ along the straight
+line
+\[
+X_t(x,y)=(1-t)x+ty.
+\]
+Define
+\[
+\rho_t=(X_t)_\#\gamma.
+\]
+This gives $\rho_0=\mu_0$ and $\rho_1=\mu_1$.
+
+The Lagrangian velocity of the particle labelled by $(x,y)$ is constant:
+\[
+\frac{d}{dt}X_t(x,y)=y-x.
+\]
+To express this motion in Eulerian form, disintegrate the labels $(x,y)$
+conditioned on the current position $z=X_t(x,y)$ and define
+\[
+v_t(z)
+=
+\mathbb E_\gamma[y-x\mid X_t(x,y)=z].
+\]
+Equivalently, $v_t$ is the conditional average velocity of all particles that
+occupy the point $z$ at time $t$.
+
+For every smooth compactly supported test function $\varphi$, we compute
+\[
+\frac{d}{dt}\int_{\mathbb R^d}\varphi(z)\,d\rho_t(z)
+=
+\frac{d}{dt}\int_{\mathbb R^d\times\mathbb R^d}
+\varphi(X_t(x,y))\,d\gamma(x,y).
+\]
+By the chain rule,
+\[
+\frac{d}{dt}\int \varphi(X_t(x,y))\,d\gamma(x,y)
+=
+\int \nabla\varphi(X_t(x,y))\cdot (y-x)\,d\gamma(x,y).
+\]
+By the definition of the conditional expectation $v_t$,
+\[
+\int \nabla\varphi(X_t(x,y))\cdot (y-x)\,d\gamma(x,y)
+=
+\int_{\mathbb R^d}\nabla\varphi(z)\cdot v_t(z)\,d\rho_t(z).
+\]
+This is precisely the weak form of
+\[
+\partial_t\rho_t+\operatorname{div}(\rho_t v_t)=0.
+\]
+Hence $(\rho_t,v_t)$ is admissible.
+
+It remains to estimate its action. By Jensen's inequality for conditional
+expectations,
+\[
+|v_t(z)|^2
+=
+\left|\mathbb E_\gamma[y-x\mid X_t=z]\right|^2
+\le
+\mathbb E_\gamma[|y-x|^2\mid X_t=z].
+\]
+Integrating with respect to $\rho_t$ gives
+\[
+\int_{\mathbb R^d}|v_t(z)|^2\,d\rho_t(z)
+\le
+\int_{\mathbb R^d\times\mathbb R^d}|y-x|^2\,d\gamma(x,y).
+\]
+Therefore
+\[
+\mathcal A(\rho,v)
+\le
+\int_0^1
+\int_{\mathbb R^d\times\mathbb R^d}|y-x|^2\,d\gamma(x,y)\,dt
+=
+W_2^2(\mu_0,\mu_1).
+\]
+Taking the infimum over admissible pairs gives
+\[
+\inf_{\rho,v}\mathcal A(\rho,v)
+\le
+W_2^2(\mu_0,\mu_1).
+\]
+
+\section*{Conclusion}
+
+The first step gave
+\[
+W_2^2(\mu_0,\mu_1)
+\le
+\inf_{\rho,v}\mathcal A(\rho,v),
+\]
+while the second step gave
+\[
+\inf_{\rho,v}\mathcal A(\rho,v)
+\le
+W_2^2(\mu_0,\mu_1).
+\]
+Thus
+\[
+W_2^2(\mu_0,\mu_1)
+=
+\inf_{\rho_t,v_t}
+\int_0^1\int_{\mathbb R^d}|v_t(x)|^2\,d\rho_t(x)\,dt.
+\]
+
+\section*{Geometric Meaning}
+
+The static formulation chooses an optimal coupling between initial and final
+positions. The Benamou--Brenier formulation inserts time between those
+positions. It says that the squared Wasserstein distance is the least kinetic
+energy needed to deform $\mu_0$ into $\mu_1$ through a mass-preserving flow.
+
+\end{document}

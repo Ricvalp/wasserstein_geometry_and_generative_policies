@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>steepest descent metric</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">steepest descent metric</h1>
+</header>
+<h1 class="unnumbered" id="steepest-among-which-directions">Steepest
+Among Which Directions?</h1>
+<p>At a point <span class="math inline">\(p\)</span>, the differential
+<span class="math display">\[df_p:T_pM\to\mathbb R\]</span> tells us the
+rate of change in every direction: <span
+class="math display">\[X_p\mapsto df_p(X_p).\]</span> If we want the
+direction of fastest decrease, we might try to minimize <span
+class="math display">\[df_p(X_p)\]</span> over all nonzero directions
+<span class="math inline">\(X_p\)</span>.</p>
+<p>But this has no answer unless we say how large a direction is. If
+<span class="math inline">\(X_p\)</span> gives some decrease, then <span
+class="math inline">\(100X_p\)</span> gives one hundred times as much
+first-order decrease: <span
+class="math display">\[df_p(100X_p)=100\,df_p(X_p).\]</span> So without
+a notion of unit length, “steepest” is meaningless.</p>
+<h1 class="unnumbered" id="the-metric-defines-unit-directions">The
+Metric Defines Unit Directions</h1>
+<p>A Riemannian metric gives a norm <span
+class="math display">\[\|X_p\|_g
+=
+\sqrt{g_p(X_p,X_p)}.\]</span> Now we can ask a meaningful question:
+<span class="math display">\[\text{among all }X_p\text{ with
+}\|X_p\|_g=1,
+\text{ which minimizes }df_p(X_p)?\]</span></p>
+<p>Using <span class="math display">\[df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p),\]</span> the Cauchy–Schwarz
+inequality gives <span class="math display">\[df_p(X_p)
+\ge
+-\|\operatorname{grad}_g f(p)\|_g\|X_p\|_g.\]</span> For unit vectors,
+<span class="math display">\[df_p(X_p)
+\ge
+-\|\operatorname{grad}_g f(p)\|_g.\]</span> Equality occurs when <span
+class="math display">\[X_p
+=
+-\frac{\operatorname{grad}_g f(p)}
+{\|\operatorname{grad}_g f(p)\|_g}.\]</span> Thus the negative gradient
+is the steepest descent direction among unit directions measured by
+<span class="math inline">\(g\)</span>.</p>
+<h1 class="unnumbered" id="no-metric-no-canonical-steepest-direction">No
+Metric, No Canonical Steepest Direction</h1>
+<p>On a bare smooth manifold, there is no canonical norm on <span
+class="math inline">\(T_pM\)</span>. Therefore there is no canonical
+notion of unit direction, angle, or steepest descent.</p>
+<p>You can still compute directional derivatives: <span
+class="math display">\[df_p(X_p).\]</span> But you cannot canonically
+say which direction is the steepest without choosing some way to measure
+the size of directions.</p>
+<h1 class="unnumbered"
+id="why-different-metrics-give-different-flows">Why Different Metrics
+Give Different Flows</h1>
+<p>Changing the metric changes the unit sphere in each tangent space.
+Since steepest descent means “best decrease per unit length,” changing
+the notion of length changes the steepest direction.</p>
+<p>This is why Euclidean gradient descent, natural gradient descent,
+Riemannian gradient descent, and Wasserstein gradient flow can all have
+the same objective but different dynamics: they use different
+metrics.</p>
+</body>
+</html>

@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Why a Metric Is Needed to Define a Gradient}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{What Smooth Structure Gives You}
+
+On a smooth manifold $M$, a smooth function
+\[
+f:M\to\mathbb R
+\]
+has a differential at each point:
+\[
+df_p\in T_p^*M.
+\]
+This is a covector, meaning a linear map
+\[
+df_p:T_pM\to\mathbb R.
+\]
+It eats a tangent vector $X_p$ and returns the directional derivative
+\[
+df_p(X_p)=X_p[f].
+\]
+
+This construction uses only the smooth structure. No metric and no connection
+are required.
+
+\section*{Why This Is Not Yet a Direction to Follow}
+
+A gradient flow needs a tangent vector field:
+\[
+\dot p_t = -(\text{some tangent vector at }p_t).
+\]
+But $df_p$ is not a tangent vector. It lives in the dual space $T_p^*M$, not in
+$T_pM$.
+
+The distinction matters. A covector measures directions; a vector is a
+direction. The differential $df_p$ tells us how $f$ changes along every
+possible direction, but it is not itself one of those directions.
+
+\section*{Can a Connection Help?}
+
+A connection lets us differentiate vector fields along vector fields:
+\[
+\nabla_XY.
+\]
+It tells us how to compare tangent vectors at nearby points.
+
+But it does not, by itself, give a canonical map
+\[
+T_p^*M\to T_pM.
+\]
+So a connection alone does not turn $df_p$ into a vector field and does not
+define gradient descent.
+
+\section*{What a Riemannian Metric Adds}
+
+A Riemannian metric gives an inner product
+\[
+g_p:T_pM\times T_pM\to\mathbb R.
+\]
+For each vector $Y_p\in T_pM$, the metric produces a covector
+\[
+g_p(Y_p,\cdot)\in T_p^*M.
+\]
+Because $g_p$ is nondegenerate, every covector arises uniquely in this way.
+Thus the metric gives an isomorphism
+\[
+T_pM \cong T_p^*M.
+\]
+The gradient is the vector corresponding to $df_p$ under this isomorphism:
+\[
+df_p(\cdot)=g_p(\operatorname{grad}_g f(p),\cdot).
+\]
+
+\section*{Could One Choose Another Identification?}
+
+Yes, but it would be extra structure. A bare smooth manifold has no canonical
+way to identify tangent and cotangent spaces. Choosing a Riemannian metric is
+the standard geometric way to make that identification.
+
+Different metrics produce different gradients and therefore different gradient
+flows. This is not a bug; it is the point. Gradient descent is metric-dependent.
+
+\end{document}

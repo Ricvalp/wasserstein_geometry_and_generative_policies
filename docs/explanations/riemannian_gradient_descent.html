@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>riemannian gradient descent</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">riemannian gradient descent</h1>
+</header>
+<h1 class="unnumbered" id="the-euclidean-picture">The Euclidean
+Picture</h1>
+<p>Let <span class="math display">\[f:\mathbb R^n\to\mathbb R\]</span>
+be smooth. In Euclidean space, the gradient <span
+class="math inline">\(\nabla f(x)\)</span> is characterized by <span
+class="math display">\[Df(x)[v]
+=
+\nabla f(x)\cdot v\]</span> for every direction <span
+class="math inline">\(v\in\mathbb R^n\)</span>.</p>
+<p>Here <span class="math inline">\(Df(x)[v]\)</span> is the <a
+href="directional_derivative.html">directional derivative</a> of <span
+class="math inline">\(f\)</span> at <span
+class="math inline">\(x\)</span> in the direction <span
+class="math inline">\(v\)</span>. The dot product is the Euclidean
+metric. Thus the gradient is not merely “the list of partial
+derivatives.” It is the vector that <a
+href="gradient_represents_derivative.html">represents the linear map
+<span class="math inline">\(Df(x)\)</span> through the chosen inner
+product</a>.</p>
+<h1 class="unnumbered" id="differential-versus-gradient">Differential
+Versus Gradient</h1>
+<p>On a smooth manifold <span class="math inline">\(M\)</span>, the
+derivative of a smooth function <span
+class="math display">\[f:M\to\mathbb R\]</span> at a point <span
+class="math inline">\(p\in M\)</span> is naturally a covector <span
+class="math display">\[df_p:T_pM\to\mathbb R.\]</span> It eats a tangent
+vector <span class="math inline">\(X_p\in T_pM\)</span> and returns the
+directional derivative <span
+class="math display">\[df_p(X_p)=X_p[f].\]</span></p>
+<p>So the differential <span class="math inline">\(df_p\)</span> lives
+in the cotangent space <span class="math inline">\(T_p^*M\)</span>, not
+in the tangent space <span class="math inline">\(T_pM\)</span>. To turn
+this covector into a vector, we need <a
+href="metric_needed_for_gradient.html">extra geometric
+structure</a>.</p>
+<h1 class="unnumbered"
+id="the-metric-converts-covectors-into-vectors">The Metric Converts
+Covectors Into Vectors</h1>
+<p>A Riemannian metric assigns to each point <span
+class="math inline">\(p\in M\)</span> an inner product <span
+class="math display">\[g_p:T_pM\times T_pM\to\mathbb R.\]</span> The
+Riemannian gradient of <span class="math inline">\(f\)</span> is the
+unique tangent vector <span class="math display">\[\operatorname{grad}_g
+f(p)\in T_pM\]</span> such that <span class="math display">\[df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p)\]</span> for every tangent vector
+<span class="math inline">\(X_p\in T_pM\)</span>.</p>
+<p>This is the precise meaning of the phrase:</p>
+<blockquote>
+<p><a href="gradient_represents_derivative.html">The gradient is the
+vector that represents the directional derivative through the
+metric</a>.</p>
+</blockquote>
+<p>The directional derivative is the covector <span
+class="math inline">\(df_p\)</span>. The metric <span
+class="math inline">\(g_p\)</span> converts that covector into the
+vector <span class="math inline">\(\operatorname{grad}_g
+f(p)\)</span>.</p>
+<h1 class="unnumbered" id="coordinate-formula">Coordinate Formula</h1>
+<p>Let <span class="math inline">\((x^1,\ldots,x^n)\)</span> be local
+coordinates. Write the metric as <span class="math display">\[g
+=
+g_{ij}\,dx^i\otimes dx^j.\]</span> The differential is <span
+class="math display">\[df
+=
+\frac{\partial f}{\partial x^i}\,dx^i.\]</span> If <span
+class="math display">\[\operatorname{grad}_g f
+=
+(\operatorname{grad}_g f)^i\frac{\partial}{\partial x^i},\]</span> then
+the defining identity <span
+class="math display">\[df(X)=g(\operatorname{grad}_g f,X)\]</span>
+implies <span class="math display">\[\frac{\partial f}{\partial x^j}
+=
+g_{ij}(\operatorname{grad}_g f)^i.\]</span> Multiplying by the inverse
+metric <span class="math inline">\(g^{kj}\)</span> gives <span
+class="math display">\[(\operatorname{grad}_g f)^k
+=
+g^{kj}\frac{\partial f}{\partial x^j}.\]</span> Thus <span
+class="math display">\[\operatorname{grad}_g f
+=
+g^{ij}\frac{\partial f}{\partial x^j}
+\frac{\partial}{\partial x^i}.\]</span></p>
+<p>When <span class="math inline">\(g_{ij}=\delta_{ij}\)</span>, this
+reduces to the usual Euclidean gradient.</p>
+<h1 class="unnumbered" id="gradient-flow">Gradient Flow</h1>
+<p>The Riemannian gradient flow of <span
+class="math inline">\(f\)</span> is the curve <span
+class="math inline">\(p_t\in M\)</span> solving <span
+class="math display">\[\dot p_t
+=
+-\operatorname{grad}_g f(p_t).\]</span> This is the intrinsic version of
+gradient descent. The negative sign means that the curve moves in the <a
+href="steepest_descent_metric.html">direction of steepest decrease as
+measured by the metric <span class="math inline">\(g\)</span></a>.</p>
+<p>Indeed, along a solution, <span
+class="math display">\[\frac{d}{dt}f(p_t)
+=
+df_{p_t}(\dot p_t).\]</span> Using the defining property of the
+gradient, <span class="math display">\[df_{p_t}(\dot p_t)
+=
+g_{p_t}(\operatorname{grad}_g f(p_t),\dot p_t).\]</span> Substituting
+<span class="math display">\[\dot p_t=-\operatorname{grad}_g
+f(p_t)\]</span> gives <span class="math display">\[\frac{d}{dt}f(p_t)
+=
+-g_{p_t}(\operatorname{grad}_g f(p_t),\operatorname{grad}_g f(p_t))
+\le 0.\]</span> So the objective decreases monotonically.</p>
+<h1 class="unnumbered"
+id="why-this-matters-for-wasserstein-geometry">Why This Matters for
+Wasserstein Geometry</h1>
+<p>The Wasserstein calculation follows the same pattern.</p>
+<p>On a finite-dimensional Riemannian manifold: <span
+class="math display">\[df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p).\]</span> In Wasserstein geometry, a
+tangent direction is represented by a velocity field <span
+class="math inline">\(v\)</span>, and the metric is the kinetic-energy
+inner product <span class="math display">\[\langle u,v\rangle_\rho
+=
+\int_{\mathbb R^d}u(x)\cdot v(x)\,\rho(x)\,dx.\]</span> Thus the
+Wasserstein gradient is identified by writing the directional derivative
+in the form <span class="math display">\[D\mathcal F(\rho)[v]
+=
+\langle \operatorname{grad}_{W_2}\mathcal
+F(\rho),v\rangle_\rho.\]</span> This is why, once we obtain <span
+class="math display">\[D\mathcal F(\rho)[v]
+=
+\int_{\mathbb R^d}
+\nabla\left(\frac{\delta\mathcal F}{\delta\rho}\right)
+\cdot v\,\rho\,dx,\]</span> we identify the velocity-field
+representative of the Wasserstein gradient as <span
+class="math display">\[\operatorname{grad}_{W_2}\mathcal F(\rho)
+=
+\nabla\left(\frac{\delta\mathcal F}{\delta\rho}\right).\]</span></p>
+</body>
+</html>

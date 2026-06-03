@@ -44,11 +44,64 @@ The Wasserstein metric measures the size of the velocity by kinetic energy:
 Let $\mathcal F$ be a functional on densities. Along a curve $\rho_t$,
 \[
 \frac{d}{dt}\mathcal F(\rho_t)
+\]
+means the rate at which the number $\mathcal F(\rho_t)$ changes as the density
+$\rho_t$ moves.
+
+The first variation plays the role of a gradient. In finite dimensions, if
+$f:\mathbb R^n\to\mathbb R$ and $x_t$ is a curve, then the chain rule gives
+\[
+\frac{d}{dt}f(x_t)
+=
+\nabla f(x_t)\cdot \dot x_t
+=
+\sum_{i=1}^n
+\frac{\partial f}{\partial x_i}(x_t)\dot x_i(t).
+\]
+For a density $\rho_t$, the ``coordinates'' are the values $\rho_t(x)$ indexed
+by the continuous variable $x\in\mathbb R^d$. Thus the finite-dimensional sum
+is replaced by an integral:
+\[
+\sum_i
+\frac{\partial f}{\partial x_i}\dot x_i
+\quad\leadsto\quad
+\int_{\mathbb R^d}
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)
+\partial_t\rho_t(x)\,dx.
+\]
+Here:
+\begin{itemize}
+    \item $\partial_t\rho_t(x)$ is the infinitesimal change of the density at $x$,
+    \item $\frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)$ is the sensitivity of
+    $\mathcal F$ to changing the density at $x$.
+\end{itemize}
+Therefore the functional chain rule is
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
 =
 \int_{\mathbb R^d}
 \frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)
 \partial_t\rho_t(x)\,dx.
 \]
+For example, if
+\[
+\mathcal F(\rho)=\int_{\mathbb R^d}V(x)\rho(x)\,dx,
+\]
+then
+\[
+\mathcal F(\rho_t)=\int_{\mathbb R^d}V(x)\rho_t(x)\,dx,
+\]
+so direct differentiation gives
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}V(x)\partial_t\rho_t(x)\,dx.
+\]
+This matches the general formula because
+\[
+\frac{\delta\mathcal F}{\delta\rho}=V.
+\]
+
 Using the continuity equation,
 \[
 \frac{d}{dt}\mathcal F(\rho_t)
@@ -77,8 +130,44 @@ The Wasserstein inner product of two velocity fields is
 =
 \int_{\mathbb R^d}u\cdot v\,\rho_t\,dx.
 \]
-The previous identity shows that the velocity-field representative of the
-Wasserstein gradient of $\mathcal F$ is
+The identity obtained above was
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right]
+\cdot v_t\,\rho_t\,dx.
+\]
+Using the Wasserstein inner product, this can be rewritten as
+\[
+\frac{d}{dt}\mathcal F(\rho_t)
+=
+\left\langle
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right],
+v_t
+\right\rangle_{\rho_t}.
+\]
+This is the direct analogue of the Euclidean identity
+\[
+\frac{d}{dt}f(x_t)
+=
+\nabla f(x_t)\cdot \dot x_t.
+\]
+In \href{riemannian_gradient_descent.html}{Riemannian geometry, the gradient is the vector that represents the
+directional derivative through the metric}:
+\[
+D\mathcal F(\rho_t)[v_t]
+=
+\langle \operatorname{grad}_{W_2}\mathcal F(\rho_t),v_t\rangle_{\rho_t}.
+\]
+Comparing this definition with the previous formula, the velocity-field
+representative of the Wasserstein gradient must be
 \[
 \nabla
 \left[

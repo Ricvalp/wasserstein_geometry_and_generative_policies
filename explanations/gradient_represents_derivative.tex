@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{The Gradient Represents the Directional Derivative Through the Metric}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{The Problem}
+
+At a point $p$ of a manifold, the derivative of a function is a covector:
+\[
+df_p:T_pM\to\mathbb R.
+\]
+It is a linear functional. Given a tangent vector $X_p$, it returns the number
+\[
+df_p(X_p),
+\]
+the directional derivative of $f$ in the direction $X_p$.
+
+But gradient descent wants a vector. So we ask:
+
+\begin{quote}
+Which tangent vector contains the same information as the covector $df_p$?
+\end{quote}
+
+\section*{Representation by the Metric}
+
+If $g$ is a Riemannian metric, then every tangent vector $Y_p$ defines a
+covector by
+\[
+X_p\mapsto g_p(Y_p,X_p).
+\]
+So vectors can represent linear functionals through the metric.
+
+The gradient is defined as the unique vector
+\[
+\operatorname{grad}_g f(p)\in T_pM
+\]
+whose metric pairing with every direction $X_p$ reproduces the directional
+derivative:
+\[
+df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p)
+\]
+for all $X_p\in T_pM$.
+
+This is what ``represents'' means: the covector $df_p$ and the vector
+$\operatorname{grad}_g f(p)$ give the same numerical answer after the vector is
+paired with $X_p$ using $g_p$.
+
+\section*{Euclidean Example}
+
+In $\mathbb R^n$ with the Euclidean dot product,
+\[
+Df(x)[v]
+=
+\sum_i\frac{\partial f}{\partial x^i}(x)v^i.
+\]
+The vector
+\[
+\nabla f(x)
+=
+\left(
+\frac{\partial f}{\partial x^1},
+\ldots,
+\frac{\partial f}{\partial x^n}
+\right)
+\]
+satisfies
+\[
+Df(x)[v]
+=
+\nabla f(x)\cdot v.
+\]
+So the Euclidean gradient is the vector representing the covector $Df(x)$
+through the Euclidean metric.
+
+\section*{Non-Euclidean Metric}
+
+If the metric has components $g_{ij}$, the representing vector changes:
+\[
+(\operatorname{grad}_g f)^i
+=
+g^{ij}\frac{\partial f}{\partial x^j}.
+\]
+The covector $df$ is the same differential object, but the vector representing
+it depends on the metric.
+
+\section*{Wasserstein Analogy}
+
+In Wasserstein geometry, the role of the metric pairing is
+\[
+\langle u,v\rangle_\rho
+=
+\int u\cdot v\,d\rho.
+\]
+When we write
+\[
+D\mathcal F(\rho)[v]
+=
+\langle \operatorname{grad}_{W_2}\mathcal F(\rho),v\rangle_\rho,
+\]
+we are using exactly the same idea: the Wasserstein gradient is the velocity
+field that represents the directional derivative through the Wasserstein
+metric.
+
+\end{document}

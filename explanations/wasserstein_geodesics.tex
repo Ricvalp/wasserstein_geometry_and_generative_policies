@@ -68,8 +68,71 @@ Using $\gamma_{s,t}$ as an admissible transport plan gives
 \[
 W_2^2(\mu_s,\mu_t)
 \le
+\int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b).
+\]
+We now rewrite this integral in terms of the original variable $x$.
+Define
+\[
+F_{s,t}(x)=(T_s(x),T_t(x)).
+\]
+By definition,
+\[
+\gamma_{s,t}=(F_{s,t})_\#\mu.
+\]
+The \href{pushforward_change_of_variables.html}{defining property} of a pushforward measure says that, for every integrable
+function $\Phi:\mathbb R^d\times\mathbb R^d\to\mathbb R$,
+\[
+\int_{\mathbb R^d\times\mathbb R^d}
+\Phi(a,b)\,d\gamma_{s,t}(a,b)
+=
+\int_{\mathbb R^d}
+\Phi(F_{s,t}(x))\,d\mu(x).
+\]
+Here we choose
+\[
+\Phi(a,b)=|a-b|^2.
+\]
+Therefore
+\[
 \int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
 =
+\int_{\mathbb R^d}|T_s(x)-T_t(x)|^2\,d\mu(x).
+\]
+This is why the integral over $\mathbb R^d\times\mathbb R^d$ becomes an integral
+over $\mathbb R^d$: the coupling $\gamma_{s,t}$ was itself obtained by pushing
+the original measure $\mu$ forward through the map $x\mapsto (T_s(x),T_t(x))$.
+
+Now compute the integrand:
+\[
+T_t(x)-T_s(x)
+=
+((1-t)x+tT(x))-((1-s)x+sT(x)).
+\]
+The terms involving $x$ and $T(x)$ collect as
+\[
+T_t(x)-T_s(x)
+=
+(s-t)x+(t-s)T(x)
+=
+(t-s)(T(x)-x).
+\]
+Hence
+\[
+|T_t(x)-T_s(x)|^2
+=
+|t-s|^2\,|T(x)-x|^2.
+\]
+Substituting this into the previous integral gives
+\[
+\int_{\mathbb R^d\times\mathbb R^d}|a-b|^2\,d\gamma_{s,t}(a,b)
+=
+|t-s|^2
+\int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x).
+\]
+Thus
+\[
+W_2^2(\mu_s,\mu_t)
+\le
 |t-s|^2
 \int_{\mathbb R^d}|T(x)-x|^2\,d\mu(x).
 \]

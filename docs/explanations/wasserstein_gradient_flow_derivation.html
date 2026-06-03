@@ -51,11 +51,55 @@ class="math display">\[\|v_t\|_{\rho_t}^2
 the Functional</h1>
 <p>Let <span class="math inline">\(\mathcal F\)</span> be a functional
 on densities. Along a curve <span class="math inline">\(\rho_t\)</span>,
-<span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+<span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)\]</span>
+means the rate at which the number <span class="math inline">\(\mathcal
+F(\rho_t)\)</span> changes as the density <span
+class="math inline">\(\rho_t\)</span> moves.</p>
+<p>The first variation plays the role of a gradient. In finite
+dimensions, if <span class="math inline">\(f:\mathbb R^n\to\mathbb
+R\)</span> and <span class="math inline">\(x_t\)</span> is a curve, then
+the chain rule gives <span class="math display">\[\frac{d}{dt}f(x_t)
+=
+\nabla f(x_t)\cdot \dot x_t
+=
+\sum_{i=1}^n
+\frac{\partial f}{\partial x_i}(x_t)\dot x_i(t).\]</span> For a density
+<span class="math inline">\(\rho_t\)</span>, the “coordinates” are the
+values <span class="math inline">\(\rho_t(x)\)</span> indexed by the
+continuous variable <span class="math inline">\(x\in\mathbb
+R^d\)</span>. Thus the finite-dimensional sum is replaced by an
+integral: <span class="math display">\[\sum_i
+\frac{\partial f}{\partial x_i}\dot x_i
+\quad\leadsto\quad
+\int_{\mathbb R^d}
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)
+\partial_t\rho_t(x)\,dx.\]</span> Here:</p>
+<ul>
+<li><p><span class="math inline">\(\partial_t\rho_t(x)\)</span> is the
+infinitesimal change of the density at <span
+class="math inline">\(x\)</span>,</p></li>
+<li><p><span class="math inline">\(\frac{\delta\mathcal
+F}{\delta\rho}(\rho_t)(x)\)</span> is the sensitivity of <span
+class="math inline">\(\mathcal F\)</span> to changing the density at
+<span class="math inline">\(x\)</span>.</p></li>
+</ul>
+<p>Therefore the functional chain rule is <span
+class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
 =
 \int_{\mathbb R^d}
 \frac{\delta\mathcal F}{\delta\rho}(\rho_t)(x)
-\partial_t\rho_t(x)\,dx.\]</span> Using the continuity equation, <span
+\partial_t\rho_t(x)\,dx.\]</span> For example, if <span
+class="math display">\[\mathcal F(\rho)=\int_{\mathbb
+R^d}V(x)\rho(x)\,dx,\]</span> then <span class="math display">\[\mathcal
+F(\rho_t)=\int_{\mathbb R^d}V(x)\rho_t(x)\,dx,\]</span> so direct
+differentiation gives <span class="math display">\[\frac{d}{dt}\mathcal
+F(\rho_t)
+=
+\int_{\mathbb R^d}V(x)\partial_t\rho_t(x)\,dx.\]</span> This matches the
+general formula because <span
+class="math display">\[\frac{\delta\mathcal
+F}{\delta\rho}=V.\]</span></p>
+<p>Using the continuity equation, <span
 class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
 =
 -\int_{\mathbb R^d}
@@ -75,10 +119,37 @@ Gradient</h1>
 <p>The Wasserstein inner product of two velocity fields is <span
 class="math display">\[\langle u,v\rangle_{\rho_t}
 =
-\int_{\mathbb R^d}u\cdot v\,\rho_t\,dx.\]</span> The previous identity
-shows that the velocity-field representative of the Wasserstein gradient
-of <span class="math inline">\(\mathcal F\)</span> is <span
-class="math display">\[\nabla
+\int_{\mathbb R^d}u\cdot v\,\rho_t\,dx.\]</span> The identity obtained
+above was <span class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+=
+\int_{\mathbb R^d}
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right]
+\cdot v_t\,\rho_t\,dx.\]</span> Using the Wasserstein inner product,
+this can be rewritten as <span
+class="math display">\[\frac{d}{dt}\mathcal F(\rho_t)
+=
+\left\langle
+\nabla
+\left[
+\frac{\delta\mathcal F}{\delta\rho}(\rho_t)
+\right],
+v_t
+\right\rangle_{\rho_t}.\]</span> This is the direct analogue of the
+Euclidean identity <span class="math display">\[\frac{d}{dt}f(x_t)
+=
+\nabla f(x_t)\cdot \dot x_t.\]</span> In <a
+href="riemannian_gradient_descent.html">Riemannian geometry, the
+gradient is the vector that represents the directional derivative
+through the metric</a>: <span class="math display">\[D\mathcal
+F(\rho_t)[v_t]
+=
+\langle \operatorname{grad}_{W_2}\mathcal
+F(\rho_t),v_t\rangle_{\rho_t}.\]</span> Comparing this definition with
+the previous formula, the velocity-field representative of the
+Wasserstein gradient must be <span class="math display">\[\nabla
 \left[
 \frac{\delta\mathcal F}{\delta\rho}(\rho_t)
 \right].\]</span> Therefore the negative-gradient velocity is <span

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>directional derivative</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">directional derivative</h1>
+</header>
+<h1 class="unnumbered" id="in-euclidean-space">In Euclidean Space</h1>
+<p>Let <span class="math display">\[f:\mathbb R^n\to\mathbb R\]</span>
+be smooth. The directional derivative of <span
+class="math inline">\(f\)</span> at <span
+class="math inline">\(x\)</span> in the direction <span
+class="math inline">\(v\)</span> is <span
+class="math display">\[Df(x)[v]
+=
+\left.\frac{d}{dt}f(x+tv)\right|_{t=0}.\]</span> It measures the
+first-order rate of change of <span class="math inline">\(f\)</span> if
+one starts at <span class="math inline">\(x\)</span> and moves
+infinitesimally with velocity <span
+class="math inline">\(v\)</span>.</p>
+<p>If <span class="math inline">\(f\)</span> is differentiable, then
+<span class="math display">\[Df(x)[v]
+=
+\sum_{i=1}^n
+\frac{\partial f}{\partial x^i}(x)v^i.\]</span> Thus, for fixed <span
+class="math inline">\(x\)</span>, the map <span
+class="math display">\[v\mapsto Df(x)[v]\]</span> is linear in <span
+class="math inline">\(v\)</span>.</p>
+<h1 class="unnumbered" id="on-a-smooth-manifold">On a Smooth
+Manifold</h1>
+<p>Let <span class="math inline">\(M\)</span> be a smooth manifold, let
+<span class="math inline">\(p\in M\)</span>, and let <span
+class="math display">\[X_p\in T_pM\]</span> be a tangent vector. A
+tangent vector can be represented by a smooth curve <span
+class="math display">\[\gamma:(-\epsilon,\epsilon)\to M\]</span> such
+that <span class="math display">\[\gamma(0)=p,
+\qquad
+\dot\gamma(0)=X_p.\]</span> The directional derivative of <span
+class="math inline">\(f:M\to\mathbb R\)</span> at <span
+class="math inline">\(p\)</span> in the direction <span
+class="math inline">\(X_p\)</span> is <span
+class="math display">\[X_p[f]
+=
+\left.\frac{d}{dt}f(\gamma(t))\right|_{t=0}.\]</span> This number
+depends only on the tangent vector <span
+class="math inline">\(X_p\)</span>, not on the particular curve chosen
+to represent it.</p>
+<h1 class="unnumbered" id="relation-to-the-differential">Relation to the
+Differential</h1>
+<p>The differential of <span class="math inline">\(f\)</span> at <span
+class="math inline">\(p\)</span> is the covector <span
+class="math display">\[df_p:T_pM\to\mathbb R\]</span> defined by <span
+class="math display">\[df_p(X_p)=X_p[f].\]</span> So the differential
+packages all directional derivatives at <span
+class="math inline">\(p\)</span> into one linear map.</p>
+<h1 class="unnumbered" id="is-it-the-covariant-derivative">Is It the
+Covariant Derivative?</h1>
+<p>For a scalar function, the directional derivative <span
+class="math inline">\(X[f]\)</span> is already intrinsic. It does not
+require a connection.</p>
+<p>A connection is needed when differentiating vector fields or tensor
+fields along directions, because values of vector fields at different
+points live in different tangent spaces. But a function has values in
+<span class="math inline">\(\mathbb R\)</span>, so along a curve <span
+class="math inline">\(\gamma(t)\)</span> we can simply differentiate the
+real-valued function <span class="math display">\[t\mapsto
+f(\gamma(t)).\]</span> Therefore: <span
+class="math display">\[\text{directional derivative of a function: no
+connection needed,}\]</span> while <span
+class="math display">\[\text{covariant derivative of vector/tensor
+fields: connection needed.}\]</span></p>
+</body>
+</html>

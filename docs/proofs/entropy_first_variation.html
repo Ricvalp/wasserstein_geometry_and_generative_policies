@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>entropy first variation</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">entropy first variation</h1>
+</header>
+<h1 class="unnumbered" id="statement">Statement</h1>
+<p>Let <span class="math display">\[\mathcal H(\rho)
+=
+\int_{\mathbb R^d}\rho(x)\log\rho(x)\,dx\]</span> be the Boltzmann
+entropy functional, using the convention common in Wasserstein gradient
+flows. Assume <span class="math inline">\(\rho\)</span> is positive and
+smooth enough for the following computation, and let <span
+class="math inline">\(\eta\)</span> be a smooth perturbation satisfying
+<span class="math display">\[\int_{\mathbb R^d}\eta(x)\,dx=0.\]</span>
+Then <span class="math display">\[\frac{\delta \mathcal H}{\delta \rho}
+=
+\log\rho+1.\]</span></p>
+<h1 class="unnumbered" id="proof">Proof</h1>
+<p>Consider the perturbed density <span
+class="math display">\[\rho_\varepsilon=\rho+\varepsilon\eta.\]</span>
+For sufficiently small <span class="math inline">\(\varepsilon\)</span>,
+this remains positive if <span class="math inline">\(\rho\)</span> is
+strictly positive and <span class="math inline">\(\eta\)</span> is
+bounded. We compute <span class="math display">\[\left.
+\frac{d}{d\varepsilon}
+\mathcal H(\rho_\varepsilon)
+\right|_{\varepsilon=0}.\]</span> By definition, <span
+class="math display">\[\mathcal H(\rho_\varepsilon)
+=
+\int_{\mathbb R^d}
+(\rho(x)+\varepsilon\eta(x))
+\log(\rho(x)+\varepsilon\eta(x))\,dx.\]</span> Differentiate the scalar
+function <span class="math display">\[h(r)=r\log r.\]</span> Its
+derivative is <span class="math display">\[h&#39;(r)=\log r+1.\]</span>
+Therefore, pointwise in <span class="math inline">\(x\)</span>, <span
+class="math display">\[\left.
+\frac{d}{d\varepsilon}
+\Big[
+(\rho(x)+\varepsilon\eta(x))
+\log(\rho(x)+\varepsilon\eta(x))
+\Big]
+\right|_{\varepsilon=0}
+=
+(\log\rho(x)+1)\eta(x).\]</span> Integrating gives <span
+class="math display">\[\left.
+\frac{d}{d\varepsilon}
+\mathcal H(\rho+\varepsilon\eta)
+\right|_{\varepsilon=0}
+=
+\int_{\mathbb R^d}
+(\log\rho(x)+1)\eta(x)\,dx.\]</span> By the definition of first
+variation, this means <span class="math display">\[\frac{\delta \mathcal
+H}{\delta \rho}(\rho)(x)
+=
+\log\rho(x)+1.\]</span></p>
+<h1 class="unnumbered" id="remark-on-the-constant">Remark on the
+Constant</h1>
+<p>When working on probability densities, admissible perturbations
+satisfy <span class="math display">\[\int_{\mathbb
+R^d}\eta(x)\,dx=0.\]</span> Hence adding any constant <span
+class="math inline">\(C\)</span> to the first variation does not change
+the directional derivative, because <span
+class="math display">\[\int_{\mathbb R^d}C\,\eta(x)\,dx=0.\]</span>
+Thus, on the probability simplex, the first variation is defined only up
+to an additive constant. One often writes simply <span
+class="math display">\[\frac{\delta \mathcal
+H}{\delta\rho}=\log\rho\]</span> when the constant is irrelevant. In
+Wasserstein gradient flows, the constant also disappears after taking a
+spatial gradient: <span
+class="math display">\[\nabla(\log\rho+1)=\nabla\log\rho.\]</span></p>
+</body>
+</html>

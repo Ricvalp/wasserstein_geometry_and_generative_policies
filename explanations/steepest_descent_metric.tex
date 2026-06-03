@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Steepest Descent Depends on the Metric}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Steepest Among Which Directions?}
+
+At a point $p$, the differential
+\[
+df_p:T_pM\to\mathbb R
+\]
+tells us the rate of change in every direction:
+\[
+X_p\mapsto df_p(X_p).
+\]
+If we want the direction of fastest decrease, we might try to minimize
+\[
+df_p(X_p)
+\]
+over all nonzero directions $X_p$.
+
+But this has no answer unless we say how large a direction is. If $X_p$ gives
+some decrease, then $100X_p$ gives one hundred times as much first-order
+decrease:
+\[
+df_p(100X_p)=100\,df_p(X_p).
+\]
+So without a notion of unit length, ``steepest'' is meaningless.
+
+\section*{The Metric Defines Unit Directions}
+
+A Riemannian metric gives a norm
+\[
+\|X_p\|_g
+=
+\sqrt{g_p(X_p,X_p)}.
+\]
+Now we can ask a meaningful question:
+\[
+\text{among all }X_p\text{ with }\|X_p\|_g=1,
+\text{ which minimizes }df_p(X_p)?
+\]
+
+Using
+\[
+df_p(X_p)
+=
+g_p(\operatorname{grad}_g f(p),X_p),
+\]
+the Cauchy--Schwarz inequality gives
+\[
+df_p(X_p)
+\ge
+-\|\operatorname{grad}_g f(p)\|_g\|X_p\|_g.
+\]
+For unit vectors,
+\[
+df_p(X_p)
+\ge
+-\|\operatorname{grad}_g f(p)\|_g.
+\]
+Equality occurs when
+\[
+X_p
+=
+-\frac{\operatorname{grad}_g f(p)}
+{\|\operatorname{grad}_g f(p)\|_g}.
+\]
+Thus the negative gradient is the steepest descent direction among unit
+directions measured by $g$.
+
+\section*{No Metric, No Canonical Steepest Direction}
+
+On a bare smooth manifold, there is no canonical norm on $T_pM$. Therefore
+there is no canonical notion of unit direction, angle, or steepest descent.
+
+You can still compute directional derivatives:
+\[
+df_p(X_p).
+\]
+But you cannot canonically say which direction is the steepest without choosing
+some way to measure the size of directions.
+
+\section*{Why Different Metrics Give Different Flows}
+
+Changing the metric changes the unit sphere in each tangent space. Since
+steepest descent means ``best decrease per unit length,'' changing the notion
+of length changes the steepest direction.
+
+This is why Euclidean gradient descent, natural gradient descent, Riemannian
+gradient descent, and Wasserstein gradient flow can all have the same objective
+but different dynamics: they use different metrics.
+
+\end{document}
