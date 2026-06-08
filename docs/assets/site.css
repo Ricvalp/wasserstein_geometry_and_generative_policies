@@ -107,7 +107,13 @@ p {
   margin: 1em 0;
 }
 
-.math-block {
+.math-block,
+div.definition,
+div.theorem,
+div.proposition,
+div.corollary,
+div.remark,
+div.example {
   background: var(--panel);
   border: 1px solid var(--line);
   border-left: 5px solid var(--accent);
@@ -116,7 +122,13 @@ p {
   padding: 16px 18px;
 }
 
-.math-block strong:first-child {
+.math-block strong:first-child,
+div.definition strong:first-child,
+div.theorem strong:first-child,
+div.proposition strong:first-child,
+div.corollary strong:first-child,
+div.remark strong:first-child,
+div.example strong:first-child {
   color: var(--accent);
   display: block;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -124,8 +136,30 @@ p {
   margin-bottom: 0.35em;
 }
 
+.math-block > p:first-child,
+div.definition > p:first-child,
+div.theorem > p:first-child,
+div.proposition > p:first-child,
+div.corollary > p:first-child,
+div.remark > p:first-child,
+div.example > p:first-child {
+  margin-top: 0;
+}
+
+.math-block > p:last-child,
+div.definition > p:last-child,
+div.theorem > p:last-child,
+div.proposition > p:last-child,
+div.corollary > p:last-child,
+div.remark > p:last-child,
+div.example > p:last-child {
+  margin-bottom: 0;
+}
+
 .math-block-remark,
-.math-block-example {
+.math-block-example,
+div.remark,
+div.example {
   background: var(--accent-soft);
   border-left-color: #7d9b98;
 }

@@ -24,7 +24,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="assets/site.css" />
+  <link rel="stylesheet" href="assets/site.css?v=20260603" />
   <script defer=""
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
   type="text/javascript"></script>
@@ -276,6 +276,78 @@ id="toc-otto-calculus-revisited">Otto Calculus Revisited</a></li>
 <li><a href="#summary-1" id="toc-summary-1">Summary</a></li>
 <li><a href="#recommended-reading-2"
 id="toc-recommended-reading-2">Recommended Reading</a></li>
+</ul></li>
+<li><a
+href="#entropy-free-energy-gibbs-measures-and-variational-principles"
+id="toc-entropy-free-energy-gibbs-measures-and-variational-principles">Entropy,
+Free Energy, Gibbs Measures, and Variational Principles</a>
+<ul>
+<li><a href="#motivation-2" id="toc-motivation-2">Motivation</a></li>
+<li><a href="#entropy-2" id="toc-entropy-2">Entropy</a>
+<ul>
+<li><a href="#differential-entropy-1"
+id="toc-differential-entropy-1">Differential entropy</a></li>
+<li><a href="#relative-entropy-1" id="toc-relative-entropy-1">Relative
+entropy</a></li>
+</ul></li>
+<li><a href="#gibbs-measures" id="toc-gibbs-measures">Gibbs Measures</a>
+<ul>
+<li><a href="#definition-1" id="toc-definition-1">Definition</a></li>
+<li><a href="#examples-1" id="toc-examples-1">Examples</a></li>
+</ul></li>
+<li><a href="#free-energy-2" id="toc-free-energy-2">Free Energy</a>
+<ul>
+<li><a href="#definition-2" id="toc-definition-2">Definition</a></li>
+<li><a href="#physical-interpretation"
+id="toc-physical-interpretation">Physical interpretation</a></li>
+</ul></li>
+<li><a href="#the-gibbs-variational-principle"
+id="toc-the-gibbs-variational-principle">The Gibbs Variational
+Principle</a></li>
+</ul></li>
+<li><a href="#schrödinger-bridges-and-non-conservative-transport"
+id="toc-schrödinger-bridges-and-non-conservative-transport">Schrödinger
+Bridges and Non-Conservative Transport</a>
+<ul>
+<li><a href="#motivation-3" id="toc-motivation-3">Motivation</a></li>
+<li><a href="#from-optimal-transport-to-schrödinger-bridges"
+id="toc-from-optimal-transport-to-schrödinger-bridges">From Optimal
+Transport to Schrödinger Bridges</a>
+<ul>
+<li><a href="#the-deterministic-transport-picture"
+id="toc-the-deterministic-transport-picture">The deterministic transport
+picture</a></li>
+<li><a href="#adding-diffusion" id="toc-adding-diffusion">Adding
+diffusion</a></li>
+</ul></li>
+<li><a href="#the-generalized-schrödinger-bridge"
+id="toc-the-generalized-schrödinger-bridge">The Generalized Schrödinger
+Bridge</a></li>
+<li><a href="#hamiltonian-structure"
+id="toc-hamiltonian-structure">Hamiltonian Structure</a></li>
+<li><a href="#the-jacobi-metric-viewpoint"
+id="toc-the-jacobi-metric-viewpoint">The Jacobi Metric
+Viewpoint</a></li>
+<li><a href="#why-conservative-bridges-are-not-enough"
+id="toc-why-conservative-bridges-are-not-enough">Why Conservative
+Bridges Are Not Enough</a></li>
+<li><a href="#the-non-conservative-lift"
+id="toc-the-non-conservative-lift">The Non-Conservative Lift</a></li>
+<li><a href="#contact-hamiltonian-dynamics"
+id="toc-contact-hamiltonian-dynamics">Contact Hamiltonian
+Dynamics</a></li>
+<li><a href="#contact-wasserstein-geodesics"
+id="toc-contact-wasserstein-geodesics">Contact Wasserstein
+Geodesics</a></li>
+<li><a href="#finite-dimensional-parameterization"
+id="toc-finite-dimensional-parameterization">Finite-Dimensional
+Parameterization</a></li>
+<li><a href="#guidance-as-metric-modulation"
+id="toc-guidance-as-metric-modulation">Guidance as Metric
+Modulation</a></li>
+<li><a href="#interpretation-for-generative-policies"
+id="toc-interpretation-for-generative-policies">Interpretation for
+Generative Policies</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1508,6 +1580,647 @@ Formulation of the Fokker–Planck Equation.”</p></li>
 <li><p>F. Santambrogio, <em>Optimal Transport for Applied
 Mathematicians</em>.</p></li>
 </ol>
-<script src="assets/preview.js"></script>
+<h1
+id="entropy-free-energy-gibbs-measures-and-variational-principles">Entropy,
+Free Energy, Gibbs Measures, and Variational Principles</h1>
+<h2 id="motivation-2">Motivation</h2>
+<p>The previous chapter showed that many evolution equations may be
+interpreted as gradient flows in Wasserstein space. The next step is to
+understand the functionals that generate these flows.</p>
+<p>Three objects appear repeatedly throughout modern machine
+learning:</p>
+<ol>
+<li><p>Gibbs distributions,</p></li>
+<li><p>Kullback–Leibler divergence,</p></li>
+<li><p>entropy-regularized optimization.</p></li>
+</ol>
+<p>These concepts form the common mathematical foundation of:</p>
+<ul>
+<li><p>diffusion models,</p></li>
+<li><p>Schrödinger bridges,</p></li>
+<li><p>variational inference,</p></li>
+<li><p>soft reinforcement learning,</p></li>
+<li><p>Wasserstein policy optimization,</p></li>
+<li><p>drifting-field policies.</p></li>
+</ul>
+<p>The main goal of this chapter is to understand the variational
+principle</p>
+<p><span class="math display">\[\pi
+=
+\operatorname*{argmin}_\rho
+\left(
+\int V\,d\rho
++
+\beta^{-1}
+\int \rho\log\rho
+\right),\]</span></p>
+<p>which lies at the heart of all subsequent developments.</p>
+<h2 id="entropy-2">Entropy</h2>
+<h3 id="differential-entropy-1">Differential entropy</h3>
+<p>Let <span class="math inline">\(\rho\)</span> be a probability
+density on <span class="math inline">\(\mathbb{R}^d\)</span>.</p>
+<div class="definition">
+<p><strong>Definition 4.1</strong> (Differential entropy). The
+differential entropy of <span class="math inline">\(\rho\)</span> is</p>
+<p><span class="math display">\[H(\rho)
+=
+-
+\int_{\mathbb{R}^d}
+\rho(x)\log\rho(x)\,dx.\]</span></p>
+<p>Entropy measures uncertainty or spread.</p>
+</div>
+<div class="example">
+<p><strong>Example 4.2</strong>. Among all distributions with fixed
+variance, the Gaussian maximizes entropy.</p>
+</div>
+<div class="remark">
+<p><strong>Remark 4.3</strong>. In mathematics it is often convenient to
+use</p>
+<p><span class="math display">\[\mathcal H(\rho)
+=
+\int \rho\log\rho,\]</span></p>
+<p>which differs by a sign from Shannon entropy.</p>
+</div>
+<h3 id="relative-entropy-1">Relative entropy</h3>
+<div class="definition">
+<p><strong>Definition 4.4</strong> (Kullback–Leibler divergence). Let
+<span class="math inline">\(\rho\)</span> and <span
+class="math inline">\(\pi\)</span> be probability densities.</p>
+<p>The relative entropy is</p>
+<p><span class="math display">\[\mathrm{KL}(\rho\|\pi)
+=
+\int
+\rho(x)
+\log
+\frac{\rho(x)}{\pi(x)}
+\,dx.\]</span></p>
+</div>
+<div class="theorem">
+<p><strong>Theorem 4.5</strong> (Gibbs inequality). <em><span
+class="math display">\[\mathrm{KL}(\rho\|\pi)\ge0.\]</span></em></p>
+<p><em>Equality holds iff</em></p>
+<p><em><span class="math display">\[\rho=\pi\]</span></em></p>
+<p><em>almost everywhere.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Since</p>
+<p><span class="math display">\[\log u \le u-1,\]</span></p>
+<p>one obtains</p>
+<p><span class="math display">\[-\log u \ge 1-u.\]</span></p>
+<p>Substituting</p>
+<p><span class="math display">\[u=\frac{\pi(x)}{\rho(x)}\]</span></p>
+<p>and integrating gives the claim. ◻</p>
+</div>
+<h2 id="gibbs-measures">Gibbs Measures</h2>
+<h3 id="definition-1">Definition</h3>
+<p>Let</p>
+<p><span class="math display">\[V:\mathbb{R}^d\to\mathbb{R}\]</span></p>
+<p>be a potential energy.</p>
+<div class="definition">
+<p><strong>Definition 4.6</strong> (Partition function). <span
+class="math display">\[Z
+=
+\int_{\mathbb{R}^d}
+e^{-\beta V(x)}
+dx.\]</span></p>
+</div>
+<div class="definition">
+<p><strong>Definition 4.7</strong> (Gibbs measure). The Gibbs density
+associated with <span class="math inline">\(V\)</span> is</p>
+<p><span class="math display">\[\pi(x)
+=
+\frac1Z
+e^{-\beta V(x)}.\]</span></p>
+</div>
+<div class="remark">
+<p><strong>Remark 4.8</strong>. The parameter</p>
+<p><span class="math display">\[\beta^{-1}\]</span></p>
+<p>is interpreted as temperature.</p>
+</div>
+<h3 id="examples-1">Examples</h3>
+<h5 id="quadratic-potential">Quadratic potential</h5>
+<p><span class="math display">\[V(x)
+=
+\frac12\|x\|^2.\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[\pi(x)
+\propto
+e^{-\beta \|x\|^2/2},\]</span></p>
+<p>which is Gaussian.</p>
+<h5 id="softmax-distributions">Softmax distributions</h5>
+<p>If the state space is finite,</p>
+<p><span class="math display">\[V_i=-Q_i,\]</span></p>
+<p>then</p>
+<p><span class="math display">\[\pi_i
+=
+\frac{e^{Q_i/\alpha}}
+{\sum_j e^{Q_j/\alpha}}.\]</span></p>
+<p>This is precisely the Boltzmann policy appearing in soft RL.</p>
+<h2 id="free-energy-2">Free Energy</h2>
+<h3 id="definition-2">Definition</h3>
+<div class="definition">
+<p><strong>Definition 4.9</strong> (Free energy). The free energy
+functional is</p>
+<p><span class="math display">\[\mathcal F(\rho)
+=
+\int V(x)\rho(x)\,dx
++
+\beta^{-1}
+\int
+\rho(x)\log\rho(x)\,dx.\]</span></p>
+<p>The first term is expected energy.</p>
+<p>The second term penalizes low entropy.</p>
+</div>
+<h3 id="physical-interpretation">Physical interpretation</h3>
+<p>The classical thermodynamic identity is</p>
+<p><span class="math display">\[F=E-TS.\]</span></p>
+<p>In our notation,</p>
+<p><span class="math display">\[\mathcal F
+=
+\text{energy}
++
+\beta^{-1}
+\text{entropy}.\]</span></p>
+<p>Because entropy carries a minus sign, this is exactly the same
+formula.</p>
+<h2 id="the-gibbs-variational-principle">The Gibbs Variational
+Principle</h2>
+<p>We now arrive at one of the central theorems of the entire
+syllabus.</p>
+<div class="theorem">
+<p><strong>Theorem 4.10</strong> (Gibbs variational principle).
+<em>Let</em></p>
+<p><em><span class="math display">\[\pi(x)
+=
+\frac1Z e^{-\beta V(x)}.\]</span></em></p>
+<p><em>Then</em></p>
+<p><em><span class="math display">\[\pi
+=
+\operatorname*{argmin}_{\rho}
+\mathcal F(\rho).\]</span></em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Observe that</p>
+<p><span class="math display">\[\log \pi(x)
+=
+-\beta V(x)-\log Z.\]</span></p>
+<p>Therefore</p>
+<p><span class="math display">\[V(x)
+=
+-\beta^{-1}\log\pi(x)
+-\beta^{-1}\log Z.\]</span></p>
+<p>Substituting into the free energy gives</p>
+<p><span class="math display">\[\begin{align*}
+\mathcal F(\rho)
+&amp;=
+\int
+\left(
+-\beta^{-1}\log\pi
+-\beta^{-1}\log Z
+\right)
+\rho
++
+\beta^{-1}
+\int
+\rho\log\rho
+\\
+&amp;=
+\beta^{-1}
+\int
+\rho
+\log
+\frac{\rho}{\pi}
+-
+\beta^{-1}\log Z.
+\end{align*}\]</span></p>
+<p>Hence</p>
+<p><span class="math display">\[\mathcal F(\rho)
+=
+\beta^{-1}
+\mathrm{KL}(\rho\|\pi)
+-
+\beta^{-1}\log Z.\]</span></p>
+<p>Since KL divergence is nonnegative,</p>
+<p><span class="math display">\[\mathcal F(\rho)
+\ge
+-\beta^{-1}\log Z.\]</span></p>
+<p>Equality occurs iff</p>
+<p><span class="math display">\[\rho=\pi.\]</span> ◻</p>
+</div>
+<h1 id="schrödinger-bridges-and-non-conservative-transport">Schrödinger
+Bridges and Non-Conservative Transport</h1>
+<h2 id="motivation-3">Motivation</h2>
+<p>The previous chapter introduced entropy, Gibbs measures, and
+variational principles. We now use those ideas to move from
+deterministic optimal transport to stochastic transport.</p>
+<p>The central object of this chapter is the <em>Schrödinger
+bridge</em>. At a high level, a Schrödinger bridge asks for the most
+likely stochastic evolution connecting two prescribed probability
+distributions. In modern generative modeling language, it asks for a
+probability path</p>
+<p><span class="math display">\[\rho_0=\rho_a,
+\qquad
+\rho_1=\rho_b,\]</span></p>
+<p>together with a velocity or drift field that transports samples from
+the initial marginal to the terminal marginal.</p>
+<p>The new feature is that the path is not chosen only by shortest
+transport cost. It is regularized by diffusion, entropy, or a reference
+stochastic process. This makes Schrödinger bridges a natural meeting
+point of:</p>
+<ul>
+<li><p>optimal transport,</p></li>
+<li><p>stochastic control,</p></li>
+<li><p>diffusion models,</p></li>
+<li><p>multi-marginal interpolation,</p></li>
+<li><p>policy improvement under entropy regularization.</p></li>
+</ul>
+<p>For our long-term goal, the important question is slightly
+sharper:</p>
+<p><span class="math display">\[\text{What happens if the bridge is not
+energy-conserving?}\]</span></p>
+<p>This question is the doorway to contact geometry.</p>
+<h2 id="from-optimal-transport-to-schrödinger-bridges">From Optimal
+Transport to Schrödinger Bridges</h2>
+<h3 id="the-deterministic-transport-picture">The deterministic transport
+picture</h3>
+<p>In the Benamou–Brenier formulation, the squared Wasserstein distance
+is obtained by minimizing kinetic energy:</p>
+<p><span class="math display">\[W_2^2(\rho_a,\rho_b)
+=
+\inf_{\rho_t,v_t}
+\int_0^1
+\int_{\mathbb{R}^d}
+\|v_t(x)\|^2
+\rho_t(x)\,dx\,dt,\]</span></p>
+<p>subject to</p>
+<p><span class="math display">\[\partial_t\rho_t+\nabla\cdot(\rho_t
+v_t)=0,
+\qquad
+\rho_0=\rho_a,
+\qquad
+\rho_1=\rho_b.\]</span></p>
+<p>The continuity equation says that probability mass is transported by
+the velocity field <span class="math inline">\(v_t\)</span>. There is no
+creation or destruction of mass.</p>
+<h3 id="adding-diffusion">Adding diffusion</h3>
+<p>A Schrödinger bridge replaces the deterministic continuity equation
+by a diffusive equation of Fokker–Planck type:</p>
+<p><span class="math display">\[\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon \Delta \rho_t.\]</span></p>
+<p>The diffusion coefficient <span
+class="math inline">\(\varepsilon&gt;0\)</span> measures the strength of
+the stochastic perturbation. The velocity <span
+class="math inline">\(v_t\)</span> now controls a noisy transport
+process rather than a purely deterministic one.</p>
+<div class="remark">
+<p><strong>Remark 5.1</strong>. When <span
+class="math inline">\(\varepsilon\to 0\)</span>, the Schrödinger bridge
+problem formally approaches optimal transport. For positive <span
+class="math inline">\(\varepsilon\)</span>, the bridge prefers
+stochastic paths that are close to a reference diffusion.</p>
+</div>
+<h2 id="the-generalized-schrödinger-bridge">The Generalized Schrödinger
+Bridge</h2>
+<p>The version that will matter for us includes a potential energy <span
+class="math inline">\(U\)</span>. The action is</p>
+<p><span class="math display">\[J(\rho,v)
+=
+\int_0^1
+\int_{\mathbb{R}^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx\,dt.\]</span></p>
+<p>The first term is kinetic energy. The second term penalizes or
+rewards regions of state space through the potential <span
+class="math inline">\(U\)</span>.</p>
+<div class="definition">
+<p><strong>Definition 5.2</strong> (Generalized Schrödinger bridge). A
+generalized Schrödinger bridge between <span
+class="math inline">\(\rho_a\)</span> and <span
+class="math inline">\(\rho_b\)</span> is a solution of</p>
+<p><span class="math display">\[\inf_{\rho_t,v_t}
+\int_0^1
+\int_{\mathbb{R}^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx\,dt\]</span></p>
+<p>subject to</p>
+<p><span class="math display">\[\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon\Delta\rho_t,
+\qquad
+\rho_0=\rho_a,
+\qquad
+\rho_1=\rho_b.\]</span></p>
+</div>
+<p>One may also impose intermediate marginal constraints</p>
+<p><span class="math display">\[\rho_{t_m}=\rho_m,
+\qquad
+m=1,\dots,M.\]</span></p>
+<p>This is important for applications where one observes snapshots of a
+system at several times but not the full underlying trajectory.</p>
+<h2 id="hamiltonian-structure">Hamiltonian Structure</h2>
+<p>The optimality conditions of the generalized bridge can be written in
+Hamiltonian form. Introduce a scalar field <span
+class="math inline">\(S_t(x)\)</span>, which plays the role of a
+momentum or cotangent variable. At the optimum, the velocity is a
+gradient:</p>
+<p><span class="math display">\[v_t(x)=\nabla S_t(x).\]</span></p>
+<p>The density and momentum then evolve according to a coupled system of
+the form</p>
+<p><span class="math display">\[\partial_t\rho_t
+=
+-\nabla\cdot(\rho_t\nabla S_t),\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\partial_t S_t
+=
+-\frac12\|\nabla S_t\|^2
++\frac12\varepsilon^2
+\frac{\delta I}{\delta\rho}(\rho_t)
++U.\]</span></p>
+<p>Here</p>
+<p><span class="math display">\[I(\rho)
+=
+\int_{\mathbb{R}^d}
+\|\nabla\log\rho(x)\|^2
+\rho(x)\,dx\]</span></p>
+<p>is the Fisher information.</p>
+<div class="remark">
+<p><strong>Remark 5.3</strong>. The field <span
+class="math inline">\(S_t\)</span> should be read as the cotangent
+representative of the motion. The density derivative <span
+class="math inline">\(\partial_t\rho_t\)</span> is tangent to the
+probability manifold, while <span class="math inline">\(S_t\)</span> is
+the dual object whose gradient gives the velocity field moving the
+density.</p>
+</div>
+<p>The corresponding Hamiltonian is naturally split into kinetic and
+potential parts:</p>
+<p><span class="math display">\[H(\rho,S)
+=
+\underbrace{
+\frac12
+\int
+\|\nabla S(x)\|^2\rho(x)\,dx
+}_{K(\rho,S)}
++
+\underbrace{
+F(\rho)
+}_{\text{potential contribution}}.\]</span></p>
+<p>The Fisher information belongs to the potential contribution. It is
+the trace left by stochastic diffusion after rewriting the bridge in
+Hamiltonian variables.</p>
+<h2 id="the-jacobi-metric-viewpoint">The Jacobi Metric Viewpoint</h2>
+<p>Classical mechanics has a useful geometric reformulation: under
+suitable conditions, Hamiltonian trajectories can be seen as geodesics
+for a rescaled metric called a Jacobi metric.</p>
+<p>In the Wasserstein setting, the base metric is the Wasserstein metric
+<span class="math inline">\(g_{W_2}\)</span>. The generalized bridge can
+be viewed as a geodesic problem for a conformal rescaling</p>
+<p><span class="math display">\[g_J
+=
+\bigl(H-F(\rho)\bigr)g_{W_2}.\]</span></p>
+<p>The factor <span class="math inline">\(H-F(\rho)\)</span> measures
+the kinetic part of the energy. Thus the potential does not replace the
+Wasserstein metric; it changes the geometry by making some regions of
+probability space more expensive than others.</p>
+<div class="remark">
+<p><strong>Remark 5.4</strong>. This is the first point where the bridge
+stops looking like ordinary optimal transport. The geometry is no longer
+only the bare Wasserstein geometry of mass movement. It is Wasserstein
+geometry shaped by an energy landscape.</p>
+</div>
+<h2 id="why-conservative-bridges-are-not-enough">Why Conservative
+Bridges Are Not Enough</h2>
+<p>The Hamiltonian formulation above is conservative: the total
+Hamiltonian is constant along the idealized flow. This is appropriate
+for systems whose energy is preserved, but many systems of interest in
+generative modeling and reinforcement learning are not like that.</p>
+<p>Examples include:</p>
+<ul>
+<li><p>a policy distribution changing as new value information is
+injected,</p></li>
+<li><p>a generative model being guided toward a condition,</p></li>
+<li><p>a biological population differentiating over time,</p></li>
+<li><p>an offline policy being updated toward an online-improved
+policy.</p></li>
+</ul>
+<p>In these cases, the path may gain or lose effective energy. The
+target itself may drift. The geometry should therefore allow the bridge
+to be non-conservative.</p>
+<h2 id="the-non-conservative-lift">The Non-Conservative Lift</h2>
+<p>The non-conservative bridge introduces one extra scalar variable
+<span class="math inline">\(z_t\)</span>. This variable stores the
+accumulated action along the path. Instead of minimizing a fixed action
+directly, one prescribes its evolution:</p>
+<p><span class="math display">\[\partial_t z_t
+=
+\int_{\mathbb{R}^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx
+-\gamma z_t.\]</span></p>
+<p>The parameter <span
+class="math inline">\(\gamma\in\mathbb{R}\)</span> controls damping or
+amplification. The bridge is still constrained by the Fokker–Planck
+equation</p>
+<p><span class="math display">\[\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon\Delta\rho_t.\]</span></p>
+<div class="definition">
+<p><strong>Definition 5.5</strong> (Non-conservative generalized
+Schrödinger bridge). A non-conservative generalized Schrödinger bridge
+is a controlled density path <span
+class="math inline">\((\rho_t,v_t,z_t)\)</span> satisfying</p>
+<p><span class="math display">\[\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon\Delta\rho_t\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\partial_t z_t
+=
+\int_{\mathbb{R}^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx
+-\gamma z_t,\]</span></p>
+<p>with prescribed endpoint marginals, and possibly prescribed
+intermediate marginals.</p>
+</div>
+<p>The point of <span class="math inline">\(z_t\)</span> is not that
+probability mass is no longer conserved. The mass is still conserved by
+the Fokker–Planck equation. What is no longer conserved is the
+energy/action budget governing the bridge.</p>
+<h2 id="contact-hamiltonian-dynamics">Contact Hamiltonian Dynamics</h2>
+<p>Contact geometry is the odd-dimensional analogue of symplectic
+geometry. The usual Hamiltonian phase space is enlarged by one scalar
+coordinate. In our case, the enlarged phase space is formally</p>
+<p><span
+class="math display">\[T^*\mathcal{P}^+(\mathbb{R}^d)\times\mathbb{R},\]</span></p>
+<p>with coordinates</p>
+<p><span class="math display">\[(\rho,S,z).\]</span></p>
+<p>The contact Hamiltonian has the schematic form</p>
+<p><span class="math display">\[H^c(\rho,S,z)
+=
+K(\rho,S)+F(\rho)+B(\rho)+\gamma z.\]</span></p>
+<p>Here <span class="math inline">\(K\)</span> is kinetic energy, <span
+class="math inline">\(F\)</span> contains the potential and
+diffusion-induced terms, <span class="math inline">\(B\)</span> is an
+entropy contribution, and <span class="math inline">\(\gamma z\)</span>
+is the explicitly non-conservative part.</p>
+<p>The contact Hamiltonian equations have the form</p>
+<p><span class="math display">\[\partial_t\rho_t
+=
+-\nabla\cdot(\rho_t\nabla S_t),\]</span></p>
+<p><span class="math display">\[\partial_t S_t
+=
+-\frac12\|\nabla S_t\|^2
++\frac12\varepsilon^2
+\frac{\delta I}{\delta\rho}(\rho_t)
++U
+-\gamma S_t
+-\varepsilon\gamma\log\rho_t,\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\partial_t z_t
+=
+\int
+\left(
+\frac12\|\nabla S_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx
++\frac12\varepsilon^2 I(\rho_t)
+-\int
+\varepsilon\gamma(\log\rho_t(x)-1)\rho_t(x)\,dx
+-\gamma z_t.\]</span></p>
+<div class="remark">
+<p><strong>Remark 5.6</strong>. The terms involving <span
+class="math inline">\(\gamma\)</span> are the signature of
+non-conservative dynamics. When <span
+class="math inline">\(\gamma=0\)</span>, the extra contact effects
+disappear and the system reduces to the conservative Hamiltonian bridge
+picture.</p>
+</div>
+<h2 id="contact-wasserstein-geodesics">Contact Wasserstein
+Geodesics</h2>
+<p>The contact Hamiltonian flow lives on the extended phase space <span
+class="math inline">\(T^*\mathcal{P}^+(\mathbb{R}^d)\times\mathbb{R}\)</span>.
+Its projection can be interpreted as a geodesic on an augmented
+probability manifold</p>
+<p><span
+class="math display">\[\mathcal{P}^+(\mathbb{R}^d)\times\mathbb{R}.\]</span></p>
+<p>The associated metric is again a Jacobi-type rescaling of the
+Wasserstein metric:</p>
+<p><span class="math display">\[\widetilde g_J
+=
+\bigl(H^c-F(\rho)-B(\rho)\bigr)g_{W_2}.\]</span></p>
+<p>This metric is still Wasserstein in its tangent directions, but the
+cost of moving through probability space is modulated by the evolving
+non-conservative energy.</p>
+<div class="definition">
+<p><strong>Definition 5.7</strong> (Contact Wasserstein geodesic). A
+contact Wasserstein geodesic is a probability path, together with an
+accumulated action coordinate <span class="math inline">\(z_t\)</span>,
+that solves the non-conservative bridge problem and is equivalently
+described as a geodesic for the contact Jacobi-type metric on <span
+class="math inline">\(\mathcal{P}^+(\mathbb{R}^d)\times\mathbb{R}\)</span>.</p>
+</div>
+<h2 id="finite-dimensional-parameterization">Finite-Dimensional
+Parameterization</h2>
+<p>The full space <span
+class="math inline">\(\mathcal{P}^+(\mathbb{R}^d)\)</span> is
+infinite-dimensional. To compute bridges in practice, one restricts
+attention to a finite-dimensional family of pushforward distributions.
+Let <span class="math inline">\(\lambda\)</span> be a reference
+distribution and let</p>
+<p><span class="math display">\[T_{\theta_K}\circ\cdots\circ
+T_{\theta_1}\circ T_{\theta_0}\]</span></p>
+<p>be a composition of maps. This induces a discrete sequence</p>
+<p><span class="math display">\[\rho^{\theta}_{t_{k+1}}
+=
+(T_{\theta_{k+1}})_\#
+\rho^{\theta}_{t_k}.\]</span></p>
+<p>This is exactly the geometric role played by a residual network: each
+block is a small transport step, and the whole network is a discretized
+path in probability space.</p>
+<p>The training loss has three conceptual parts:</p>
+<p><span class="math display">\[\ell
+=
+\underbrace{
+d_{W_2}^2(\rho^\theta_{t_K},\rho_b)
+}_{\text{terminal marginal}}
++
+\underbrace{
+\sum_{m=1}^M
+d_{W_2}^2(\rho^\theta_{t_{k_m}},\rho_m)
+}_{\text{intermediate marginals}}
++
+\underbrace{
+\sum_{k=1}^K
+\Phi_{t_k}
+d_{W_2}^2(\rho^\theta_{t_k},\rho^\theta_{t_{k-1}})
+}_{\text{contact geodesic energy}}.\]</span></p>
+<p>The scalar <span class="math inline">\(\Phi_{t_k}\)</span> is the
+discrete version of the contact Jacobi factor. It tells the model how
+expensive it is to move through that portion of the probability
+path.</p>
+<div class="remark">
+<p><strong>Remark 5.8</strong>. This is the computational bridge between
+the geometry and generative modeling. The abstract object is a geodesic
+in an infinite-dimensional Wasserstein-type space. The implemented
+object is a sequence of parameterized pushforwards trained to match
+marginals while minimizing a geometry-weighted transport energy.</p>
+</div>
+<h2 id="guidance-as-metric-modulation">Guidance as Metric
+Modulation</h2>
+<p>Suppose we want the bridge to satisfy a condition</p>
+<p><span class="math display">\[y=f(x_{t_s})\]</span></p>
+<p>at some time <span class="math inline">\(t_s\)</span>. A natural way
+to impose this condition is to add the penalty</p>
+<p><span class="math display">\[\|y-f(x_{t_s})\|^2\]</span></p>
+<p>to the action. Geometrically, this modifies the Jacobi factor:</p>
+<p><span class="math display">\[\widetilde g&#39;_J
+=
+\left(
+\Phi_t+\|y-f(x_{t_s})\|^2
+\right)g_{W_2}.\]</span></p>
+<p>Regions of probability space that violate the condition become more
+expensive. The bridge is therefore steered without abandoning the
+underlying transport geometry.</p>
+<h2 id="interpretation-for-generative-policies">Interpretation for
+Generative Policies</h2>
+<p>For generative policies, a policy is a pushforward</p>
+<p><span class="math display">\[\pi_\theta(\cdot|s)
+=
+f_\theta(s,\cdot)_\#\rho_0.\]</span></p>
+<p>Training changes the induced distribution over actions. The
+conservative Wasserstein-gradient-flow picture says that policy
+improvement is a mass-preserving transport process driven by a
+variational objective.</p>
+<p>The contact-Wasserstein picture suggests a richer possibility:</p>
+<p><span class="math display">\[\pi_\beta
+\longrightarrow
+\pi_Q\]</span></p>
+<p>may be better modeled as a non-conservative bridge whose effective
+energy can change during learning.</p>
+<p>In this interpretation:</p>
+<ul>
+<li><p>the behavior policy is the initial marginal,</p></li>
+<li><p>the improved soft policy is the terminal marginal,</p></li>
+<li><p>value information acts like a potential or guidance
+term,</p></li>
+<li><p>entropy controls exploration,</p></li>
+<li><p>trust-region effects can be encoded as transport costs,</p></li>
+<li><p>offline-to-online updates can inject or dissipate
+energy.</p></li>
+</ul>
+<p>This is the conceptual reason for studying contact Wasserstein
+geometry in the context of drifting policies. It gives a language for
+distributional learning dynamics that are still geometric, but no longer
+forced to behave as closed conservative systems.</p>
+<script src="assets/preview.js?v=20260603"></script>
 </body>
 </html>

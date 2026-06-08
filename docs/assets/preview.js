@@ -115,7 +115,36 @@
   }
 
   function enhanceMathBlocks(root) {
+    const environmentSelector = [
+      'div.definition',
+      'div.theorem',
+      'div.proposition',
+      'div.corollary',
+      'div.remark',
+      'div.example'
+    ].join(', ');
+
+    root.querySelectorAll(environmentSelector).forEach((block) => {
+      if (block.classList.contains('math-block')) return;
+
+      const type = ['definition', 'theorem', 'proposition', 'corollary', 'remark', 'example']
+        .find((name) => block.classList.contains(name));
+      if (!type) return;
+
+      block.classList.add('math-block', `math-block-${type}`);
+
+      const label = block.querySelector(':scope > p:first-child > strong:first-child');
+      if (!label) return;
+
+      const next = label.nextSibling;
+      if (next && next.nodeType === Node.TEXT_NODE) {
+        next.textContent = next.textContent.replace(/^\.\s*/, '');
+      }
+    });
+
     root.querySelectorAll('p').forEach((paragraph) => {
+      if (paragraph.closest(environmentSelector)) return;
+
       const label = paragraph.querySelector(':scope > strong:first-child');
       if (!label) return;
 

@@ -1,0 +1,371 @@
+% !TeX root = main.tex
+
+\chapter{Entropy, Free Energy, Gibbs Measures, and Variational Principles}
+
+\section{Motivation}
+
+The previous chapter showed that many evolution equations may be interpreted as
+gradient flows in Wasserstein space. The next step is to understand the
+functionals that generate these flows.
+
+Three objects appear repeatedly throughout modern machine learning:
+
+\begin{enumerate}
+    \item Gibbs distributions,
+    \item Kullback--Leibler divergence,
+    \item entropy-regularized optimization.
+\end{enumerate}
+
+These concepts form the common mathematical foundation of:
+
+\begin{itemize}
+    \item diffusion models,
+    \item Schrödinger bridges,
+    \item variational inference,
+    \item soft reinforcement learning,
+    \item Wasserstein policy optimization,
+    \item drifting-field policies.
+\end{itemize}
+
+The main goal of this chapter is to understand the variational principle
+
+\[
+\pi
+=
+\argmin_\rho
+\left(
+\int V\,d\rho
++
+\beta^{-1}
+\int \rho\log\rho
+\right),
+\]
+
+which lies at the heart of all subsequent developments.
+
+\section{Entropy}
+
+\subsection{Differential entropy}
+
+Let $\rho$ be a probability density on $\R^d$.
+
+\begin{definition}[Differential entropy]
+The differential entropy of $\rho$ is
+
+\[
+H(\rho)
+=
+-
+\int_{\R^d}
+\rho(x)\log\rho(x)\,dx.
+\]
+
+Entropy measures uncertainty or spread.
+\end{definition}
+
+\begin{example}
+Among all distributions with fixed variance,
+the Gaussian maximizes entropy.
+\end{example}
+
+\begin{remark}
+In mathematics it is often convenient to use
+
+\[
+\mathcal H(\rho)
+=
+\int \rho\log\rho,
+\]
+
+which differs by a sign from Shannon entropy.
+\end{remark}
+
+\subsection{Relative entropy}
+
+\begin{definition}[Kullback--Leibler divergence]
+
+Let $\rho$ and $\pi$ be probability densities.
+
+The relative entropy is
+
+\[
+\KL(\rho\|\pi)
+=
+\int
+\rho(x)
+\log
+\frac{\rho(x)}{\pi(x)}
+\,dx.
+\]
+
+\end{definition}
+
+\begin{theorem}[Gibbs inequality]
+
+\[
+\KL(\rho\|\pi)\ge0.
+\]
+
+Equality holds iff
+
+\[
+\rho=\pi
+\]
+
+almost everywhere.
+
+\end{theorem}
+
+\begin{proof}
+
+Since
+
+\[
+\log u \le u-1,
+\]
+
+one obtains
+
+\[
+-\log u \ge 1-u.
+\]
+
+Substituting
+
+\[
+u=\frac{\pi(x)}{\rho(x)}
+\]
+
+and integrating gives the claim.
+
+\end{proof}
+
+\section{Gibbs Measures}
+
+\subsection{Definition}
+
+Let
+
+\[
+V:\R^d\to\R
+\]
+
+be a potential energy.
+
+\begin{definition}[Partition function]
+
+\[
+Z
+=
+\int_{\R^d}
+e^{-\beta V(x)}
+dx.
+\]
+
+\end{definition}
+
+\begin{definition}[Gibbs measure]
+
+The Gibbs density associated with $V$ is
+
+\[
+\pi(x)
+=
+\frac1Z
+e^{-\beta V(x)}.
+\]
+
+\end{definition}
+
+\begin{remark}
+
+The parameter
+
+\[
+\beta^{-1}
+\]
+
+is interpreted as temperature.
+
+\end{remark}
+
+\subsection{Examples}
+
+\paragraph{Quadratic potential}
+
+\[
+V(x)
+=
+\frac12\|x\|^2.
+\]
+
+Then
+
+\[
+\pi(x)
+\propto
+e^{-\beta \|x\|^2/2},
+\]
+
+which is Gaussian.
+
+\paragraph{Softmax distributions}
+
+If the state space is finite,
+
+\[
+V_i=-Q_i,
+\]
+
+then
+
+\[
+\pi_i
+=
+\frac{e^{Q_i/\alpha}}
+{\sum_j e^{Q_j/\alpha}}.
+\]
+
+This is precisely the Boltzmann policy appearing in soft RL.
+
+\section{Free Energy}
+
+\subsection{Definition}
+
+\begin{definition}[Free energy]
+
+The free energy functional is
+
+\[
+\mathcal F(\rho)
+=
+\int V(x)\rho(x)\,dx
++
+\beta^{-1}
+\int
+\rho(x)\log\rho(x)\,dx.
+\]
+
+The first term is expected energy.
+
+The second term penalizes low entropy.
+\end{definition}
+
+\subsection{Physical interpretation}
+
+The classical thermodynamic identity is
+
+\[
+F=E-TS.
+\]
+
+In our notation,
+
+\[
+\mathcal F
+=
+\text{energy}
++
+\beta^{-1}
+\text{entropy}.
+\]
+
+Because entropy carries a minus sign,
+this is exactly the same formula.
+
+\section{The Gibbs Variational Principle}
+
+We now arrive at one of the central theorems of the entire syllabus.
+
+\begin{theorem}[Gibbs variational principle]
+
+Let
+
+\[
+\pi(x)
+=
+\frac1Z e^{-\beta V(x)}.
+\]
+
+Then
+
+\[
+\pi
+=
+\argmin_{\rho}
+\mathcal F(\rho).
+\]
+
+\end{theorem}
+
+\begin{proof}
+
+Observe that
+
+\[
+\log \pi(x)
+=
+-\beta V(x)-\log Z.
+\]
+
+Therefore
+
+\[
+V(x)
+=
+-\beta^{-1}\log\pi(x)
+-\beta^{-1}\log Z.
+\]
+
+Substituting into the free energy gives
+
+\begin{align*}
+\mathcal F(\rho)
+&=
+\int
+\left(
+-\beta^{-1}\log\pi
+-\beta^{-1}\log Z
+\right)
+\rho
++
+\beta^{-1}
+\int
+\rho\log\rho
+\\
+&=
+\beta^{-1}
+\int
+\rho
+\log
+\frac{\rho}{\pi}
+-
+\beta^{-1}\log Z.
+\end{align*}
+
+Hence
+
+\[
+\mathcal F(\rho)
+=
+\beta^{-1}
+\KL(\rho\|\pi)
+-
+\beta^{-1}\log Z.
+\]
+
+Since KL divergence is nonnegative,
+
+\[
+\mathcal F(\rho)
+\ge
+-\beta^{-1}\log Z.
+\]
+
+Equality occurs iff
+
+\[
+\rho=\pi.
+\]
+
+\end{proof}

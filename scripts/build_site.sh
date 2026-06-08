@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+ASSET_VERSION="20260603"
+
 mkdir -p docs/assets docs/definitions docs/explanations docs/proofs
 
 pandoc main.tex \
@@ -12,7 +14,7 @@ pandoc main.tex \
   --standalone \
   --toc \
   --mathjax \
-  --css assets/site.css \
+  --css "assets/site.css?v=${ASSET_VERSION}" \
   --include-after-body scripts/include-preview.html \
   --metadata title="Wasserstein Geometry and Generative Policies" \
   --output docs/index.html
@@ -29,7 +31,7 @@ for source in definitions/*.tex; do
     --to html5 \
     --standalone \
     --mathjax \
-    --css ../assets/site.css \
+    --css "../assets/site.css?v=${ASSET_VERSION}" \
     --metadata title="$(basename "${source%.tex}" | tr '_' ' ')" \
     --output "$target"
 done
@@ -41,7 +43,7 @@ for source in explanations/*.tex; do
     --to html5 \
     --standalone \
     --mathjax \
-    --css ../assets/site.css \
+    --css "../assets/site.css?v=${ASSET_VERSION}" \
     --metadata title="$(basename "${source%.tex}" | tr '_' ' ')" \
     --output "$target"
 done
@@ -53,7 +55,7 @@ for source in proofs/*.tex; do
     --to html5 \
     --standalone \
     --mathjax \
-    --css ../assets/site.css \
+    --css "../assets/site.css?v=${ASSET_VERSION}" \
     --metadata title="$(basename "${source%.tex}" | tr '_' ' ')" \
     --output "$target"
 done

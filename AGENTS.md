@@ -268,3 +268,12 @@ are unified under a common variational and geometric formalism.
 
 When I ask you to write a linked definition, theorem, or proof, you will write it in seperate file and put it in the `definitions`, `theorems`, or `proofs` folder respectively. You will also link it in the main text where it is referenced and add a link macro in the preamble. For example, if I ask you to write a definition of "measurable", you will create a file `definitions/measurability.tex`. Similar for theorems and proofs.
 
+# Build Workflow
+
+After every edit to the LaTeX notes, linked explanations, definitions, proofs, site assets, or build scripts, rebuild the website with:
+
+```bash
+scripts/build_site.sh
+```
+
+The user inspects the generated blogpost locally in a browser at `http://localhost:8000/`, so edits should be reflected in `docs/index.html` and related generated files before the task is considered complete.

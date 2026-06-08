@@ -334,6 +334,11 @@ INPUT ./chapter_3.tex
 INPUT ./chapter_3.tex
 INPUT ./chapter_3.tex
 INPUT chapter_3.tex
+INPUT ./chapter_4.tex
+INPUT ./chapter_4.tex
+INPUT ./chapter_4.tex
+INPUT ./chapter_4.tex
+INPUT chapter_4.tex
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out

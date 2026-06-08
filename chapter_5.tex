@@ -1,0 +1,548 @@
+% !TeX root = main.tex
+
+\chapter{Schr\"odinger Bridges and Non-Conservative Transport}
+
+\section{Motivation}
+
+The previous chapter introduced entropy, Gibbs measures, and variational
+principles. We now use those ideas to move from deterministic optimal
+transport to stochastic transport.
+
+The central object of this chapter is the \emph{Schr\"odinger bridge}. At a
+high level, a Schr\"odinger bridge asks for the most likely stochastic
+evolution connecting two prescribed probability distributions. In modern
+generative modeling language, it asks for a probability path
+
+\[
+\rho_0=\rho_a,
+\qquad
+\rho_1=\rho_b,
+\]
+
+together with a velocity or drift field that transports samples from the
+initial marginal to the terminal marginal.
+
+The new feature is that the path is not chosen only by shortest transport
+cost. It is regularized by diffusion, entropy, or a reference stochastic
+process. This makes Schr\"odinger bridges a natural meeting point of:
+
+\begin{itemize}
+    \item optimal transport,
+    \item stochastic control,
+    \item diffusion models,
+    \item multi-marginal interpolation,
+    \item policy improvement under entropy regularization.
+\end{itemize}
+
+For our long-term goal, the important question is slightly sharper:
+
+\[
+\text{What happens if the bridge is not energy-conserving?}
+\]
+
+This question is the doorway to contact geometry.
+
+\section{From Optimal Transport to Schr\"odinger Bridges}
+
+\subsection{The deterministic transport picture}
+
+In the Benamou--Brenier formulation, the squared Wasserstein distance is
+obtained by minimizing kinetic energy:
+
+\[
+W_2^2(\rho_a,\rho_b)
+=
+\inf_{\rho_t,v_t}
+\int_0^1
+\int_{\R^d}
+\|v_t(x)\|^2
+\rho_t(x)\,dx\,dt,
+\]
+
+subject to
+
+\[
+\partial_t\rho_t+\nabla\cdot(\rho_t v_t)=0,
+\qquad
+\rho_0=\rho_a,
+\qquad
+\rho_1=\rho_b.
+\]
+
+The continuity equation says that probability mass is transported by the
+velocity field $v_t$. There is no creation or destruction of mass.
+
+\subsection{Adding diffusion}
+
+A Schr\"odinger bridge replaces the deterministic continuity equation by a
+diffusive equation of Fokker--Planck type:
+
+\[
+\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon \Delta \rho_t.
+\]
+
+The diffusion coefficient $\varepsilon>0$ measures the strength of the
+stochastic perturbation. The velocity $v_t$ now controls a noisy transport
+process rather than a purely deterministic one.
+
+\begin{remark}
+When $\varepsilon\to 0$, the Schr\"odinger bridge problem formally approaches
+optimal transport. For positive $\varepsilon$, the bridge prefers stochastic
+paths that are close to a reference diffusion.
+\end{remark}
+
+\section{The Generalized Schr\"odinger Bridge}
+
+The version that will matter for us includes a potential energy $U$. The
+action is
+
+\[
+J(\rho,v)
+=
+\int_0^1
+\int_{\R^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx\,dt.
+\]
+
+The first term is kinetic energy. The second term penalizes or rewards regions
+of state space through the potential $U$.
+
+\begin{definition}[Generalized Schr\"odinger bridge]
+A generalized Schr\"odinger bridge between $\rho_a$ and $\rho_b$ is a solution
+of
+
+\[
+\inf_{\rho_t,v_t}
+\int_0^1
+\int_{\R^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx\,dt
+\]
+
+subject to
+
+\[
+\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon\Delta\rho_t,
+\qquad
+\rho_0=\rho_a,
+\qquad
+\rho_1=\rho_b.
+\]
+\end{definition}
+
+One may also impose intermediate marginal constraints
+
+\[
+\rho_{t_m}=\rho_m,
+\qquad
+m=1,\dots,M.
+\]
+
+This is important for applications where one observes snapshots of a system at
+several times but not the full underlying trajectory.
+
+\section{Hamiltonian Structure}
+
+The optimality conditions of the generalized bridge can be written in
+Hamiltonian form. Introduce a scalar field $S_t(x)$, which plays the role of a
+momentum or cotangent variable. At the optimum, the velocity is a gradient:
+
+\[
+v_t(x)=\nabla S_t(x).
+\]
+
+The density and momentum then evolve according to a coupled system of the form
+
+\[
+\partial_t\rho_t
+=
+-\nabla\cdot(\rho_t\nabla S_t),
+\]
+
+and
+
+\[
+\partial_t S_t
+=
+-\frac12\|\nabla S_t\|^2
++\frac12\varepsilon^2
+\frac{\delta I}{\delta\rho}(\rho_t)
++U.
+\]
+
+Here
+
+\[
+I(\rho)
+=
+\int_{\R^d}
+\|\nabla\log\rho(x)\|^2
+\rho(x)\,dx
+\]
+
+is the Fisher information.
+
+\begin{remark}
+The field $S_t$ should be read as the cotangent representative of the motion.
+The density derivative $\partial_t\rho_t$ is tangent to the probability
+manifold, while $S_t$ is the dual object whose gradient gives the velocity
+field moving the density.
+\end{remark}
+
+The corresponding Hamiltonian is naturally split into kinetic and potential
+parts:
+
+\[
+H(\rho,S)
+=
+\underbrace{
+\frac12
+\int
+\|\nabla S(x)\|^2\rho(x)\,dx
+}_{K(\rho,S)}
++
+\underbrace{
+F(\rho)
+}_{\text{potential contribution}}.
+\]
+
+The Fisher information belongs to the potential contribution. It is the trace
+left by stochastic diffusion after rewriting the bridge in Hamiltonian
+variables.
+
+\section{The Jacobi Metric Viewpoint}
+
+Classical mechanics has a useful geometric reformulation: under suitable
+conditions, Hamiltonian trajectories can be seen as geodesics for a rescaled
+metric called a Jacobi metric.
+
+In the Wasserstein setting, the base metric is the Wasserstein metric
+$g_{W_2}$. The generalized bridge can be viewed as a geodesic problem for a
+conformal rescaling
+
+\[
+g_J
+=
+\bigl(H-F(\rho)\bigr)g_{W_2}.
+\]
+
+The factor $H-F(\rho)$ measures the kinetic part of the energy. Thus the
+potential does not replace the Wasserstein metric; it changes the geometry by
+making some regions of probability space more expensive than others.
+
+\begin{remark}
+This is the first point where the bridge stops looking like ordinary optimal
+transport. The geometry is no longer only the bare Wasserstein geometry of
+mass movement. It is Wasserstein geometry shaped by an energy landscape.
+\end{remark}
+
+\section{Why Conservative Bridges Are Not Enough}
+
+The Hamiltonian formulation above is conservative: the total Hamiltonian is
+constant along the idealized flow. This is appropriate for systems whose
+energy is preserved, but many systems of interest in generative modeling and
+reinforcement learning are not like that.
+
+Examples include:
+
+\begin{itemize}
+    \item a policy distribution changing as new value information is injected,
+    \item a generative model being guided toward a condition,
+    \item a biological population differentiating over time,
+    \item an offline policy being updated toward an online-improved policy.
+\end{itemize}
+
+In these cases, the path may gain or lose effective energy. The target itself
+may drift. The geometry should therefore allow the bridge to be
+non-conservative.
+
+\section{The Non-Conservative Lift}
+
+The non-conservative bridge introduces one extra scalar variable $z_t$. This
+variable stores the accumulated action along the path. Instead of minimizing a
+fixed action directly, one prescribes its evolution:
+
+\[
+\partial_t z_t
+=
+\int_{\R^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx
+-\gamma z_t.
+\]
+
+The parameter $\gamma\in\R$ controls damping or amplification. The bridge is
+still constrained by the Fokker--Planck equation
+
+\[
+\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon\Delta\rho_t.
+\]
+
+\begin{definition}[Non-conservative generalized Schr\"odinger bridge]
+A non-conservative generalized Schr\"odinger bridge is a controlled density
+path $(\rho_t,v_t,z_t)$ satisfying
+
+\[
+\partial_t\rho_t+\nabla\cdot(\rho_t v_t)
+=
+\varepsilon\Delta\rho_t
+\]
+
+and
+
+\[
+\partial_t z_t
+=
+\int_{\R^d}
+\left(
+\frac12\|v_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx
+-\gamma z_t,
+\]
+
+with prescribed endpoint marginals, and possibly prescribed intermediate
+marginals.
+\end{definition}
+
+The point of $z_t$ is not that probability mass is no longer conserved. The
+mass is still conserved by the Fokker--Planck equation. What is no longer
+conserved is the energy/action budget governing the bridge.
+
+\section{Contact Hamiltonian Dynamics}
+
+Contact geometry is the odd-dimensional analogue of symplectic geometry. The
+usual Hamiltonian phase space is enlarged by one scalar coordinate. In our
+case, the enlarged phase space is formally
+
+\[
+T^*\cP^+(\R^d)\times\R,
+\]
+
+with coordinates
+
+\[
+(\rho,S,z).
+\]
+
+The contact Hamiltonian has the schematic form
+
+\[
+H^c(\rho,S,z)
+=
+K(\rho,S)+F(\rho)+B(\rho)+\gamma z.
+\]
+
+Here $K$ is kinetic energy, $F$ contains the potential and diffusion-induced
+terms, $B$ is an entropy contribution, and $\gamma z$ is the explicitly
+non-conservative part.
+
+The contact Hamiltonian equations have the form
+
+\[
+\partial_t\rho_t
+=
+-\nabla\cdot(\rho_t\nabla S_t),
+\]
+
+\[
+\partial_t S_t
+=
+-\frac12\|\nabla S_t\|^2
++\frac12\varepsilon^2
+\frac{\delta I}{\delta\rho}(\rho_t)
++U
+-\gamma S_t
+-\varepsilon\gamma\log\rho_t,
+\]
+
+and
+
+\[
+\partial_t z_t
+=
+\int
+\left(
+\frac12\|\nabla S_t(x)\|^2+U(x)
+\right)
+\rho_t(x)\,dx
++\frac12\varepsilon^2 I(\rho_t)
+-\int
+\varepsilon\gamma(\log\rho_t(x)-1)\rho_t(x)\,dx
+-\gamma z_t.
+\]
+
+\begin{remark}
+The terms involving $\gamma$ are the signature of non-conservative dynamics.
+When $\gamma=0$, the extra contact effects disappear and the system reduces
+to the conservative Hamiltonian bridge picture.
+\end{remark}
+
+\section{Contact Wasserstein Geodesics}
+
+The contact Hamiltonian flow lives on the extended phase space
+$T^*\cP^+(\R^d)\times\R$. Its projection can be interpreted as a geodesic on an
+augmented probability manifold
+
+\[
+\cP^+(\R^d)\times\R.
+\]
+
+The associated metric is again a Jacobi-type rescaling of the Wasserstein
+metric:
+
+\[
+\widetilde g_J
+=
+\bigl(H^c-F(\rho)-B(\rho)\bigr)g_{W_2}.
+\]
+
+This metric is still Wasserstein in its tangent directions, but the cost of
+moving through probability space is modulated by the evolving
+non-conservative energy.
+
+\begin{definition}[Contact Wasserstein geodesic]
+A contact Wasserstein geodesic is a probability path, together with an
+accumulated action coordinate $z_t$, that solves the non-conservative bridge
+problem and is equivalently described as a geodesic for the contact
+Jacobi-type metric on $\cP^+(\R^d)\times\R$.
+\end{definition}
+
+\section{Finite-Dimensional Parameterization}
+
+The full space $\cP^+(\R^d)$ is infinite-dimensional. To compute bridges in
+practice, one restricts attention to a finite-dimensional family of
+pushforward distributions. Let $\lambda$ be a reference distribution and let
+
+\[
+T_{\theta_K}\circ\cdots\circ T_{\theta_1}\circ T_{\theta_0}
+\]
+
+be a composition of maps. This induces a discrete sequence
+
+\[
+\rho^{\theta}_{t_{k+1}}
+=
+(T_{\theta_{k+1}})_\#
+\rho^{\theta}_{t_k}.
+\]
+
+This is exactly the geometric role played by a residual network: each block is
+a small transport step, and the whole network is a discretized path in
+probability space.
+
+The training loss has three conceptual parts:
+
+\[
+\ell
+=
+\underbrace{
+d_{W_2}^2(\rho^\theta_{t_K},\rho_b)
+}_{\text{terminal marginal}}
++
+\underbrace{
+\sum_{m=1}^M
+d_{W_2}^2(\rho^\theta_{t_{k_m}},\rho_m)
+}_{\text{intermediate marginals}}
++
+\underbrace{
+\sum_{k=1}^K
+\Phi_{t_k}
+d_{W_2}^2(\rho^\theta_{t_k},\rho^\theta_{t_{k-1}})
+}_{\text{contact geodesic energy}}.
+\]
+
+The scalar $\Phi_{t_k}$ is the discrete version of the contact Jacobi factor.
+It tells the model how expensive it is to move through that portion of the
+probability path.
+
+\begin{remark}
+This is the computational bridge between the geometry and generative modeling.
+The abstract object is a geodesic in an infinite-dimensional Wasserstein-type
+space. The implemented object is a sequence of parameterized pushforwards
+trained to match marginals while minimizing a geometry-weighted transport
+energy.
+\end{remark}
+
+\section{Guidance as Metric Modulation}
+
+Suppose we want the bridge to satisfy a condition
+
+\[
+y=f(x_{t_s})
+\]
+
+at some time $t_s$. A natural way to impose this condition is to add the
+penalty
+
+\[
+\|y-f(x_{t_s})\|^2
+\]
+
+to the action. Geometrically, this modifies the Jacobi factor:
+
+\[
+\widetilde g'_J
+=
+\left(
+\Phi_t+\|y-f(x_{t_s})\|^2
+\right)g_{W_2}.
+\]
+
+Regions of probability space that violate the condition become more expensive.
+The bridge is therefore steered without abandoning the underlying transport
+geometry.
+
+\section{Interpretation for Generative Policies}
+
+For generative policies, a policy is a pushforward
+
+\[
+\pi_\theta(\cdot|s)
+=
+f_\theta(s,\cdot)_\#\rho_0.
+\]
+
+Training changes the induced distribution over actions. The conservative
+Wasserstein-gradient-flow picture says that policy improvement is a
+mass-preserving transport process driven by a variational objective.
+
+The contact-Wasserstein picture suggests a richer possibility:
+
+\[
+\pi_\beta
+\longrightarrow
+\pi_Q
+\]
+
+may be better modeled as a non-conservative bridge whose effective energy can
+change during learning.
+
+In this interpretation:
+
+\begin{itemize}
+    \item the behavior policy is the initial marginal,
+    \item the improved soft policy is the terminal marginal,
+    \item value information acts like a potential or guidance term,
+    \item entropy controls exploration,
+    \item trust-region effects can be encoded as transport costs,
+    \item offline-to-online updates can inject or dissipate energy.
+\end{itemize}
+
+This is the conceptual reason for studying contact Wasserstein geometry in
+the context of drifting policies. It gives a language for distributional
+learning dynamics that are still geometric, but no longer forced to behave as
+closed conservative systems.
